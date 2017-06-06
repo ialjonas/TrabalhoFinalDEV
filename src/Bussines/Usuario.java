@@ -7,7 +7,6 @@ public class Usuario {
 	private String email;
 
 	public Usuario(String nome, String cpf, String cnpj, String email) {
-		super();
 		this.nome = nome;
 		this.cpf = cpf;
 		this.cnpj = cnpj;
