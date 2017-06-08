@@ -8,7 +8,7 @@ import org.junit.Test;
 import negocio.Usuario;
 
 public class TesteUsuario {
-
+ 
 	private Usuario usua;
 	private Usuario usuaCNPJ;
 
