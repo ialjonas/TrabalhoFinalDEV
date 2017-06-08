@@ -1,4 +1,4 @@
-package Bussines;
+package negocio;
 
 public class Bem {
 
