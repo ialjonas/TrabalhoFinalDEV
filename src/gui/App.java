@@ -12,9 +12,9 @@ public class App extends Application {
 
 	@Override
 	public void start(Stage stage) throws IOException {
-		Parent root = FXMLLoader.load(getClass().getResource("tela1.fxml"));
+		Parent tela1 = FXMLLoader.load(getClass().getResource("tela1.fxml"));
 		
-		Scene scene = new Scene(root);
+		Scene scene = new Scene(tela1);
 		
 		stage.setScene(scene);
 		stage.setTitle("Leilão");

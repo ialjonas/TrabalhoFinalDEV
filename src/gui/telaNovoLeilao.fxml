@@ -1,16 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="240.0" prefWidth="352.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="369.0" prefWidth="469.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label layoutX="129.0" layoutY="2.0" prefHeight="25.0" prefWidth="94.0" text="Novo Leilão">
+      <Label layoutX="36.0" layoutY="47.0" text="Tipo de Leilão">
          <font>
-            <Font name="System Bold" size="16.0" />
+            <Font size="15.0" />
+         </font></Label>
+      <Label layoutX="244.0" layoutY="47.0" text="Tipo de Lance">
+         <font>
+            <Font size="15.0" />
          </font>
       </Label>
-      <Label layoutX="91.0" layoutY="65.0" text="Label" />
+      <ChoiceBox fx:id="cbLeilao" layoutX="36.0" layoutY="70.0" prefWidth="150.0" />
+      <ChoiceBox fx:id="cbLance" layoutX="244.0" layoutY="70.0" prefWidth="150.0" />
+      <DatePicker fx:id="dpInicio" layoutX="36.0" layoutY="168.0" prefHeight="25.0" prefWidth="150.0" />
+      <DatePicker fx:id="dpFim" layoutX="244.0" layoutY="168.0" prefHeight="25.0" prefWidth="150.0" />
+      <Label layoutX="36.0" layoutY="145.0" text="Data Inicio">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="244.0" layoutY="145.0" text="Data Fim">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="36.0" layoutY="221.0" text="Comprador / Vendedor">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <ComboBox fx:id="cbUser" layoutX="36.0" layoutY="246.0" prefWidth="150.0" />
+      <Label layoutX="244.0" layoutY="221.0" text="Valor">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <TextField fx:id="tfValor" layoutX="244.0" layoutY="246.0" />
    </children>
 </AnchorPane>

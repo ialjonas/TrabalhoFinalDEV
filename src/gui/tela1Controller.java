@@ -30,14 +30,14 @@ public class tela1Controller  implements Initializable{
 	void Novo(ActionEvent event) throws IOException {
 		try {
 	        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("telaNovoLeilao.fxml"));
-	                Parent root1 = (Parent) fxmlLoader.load();
-	                Stage stage = new Stage();
-	                stage.setScene(new Scene(root1));  
-	                stage.show();
+	                Parent parentNovoLeilao = (Parent) fxmlLoader.load();
+	                Stage stageNovoLeilao = new Stage();
+	                stageNovoLeilao.setScene(new Scene(parentNovoLeilao));
+	                stageNovoLeilao.setTitle("Novo Leilão");
+	                stageNovoLeilao.show();
 	        } catch(Exception e) {
 	           e.printStackTrace();
 	        }
-		
 	}
 	    
 	
