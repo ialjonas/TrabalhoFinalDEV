@@ -3,9 +3,8 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.tela1Controller">
    <children>
-      <Button fx:id="bt1" layoutX="154.0" layoutY="123.0" mnemonicParsing="false" onAction="#Novo" text="Button" />
+      <Button fx:id="bt1" layoutX="154.0" layoutY="123.0" mnemonicParsing="false" onAction="#Novo" text="Button1" />
    </children>
 </AnchorPane>
