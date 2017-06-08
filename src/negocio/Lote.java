@@ -22,6 +22,4 @@ public class Lote {
 		return loteBem.add(b);
 	}
 	
-	
-
 }
