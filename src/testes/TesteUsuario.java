@@ -14,6 +14,7 @@ public class TesteUsuario {
 	@Before
 	public void setUp() throws Exception {
 		usua = new Usuario("Ial", "12345678912", "email@email.com");
+		usuaCNPJ=new Usuario("Ial", 12345674, "email@email.com");
 	}
 
 	@Test
