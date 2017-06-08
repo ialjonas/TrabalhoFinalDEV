@@ -10,6 +10,7 @@ import negocio.Usuario;
 public class TesteUsuario {
 
 	private Usuario usua;
+	private Usuario usuaCNPJ;
 
 	@Before
 	public void setUp() throws Exception {
