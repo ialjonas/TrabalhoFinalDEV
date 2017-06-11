@@ -10,11 +10,11 @@
       <Button fx:id="bConcluido" layoutX="377.0" layoutY="310.0" mnemonicParsing="false" onAction="#Concluido" text="Concluído" />
       <ChoiceBox fx:id="cbTipo" layoutX="28.0" layoutY="35.0" prefWidth="150.0" />
       <Label layoutX="29.0" layoutY="15.0" text="Selecione o tipo de Usuário" />
-      <TextField fx:id="tfNome" layoutX="28.0" layoutY="117.0" prefHeight="25.0" prefWidth="216.0" />
-      <TextField fx:id="tfDado" layoutX="28.0" layoutY="172.0" prefHeight="25.0" prefWidth="216.0" />
-      <TextField fx:id="tfEmail" layoutX="28.0" layoutY="228.0" prefHeight="25.0" prefWidth="216.0" />
-      <Label fx:id="lNome" layoutX="29.0" layoutY="100.0" text="Nome Completo / Razao" />
-      <Label fx:id="lDado" layoutX="29.0" layoutY="155.0" text="CPF / CNPJ" />
-      <Label layoutX="29.0" layoutY="211.0" text="E-mail" />
+      <TextField fx:id="tfNome" editable="false" layoutX="28.0" layoutY="117.0" prefHeight="25.0" prefWidth="216.0" />
+      <TextField fx:id="tfDado" editable="false" layoutX="28.0" layoutY="172.0" prefHeight="25.0" prefWidth="216.0" />
+      <TextField fx:id="tfEmail" editable="false" layoutX="28.0" layoutY="228.0" prefHeight="25.0" prefWidth="216.0" />
+      <Label fx:id="lNome" disable="true" layoutX="29.0" layoutY="100.0" text="Nome Completo / Razao" />
+      <Label fx:id="lDado" disable="true" layoutX="29.0" layoutY="155.0" text="CPF / CNPJ" />
+      <Label fx:id="lEmail" disable="true" layoutX="29.0" layoutY="211.0" text="E-mail" />
    </children>
 </AnchorPane>

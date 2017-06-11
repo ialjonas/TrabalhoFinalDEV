@@ -27,6 +27,9 @@ public class telaNovoUsuarioController implements Initializable{
     
     @FXML
     private Label lNome; //muda o valor de acordo com o tipo de usuário
+   
+    @FXML
+    private Label lEmail;
 
     @FXML
     private TextField tfNome;
@@ -53,10 +56,22 @@ public class telaNovoUsuarioController implements Initializable{
     	if(cbTipo.getSelectionModel().getSelectedIndex()==0){
 			lDado.setText("CNPJ");
 			lNome.setText("Razão Social");
+			lDado.setDisable(false);
+			lNome.setDisable(false);
+			lEmail.setDisable(false);
+			tfNome.setEditable(true);
+			tfEmail.setEditable(true);
+			tfDado.setEditable(true);
 		}
     	if(cbTipo.getSelectionModel().getSelectedIndex()==1){
     		lDado.setText("CPF");
     		lNome.setText("Nome Completo");
+    		lDado.setDisable(false);
+			lNome.setDisable(false);
+			lEmail.setDisable(false);
+			tfNome.setEditable(true);
+			tfEmail.setEditable(true);
+			tfDado.setEditable(true);
     	}
     }
 	
