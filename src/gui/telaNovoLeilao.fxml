@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
@@ -8,7 +12,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="369.0" prefWidth="469.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.tela1Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="369.0" prefWidth="469.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.telaNovoLeilaoController">
    <children>
       <Label layoutX="36.0" layoutY="47.0" text="Tipo de Leilão">
          <font>
@@ -21,29 +25,31 @@
       </Label>
       <ChoiceBox fx:id="cbLeilao" layoutX="36.0" layoutY="70.0" prefWidth="150.0" />
       <ChoiceBox fx:id="cbLance" layoutX="244.0" layoutY="70.0" prefWidth="150.0" />
-      <DatePicker fx:id="dpInicio" layoutX="36.0" layoutY="168.0" prefHeight="25.0" prefWidth="150.0" />
-      <DatePicker fx:id="dpFim" layoutX="244.0" layoutY="168.0" prefHeight="25.0" prefWidth="150.0" />
-      <Label layoutX="36.0" layoutY="145.0" text="Data Inicio">
+      <DatePicker fx:id="dpInicio" layoutX="36.0" layoutY="126.0" prefHeight="25.0" prefWidth="150.0" />
+      <DatePicker fx:id="dpFim" layoutX="244.0" layoutY="126.0" prefHeight="25.0" prefWidth="150.0" />
+      <Label layoutX="36.0" layoutY="103.0" text="Data Inicio">
          <font>
             <Font size="15.0" />
          </font>
       </Label>
-      <Label layoutX="244.0" layoutY="145.0" text="Data Fim">
+      <Label layoutX="244.0" layoutY="103.0" text="Data Fim">
          <font>
             <Font size="15.0" />
          </font>
       </Label>
-      <Label layoutX="36.0" layoutY="221.0" text="Comprador / Vendedor">
+      <Label layoutX="36.0" layoutY="160.0" text="Comprador / Vendedor">
          <font>
             <Font size="15.0" />
          </font>
       </Label>
-      <ComboBox fx:id="cbUser" layoutX="36.0" layoutY="246.0" prefWidth="150.0" />
-      <Label layoutX="244.0" layoutY="221.0" text="Valor">
+      <ComboBox fx:id="cbUser" layoutX="36.0" layoutY="185.0" prefWidth="150.0" />
+      <Label layoutX="244.0" layoutY="160.0" text="Valor">
          <font>
             <Font size="15.0" />
          </font>
       </Label>
-      <TextField fx:id="tfValor" layoutX="244.0" layoutY="246.0" />
+      <TextField fx:id="tfValor" layoutX="244.0" layoutY="185.0" />
+      <Button fx:id="bConcluido" layoutX="324.0" layoutY="313.0" mnemonicParsing="false" onAction="#Concluido" text="Concluído" />
+      <Button fx:id="bAddItens" layoutX="36.0" layoutY="221.0" mnemonicParsing="false" onAction="#NovoLote" text="Adicionar Itens" />
    </children>
 </AnchorPane>

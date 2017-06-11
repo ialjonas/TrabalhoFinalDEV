@@ -14,7 +14,6 @@ public class Usuario {
 
 	public Usuario(String nome, int cnpj, String email) {
 		this.nome = nome;
-		
 		this.cnpj = cnpj;
 		this.email = email;
 	}

@@ -12,12 +12,12 @@ public class App extends Application {
 
 	@Override
 	public void start(Stage stage) throws IOException {
-		Parent tela1 = FXMLLoader.load(getClass().getResource("tela1.fxml"));
+		Parent tela1 = FXMLLoader.load(getClass().getResource("telaPrincipal.fxml"));
 		
 		Scene scene = new Scene(tela1);
 		
 		stage.setScene(scene);
-		stage.setTitle("Leilão");
+		stage.setTitle("Controle de Leilões");
 		stage.show();
 	}
 
