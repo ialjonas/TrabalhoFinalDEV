@@ -1,10 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.tela1Controller">
    <children>
-      <Button fx:id="btNovo" layoutX="106.0" layoutY="87.0" mnemonicParsing="false" onAction="#Novo" text="Novo Leilão" />
+      <MenuBar layoutX="80.0" layoutY="2.0" prefHeight="25.0" prefWidth="181.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="Arquivo">
+            <items>
+                  <Menu mnemonicParsing="false" text="Novo">
+                    <items>
+                      <MenuItem fx:id="miUsuario" mnemonicParsing="false" onAction="#NovoUsuario" text="Usuário" />
+                        <MenuItem fx:id="miLeilao" mnemonicParsing="false" onAction="#NovoLeilao" text="Leilão" />
+                        <MenuItem fx:id="miBem" mnemonicParsing="false" onAction="#NovoBem" text="Bem" />
+                        <MenuItem fx:id="miLote" mnemonicParsing="false" onAction="#NovoLote" text="Lote" />
+                    </items>
+                  </Menu>
+              <MenuItem fx:id="miFechar" mnemonicParsing="false" onAction="#Fechar" text="Fechar" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem fx:id="miSobre" mnemonicParsing="false" onAction="#Sobre" text="Sobre" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
    </children>
 </AnchorPane>
