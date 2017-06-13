@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author Júlio
+ * @author Ial
  */
 public class CadastroDAOJavaDb implements CadastroDAO {
 	private static CadastroDAOJavaDb ref;
