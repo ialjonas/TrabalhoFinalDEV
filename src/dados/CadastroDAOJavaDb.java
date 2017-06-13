@@ -5,6 +5,9 @@
 package dados;
 
 import java.util.List;
+
+import negocio.CadastroDAO;
+
 import java.sql.*;
 import java.util.ArrayList;
 
