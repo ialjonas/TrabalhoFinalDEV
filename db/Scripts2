@@ -1,0 +1,64 @@
+INSERT INTO USUARIO_PF(usuario_cpf, usuario_nome, usuario_email)
+VALUES('122.456.789-10', 'Joao', 'john@naofezotrabalho.com');
+ 
+INSERT INTO USUARIO_PF(usuario_cpf, usuario_nome, usuario_email)
+VALUES('133.456.789-10', 'Pedro', 'peter@naofezotrabalho.com');
+ 
+INSERT INTO USUARIO_PF(usuario_cpf, usuario_nome, usuario_email)
+VALUES('144.456.789-10', 'Matheus', 'matheusinha@naofezotrabalho.com');
+ 
+INSERT INTO USUARIO_PF(usuario_cpf, usuario_nome, usuario_email)
+VALUES('155.456.789-10', 'Jesus', 'amem@naofezotrabalho.com');
+ 
+INSERT INTO USUARIO_PF(usuario_cpf, usuario_nome, usuario_email)
+VALUES('166.456.789-10', 'Thiago', 'thiago@naofezotrabalho.com');
+ 
+INSERT INTO USUARIO_PF(usuario_cpf, usuario_nome, usuario_email)
+VALUES('177.456.789-10', 'Pitagoras', 'supletivo@naofezotrabalho.com');
+ 
+INSERT INTO USUARIO_PF(usuario_cpf, usuario_nome, usuario_email)
+VALUES('188.456.789-10', 'Baskara', 'menosb@naofezotrabalho.com');
+ 
+INSERT INTO USUARIO_PF(usuario_cpf, usuario_nome, usuario_email)
+VALUES('199.456.789-10', 'Platao', 'plato@naofezotrabalho.com');
+ 
+INSERT INTO USUARIO_PF(usuario_cpf, usuario_nome, usuario_email)
+VALUES('200.456.789-10', 'James', 'james_007@naofezotrabalho.com');
+ 
+INSERT INTO USUARIO_PF(usuario_cpf, usuario_nome, usuario_email)
+VALUES('201.456.789-10', 'Neymar', 'ousadiaealegria@naofezotrabalho.com');
+ 
+INSERT INTO USUARIO_PF(usuario_cpf, usuario_nome, usuario_email)
+VALUES('202.456.789-10', 'Ronaldo', 'ronaldo@naofezotrabalho.com');
+ 
+INSERT INTO USUARIO_PF(usuario_cpf, usuario_nome, usuario_email)
+VALUES('203.456.789-10', 'Romario', 'riomario@naofezotrabalho.com');
+ 
+INSERT INTO USUARIO_PF(usuario_cpf, usuario_nome, usuario_email)
+VALUES('204.456.789-10', 'Cynthya', 'cynthya@naofezotrabalho.com');
+ 
+INSERT INTO USUARIO_PF(usuario_cpf, usuario_nome, usuario_email)
+VALUES('205.456.789-00', 'Marilene', 'merilene@naofezotrabalho.com');
+
+INSERT INTO USUARIO_PJ(usuario_cnpj, usuario_nome, usuario_email)
+VALUES('20.588.666.0001-10', 'balao da informatica', 'balao@balaodainformatica.com');
+ 
+INSERT INTO USUARIO_PJ(usuario_cnpj, usuario_nome, usuario_email)
+VALUES('20.546.627.0001-10', 'moveis kikasa', 'kikasa@kikasamoveis.com');
+ 
+INSERT INTO USUARIO_PJ(usuario_cnpj, usuario_nome, usuario_email)
+VALUES('20.146.613.0001-10', 'construcao', 'construcao@construcao.com');
+ 
+INSERT INTO USUARIO_PJ(usuario_cnpj, usuario_nome, usuario_email)
+VALUES('20.986.654.0001-10', 'esportes esportivos', 'contato@esportesesportivos.com');
+ 
+INSERT INTO USUARIO_PJ(usuario_cnpj, usuario_nome, usuario_email)
+VALUES('20.982.735.0001-10', 'Games FarOll', 'noreply@faroll.com');
+ 
+INSERT INTO USUARIO_PJ(usuario_cnpj, usuario_nome, usuario_email)
+VALUES('23.672.745.0001-10', 'Magazine da Casa', 'noreply@magazinedacasa.com');
+
+DROP TABLE USUARIO_PJ
+
+CREATE TABLE USUARIO_PJ(usuario_cnpj CHAR (18) NOT NULL PRIMARY KEY, usuario_nome VARCHAR (100) NOT NULL , usuario_email VARCHAR (100) NOT NULL);
+
