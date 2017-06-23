@@ -1,7 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package dados;
 
 import java.util.List;
@@ -11,10 +8,6 @@ import negocio.CadastroDAO;
 import java.sql.*;
 import java.util.ArrayList;
 
-/**
- *
- * @author Ial
- */
 public class CadastroDAOJavaDb implements CadastroDAO {
 	private static CadastroDAOJavaDb ref;
 
@@ -40,7 +33,7 @@ public class CadastroDAOJavaDb implements CadastroDAO {
 
 	private static void createDB() throws CadastroDAOException {
 		try {
-			Connection con = DriverManager.getConnection("jdbc:derby:derbyDB;create=true");
+			Connection con = DriverManager.getConnection("jdbc:derby:DBTF_Dev_2017-1;create=true");
 			Statement sta = con.createStatement();
 			String sql = "CREATE TABLE Pessoas ("
 					+ "ID INTEGER NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),"
