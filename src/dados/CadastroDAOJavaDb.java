@@ -47,7 +47,7 @@ public class CadastroDAOJavaDb implements CadastroDAO {
 	}
 
 	private static Connection getConnection() throws SQLException {
-		// derbyDB sera o nome do diretorio criado localmente
-		return DriverManager.getConnection("jdbc:derby:derbyDB");
+		// DBTF_Dev_2017-1 sera o nome do diretorio criado localmente
+		return DriverManager.getConnection("jdbc:derby:DBTF_Dev_2017-1");
 	}
 }
