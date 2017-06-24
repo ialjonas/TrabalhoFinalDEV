@@ -3,25 +3,23 @@ package dados;
 
 import java.util.List;
 
-import negocio.CadastroDAO;
-
 import java.sql.*;
 import java.util.ArrayList;
 
-public class CadastroDAOJavaDb implements CadastroDAO {
-	private static CadastroDAOJavaDb ref;
+public class DAOJavaDb {
+	private static DAOJavaDb ref;
 
-	public static CadastroDAOJavaDb getInstance() throws CadastroDAOException {
+	public static DAOJavaDb getInstance() throws DAOException {
 		if (ref == null)
-			ref = new CadastroDAOJavaDb();
+			ref = new DAOJavaDb();
 		return ref;
 	}
 
-	private CadastroDAOJavaDb() throws CadastroDAOException {
+	private DAOJavaDb() throws DAOException {
 		try {
 			Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
 		} catch (ClassNotFoundException ex) {
-			throw new CadastroDAOException("JdbcOdbDriver not found!!");
+			throw new DAOException("JdbcOdbDriver not found!!");
 		}
 		// Cria o banco de dados vazio
 		// Retirar do comentário se necessário
@@ -31,7 +29,7 @@ public class CadastroDAOJavaDb implements CadastroDAO {
 		 */
 	}
 
-	private static void createDB() throws CadastroDAOException {
+	private static void createDB() throws DAOException {
 		try {
 			Connection con = DriverManager.getConnection("jdbc:derby:DBTF_Dev_2017-1;create=true");
 			Statement sta = con.createStatement();
@@ -42,7 +40,7 @@ public class CadastroDAOJavaDb implements CadastroDAO {
 			sta.close();
 			con.close();
 		} catch (SQLException ex) {
-			throw new CadastroDAOException(ex.getMessage());
+			throw new DAOException(ex.getMessage());
 		}
 	}
 

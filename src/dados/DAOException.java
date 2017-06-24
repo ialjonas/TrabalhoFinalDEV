@@ -8,13 +8,13 @@ package dados;
  *
  * @author Ial
  */
-public class CadastroDAOException extends Exception {
+public class DAOException extends Exception {
 
 	/**
 	 * Creates a new instance of <code>CadastroDAOException</code> without
 	 * detail message.
 	 */
-	public CadastroDAOException() {
+	public DAOException() {
 	}
 
 	/**
@@ -24,11 +24,11 @@ public class CadastroDAOException extends Exception {
 	 * @param msg
 	 *            the detail message.
 	 */
-	public CadastroDAOException(String msg) {
+	public DAOException(String msg) {
 		super(msg);
 	}
 
-	public CadastroDAOException(String message, Throwable cause) {
+	public DAOException(String message, Throwable cause) {
 		super(message, cause);
 	}
 
