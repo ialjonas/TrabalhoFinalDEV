@@ -1,44 +1,43 @@
 package negocio;
 
 public class Bem {
-	private String breveDescricao;
-	private String descricaoCompleta;
-	private int categoria;
+	private String descricao;
+	private String detalhes;
+	private String categoria;
 
-	public Bem(String breveDescricao, String descricaoCompleta, int categoria) {
-		this.breveDescricao = breveDescricao;
-		this.descricaoCompleta = descricaoCompleta;
+	public Bem(String descricao, String detalhes, String categoria) {
+		this.descricao = descricao;
+		this.detalhes = detalhes;
 		this.categoria = categoria;
 	}
 
-	public String getBreveDescricao() {
-		return breveDescricao;
+	public String getDescricao() {
+		return descricao;
 	}
 
-	public void setBreveDescricao(String breveDescricao) {
-		this.breveDescricao = breveDescricao;
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 
-	public String getDescricaoCompleta() {
-		return descricaoCompleta;
+	public String getDetalhes() {
+		return detalhes;
 	}
 
-	public void setDescricaoCompleta(String descricaoCompleta) {
-		this.descricaoCompleta = descricaoCompleta;
+	public void setDetalhes(String detalhes) {
+		this.detalhes = detalhes;
 	}
 
-	public int getCategoria() {
+	public String getCategoria() {
 		return categoria;
 	}
 
-	public void setCategoria(int categoria) {
+	public void setCategoria(String categoria) {
 		this.categoria = categoria;
 	}
 
 	@Override
 	public String toString() {
-		return "Bem [breveDescricao=" + breveDescricao + ", descricaoCompleta=" + descricaoCompleta + ", categoria="
-				+ categoria + "]";
+		return descricao + ", Descricao Completa=" + detalhes + ", Categoria="+ categoria;
 	}
 
 }
