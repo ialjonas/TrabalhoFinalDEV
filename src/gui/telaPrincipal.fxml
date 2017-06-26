@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
@@ -8,7 +9,7 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.telaPrincipalController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="436.0" prefWidth="703.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.telaPrincipalController">
    <children>
       <MenuBar layoutX="80.0" layoutY="2.0" prefHeight="25.0" prefWidth="181.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <menus>
@@ -31,5 +32,13 @@
           </Menu>
         </menus>
       </MenuBar>
+      <ListView fx:id="lvLeiloes" layoutX="81.0" layoutY="106.0" prefHeight="318.0" prefWidth="287.0" />
+      <Label layoutX="81.0" layoutY="40.0" text="Leilões">
+         <font>
+            <Font size="27.0" />
+         </font>
+      </Label>
+      <CheckBox fx:id="cbAndamento" layoutX="81.0" layoutY="79.0" mnemonicParsing="false" text="Em andamento" />
+      <CheckBox fx:id="cbTerminados" layoutX="198.0" layoutY="79.0" mnemonicParsing="false" text="Terminados" />
    </children>
 </AnchorPane>

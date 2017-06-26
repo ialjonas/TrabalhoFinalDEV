@@ -33,7 +33,7 @@ CREATE TABLE LEILAO(
 	CONSTRAINT lote_id FOREIGN KEY (LOTE_ID_foreign_key) REFERENCES LOTE(lote_id),
 	leilao_dataInicio DATE NOT NULL, 
 	leilao_dataFim DATE NOT NULL, 
-	leilao_arremate INTEGER,
+	leilao_arremate DOUBLE,
 	leilao_vendedor CHAR(18) NOT NULL, 
 	leilao_comprador CHAR(18) NOT NULL
 );
@@ -345,5 +345,4 @@ VALUES(017, '2017-06-19', '2017-06-29', 666, '20.588.666.0001-10', '201.456.789-
 -- DROP TABLE LEILAO
 -- DROP TABLE LOTE
 -- DROP TABLE BEM
-
 

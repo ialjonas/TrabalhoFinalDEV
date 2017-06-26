@@ -63,6 +63,20 @@ public class telaNovoUsuarioController implements Initializable{
 	public void initialize(URL location, ResourceBundle resources) {
 		cbTipo.setItems(itensChoiseTipo);
 		cbTipo.setTooltip(new Tooltip("Pessoa Física ou Juridica"));
+		
+		/*
+		cbTipo.valueProperty().addListener((obs1, v1, n1) -> {
+			lNome.setText(v1);
+			lNome.setText(n1);
+		});
+		
+		cbTipo.valueProperty().addListener((obs1, v2, n2) -> {
+			lDado.setText(v2);
+			lDado.setText(n2);
+		});
+		*/
+		
+		
 	}
 	
 	
@@ -89,29 +103,34 @@ public class telaNovoUsuarioController implements Initializable{
 			tfNome.setEditable(true);
 			tfEmail.setEditable(true);
 			tfDado.setEditable(true);
-    	}
+    	} 
+    	
     }
-	
+    
     @FXML
-    void Concluido(ActionEvent event) throws DAOException {
+    void Adicionar(ActionEvent event) throws DAOException {
     	if(cbTipo.getSelectionModel().getSelectedIndex()==0){//selecionado Empresa
     		String CNPJ = tfDado.getText();
     		String nome = tfNome.getText();
     		String email = tfEmail.getText();
     		Usuario_PJ pj = new Usuario_PJ(CNPJ,nome,email);
-    		Usuario_PjJavaDbDB.adicionar(pj);
-    	}
-    	if(cbTipo.getSelectionModel().getSelectedIndex()==1){//selecionado Pessoa Fisica
-    		String CPF = tfDado.getText();
-    		String nome = tfNome.getText();
-    		String email = tfEmail.getText();
-    		Usuario_PF pf = new Usuario_PF(CPF,nome,email);
-    		Usuario_PfJavaDbDB.adicionar(pf);
-    		/*
     		try {	
-    			Usuario_PfJavaDbDB.adicionar(pf);
-    			Stage stage = (Stage) bConcluido.getScene().getWindow();
-    	        stage.close();
+    			Usuario_PjJavaDbDB.adicionar(pj);
+    			cbTipo.setSelectionModel(null);
+    			lDado.setText("CPF / CNPJ");
+    			lNome.setText("Nome Completo / Razao Social");
+    			lDado.setDisable(true);
+    			lNome.setDisable(true);
+    			lEmail.setDisable(true);
+    			tfNome.setEditable(false);
+    			tfEmail.setEditable(false);
+    			tfDado.setEditable(false);
+    			Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setTitle("Sucesso!");
+				alert.setHeaderText(null);
+				alert.setContentText("Usuário Cadastrado corretamente");
+				alert.showAndWait();
+				
     	        } catch(Exception e) {
     	        	Alert alert = new Alert(AlertType.INFORMATION);
 					alert.setTitle("Atenção!");
@@ -119,8 +138,42 @@ public class telaNovoUsuarioController implements Initializable{
 					alert.setContentText("Usuário não inserido");
 					alert.showAndWait();
     	        }
-    	        */
     	}
+    	if(cbTipo.getSelectionModel().getSelectedIndex()==1){//selecionado Pessoa Fisica
+    		String CPF = tfDado.getText();
+    		String nome = tfNome.getText();
+    		String email = tfEmail.getText();
+    		Usuario_PF pf = new Usuario_PF(CPF,nome,email);
+    		try {	
+    			Usuario_PfJavaDbDB.adicionar(pf);
+    			cbTipo.setSelectionModel(null);
+    			lDado.setText("CPF / CNPJ");
+    			lNome.setText("Nome Completo / Razao Social");
+    			lDado.setDisable(true);
+    			lNome.setDisable(true);
+    			lEmail.setDisable(true);
+    			tfNome.setEditable(false);
+    			tfEmail.setEditable(false);
+    			tfDado.setEditable(false);
+    			Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setTitle("Sucesso!");
+				alert.setHeaderText(null);
+				alert.setContentText("Usuário Cadastrado corretamente");
+				alert.showAndWait();
+ 
+    	        } catch(Exception e) {
+    	        	Alert alert = new Alert(AlertType.INFORMATION);
+					alert.setTitle("Atenção!");
+					alert.setHeaderText(null);
+					alert.setContentText("Usuário não inserido");
+					alert.showAndWait();
+    	        }
+    	}
+    	
+    }
+	
+    @FXML
+    void Concluido(ActionEvent event) throws DAOException {
     	Stage stage = (Stage) bConcluido.getScene().getWindow();
         stage.close();
     }

@@ -4,7 +4,12 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import dados.BemJavaDb;
+import dados.DAOException;
+import dados.LeilaoJavaDb;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,9 +19,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ListView;
 import javafx.stage.Stage;
+import negocio.Leilao;
 
 public class telaPrincipalController implements Initializable{
+	LeilaoJavaDb leilaoDB=LeilaoJavaDb.getInstance();
+	ObservableList<Leilao> listaLeiloes = FXCollections.observableArrayList();
 	
 	@FXML
 	private MenuItem miUsuario;
@@ -32,10 +42,29 @@ public class telaPrincipalController implements Initializable{
 
 	@FXML
 	private MenuItem miSobre;
+	
+    @FXML
+    private ListView<Leilao> lvLeiloes;
+    
+    @FXML
+    private CheckBox cbTerminados;
+
+    @FXML
+    private CheckBox cbAndamento;
     
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		try {
+			for(int i=0;i<leilaoDB.getTodos().size();i++){
+				listaLeiloes.add(leilaoDB.getTodos().get(i));
+			}
+			lvLeiloes.setItems(listaLeiloes);
+			
+		} catch (DAOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 			
 	}

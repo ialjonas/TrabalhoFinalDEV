@@ -16,5 +16,6 @@
       <Label fx:id="lNome" disable="true" layoutX="29.0" layoutY="100.0" text="Nome Completo / Razao" />
       <Label fx:id="lDado" disable="true" layoutX="29.0" layoutY="155.0" text="CPF / CNPJ" />
       <Label fx:id="lEmail" disable="true" layoutX="29.0" layoutY="211.0" text="E-mail" />
+      <Button fx:id="bCadastrar" layoutX="28.0" layoutY="274.0" mnemonicParsing="false" onAction="#Adicionar" text="Cadastrar" />
    </children>
 </AnchorPane>
