@@ -3,6 +3,8 @@ package gui;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import dados.BemJavaDb;
+import dados.DAOException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -16,14 +18,16 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
+import negocio.Bem;
 
 public class telaNovoBemController implements Initializable {
+	BemJavaDb bemDB=BemJavaDb.getInstance();
 	ObservableList<String> itensChoiseCategoria = FXCollections.observableArrayList(
 			"Informatica","Mobiliário","Veículos","nova"
 	);
 
     @FXML
-    private TextField tfDescrBreve;
+    private TextField tfDescricao;
     
     @FXML
     private ChoiceBox<String> cbCategoria;
@@ -41,9 +45,12 @@ public class telaNovoBemController implements Initializable {
 	}
 	
 	@FXML
-	void Concluido(ActionEvent event) {
-		//lê os campos selecionados e executa a ação
-		 
+	void Concluido(ActionEvent event) throws DAOException {
+		String descricao = tfDescricao.getText();
+		String detalhes = taDetalhes.getText();
+		String categoria = cbCategoria.getValue();
+		Bem b=new Bem(descricao,detalhes,categoria);
+		bemDB.adicionar(b);
 		Stage stage = (Stage) bConcluido.getScene().getWindow();
 	    stage.close();
 	}

@@ -3,7 +3,7 @@ package negocio;
 public class Usuario_PJ extends Usuario{
 	private String CNPJ;
 
-	public Usuario_PJ(String nome, String email, String CNPJ) {
+	public Usuario_PJ(String CNPJ,String nome, String email) {
 		super(nome, email);
 		this.CNPJ=CNPJ;
 	}
@@ -18,7 +18,7 @@ public class Usuario_PJ extends Usuario{
 
 	@Override
 	public String toString() {
-		return super.toString() + "CNPJ=" + CNPJ;
+		return "CNPJ: "+CNPJ+ super.toString();
 	}
 	
 	

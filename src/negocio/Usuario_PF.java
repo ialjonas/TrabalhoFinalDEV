@@ -3,7 +3,7 @@ package negocio;
 public class Usuario_PF extends Usuario{
 	private String CPF;
 
-	public Usuario_PF(String nome, String email,String CPF) {
+	public Usuario_PF(String CPF, String nome,String email) {
 		super(nome, email);
 		this.CPF=CPF;
 	}
@@ -18,7 +18,7 @@ public class Usuario_PF extends Usuario{
 
 	@Override
 	public String toString() {
-		return super.toString() + "CPF=" + CPF;
+		return "CPF: " + CPF + super.toString();
 	}
 	
 	

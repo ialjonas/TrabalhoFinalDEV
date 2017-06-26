@@ -21,7 +21,7 @@ public class telaNovoLoteController implements Initializable {
 	ObservableList<Bem> listaBens=FXCollections.observableArrayList();
 
     @FXML
-    private ListView<?> lvLote;  //listar bens já pertencentes ao lote, remover com o clique
+    private ListView<Bem> lvLote;  //listar bens já pertencentes ao lote, remover com o clique
     
     @FXML
     private ListView<Bem> lvBens; //listar bens disponíveis para add ao lote com o clique

@@ -27,7 +27,7 @@ public abstract class Usuario {
 
 	@Override
 	public String toString() {
-		return "Usuario=" + nome + ", email=" + email + "]";
+		return " Nome: " + nome + ", e-mail: " + email;
 	}
 
 }

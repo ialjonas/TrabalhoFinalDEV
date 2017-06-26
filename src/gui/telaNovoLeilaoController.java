@@ -3,6 +3,13 @@ package gui;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import dados.BemJavaDb;
+import dados.DAOException;
+import dados.Usuario_PfJavaDb;
+import dados.Usuario_PjJavaDb;
+import negocio.Usuario;
+import negocio.Usuario_PF;
+import negocio.Usuario_PJ;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -19,11 +26,17 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 public class telaNovoLeilaoController implements Initializable {
+	Usuario_PjJavaDb Usuario_PjJavaDbDB=Usuario_PjJavaDb.getInstance();
+	Usuario_PfJavaDb Usuario_PfJavaDbDB=Usuario_PfJavaDb.getInstance();
+	
 	ObservableList<String> itensChoiseLeilao = FXCollections.observableArrayList("Demanda","Oferta");
 	ObservableList<String> itensChoiseLance = FXCollections.observableArrayList("Aberto","Fechado");
+	ObservableList<Usuario> itensCbUser = FXCollections.observableArrayList();
+	ObservableList<Usuario> itensPJCbUser = FXCollections.observableArrayList();
+	ObservableList<Usuario> itensPFCbUser = FXCollections.observableArrayList();
 	    
     @FXML
-    private ComboBox<?> cbUser;
+    private ComboBox<Usuario> cbUser;
 
     @FXML
     private DatePicker dpInicio;
@@ -51,6 +64,20 @@ public class telaNovoLeilaoController implements Initializable {
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		cbLance.setItems(itensChoiseLance);
 		cbLeilao.setItems(itensChoiseLeilao);
+		try {
+			for(int i=0;i<Usuario_PjJavaDbDB.getTodos().size();i++){
+				itensCbUser.add(Usuario_PjJavaDbDB.getTodos().get(i));
+			}
+			for(int i=0;i<Usuario_PfJavaDbDB.getTodos().size();i++){
+				itensCbUser.add(Usuario_PfJavaDbDB.getTodos().get(i));
+			}
+			
+			
+		} catch (DAOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		cbUser.setItems(itensCbUser);
 		
 	}
 	
