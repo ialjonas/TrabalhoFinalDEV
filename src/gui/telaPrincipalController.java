@@ -65,8 +65,6 @@ public class telaPrincipalController implements Initializable{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-			
 	}
 	 
 	@FXML

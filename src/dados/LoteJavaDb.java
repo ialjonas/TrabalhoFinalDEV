@@ -4,21 +4,22 @@ package dados;
 import java.util.List;
 
 import negocio.Bem;
+import negocio.Lote;
 
 import java.sql.*;
 import java.util.ArrayList;
 
-public class BemJavaDb {
-	private static BemJavaDb ref;
+public class LoteJavaDb {
+	private static LoteJavaDb ref;
 
-	public static BemJavaDb getInstance(){
+	public static LoteJavaDb getInstance(){
 		if (ref == null){
-			ref = new BemJavaDb();
+			ref = new LoteJavaDb();
 		}
 		return ref;
 	}
 
-	private BemJavaDb(){
+	private LoteJavaDb(){
 		try {
 			Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
 		} catch (ClassNotFoundException e) {
@@ -54,15 +55,14 @@ public class BemJavaDb {
 		return DriverManager.getConnection("jdbc:derby:DBTF_Dev_2017-1");
 	}
 	
-	public boolean adicionar(Bem b) throws DAOException {
+	public boolean adicionar(Lote l) throws DAOException {
         try {
             Connection con = getConnection();
             PreparedStatement stmt = con.prepareStatement(
-                    "INSERT INTO BEM (bem_descricao, bem_detalhes, bem_categoria) VALUES (?,?,?)" //                             1        2         3            4          5             6
+                    "INSERT INTO LOTE (BEM_ID_foreign_key) VALUES (?)"
                     );
-            stmt.setString(1, b.getDescricao());
-            stmt.setString(2, b.getDetalhes());
-            stmt.setString(3, b.getCategoria());
+            String bemId = Integer.toString(l.getBemId());
+            stmt.setString(1, bemId);
             int ret = stmt.executeUpdate();
             con.close();
             return (ret>0);
@@ -72,31 +72,22 @@ public class BemJavaDb {
     }
 	
 	
-    public List<Bem> getTodos() throws DAOException {
+    public List<Lote> getTodos() throws DAOException {
         try {
             Connection con = getConnection();
             Statement stmt = con.createStatement();
-            ResultSet resultado = stmt.executeQuery("SELECT * FROM BEM");
-            List<Bem> listaBens = new ArrayList<Bem>();
+            ResultSet resultado = stmt.executeQuery("SELECT * FROM LOTE");
+            List<Lote> listaLotes = new ArrayList<Lote>();
             while(resultado.next()) {
-            	int bemId=Integer.parseInt(resultado.getString("bem_id"));
-                String descricao = resultado.getString("bem_descricao");
-                String detalhes = resultado.getString("bem_detalhes");
-                String categoria = resultado.getString("bem_categoria");
-                Bem b = new Bem (bemId,descricao, detalhes, categoria);
-        
-                listaBens.add(b);
+                int bemId=Integer.parseInt(resultado.getString("BEM_ID_foreign_key"));
+                Lote l = new Lote (bemId);
+                listaLotes.add(l);
             }
-            return listaBens;
+            return listaLotes;
         } catch (SQLException ex) {
             throw new DAOException("Falha ao buscar.", ex);
         }
 	}
-	
-	
-	
-	
-	
 	
 	
 }

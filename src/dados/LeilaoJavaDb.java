@@ -7,6 +7,8 @@ import negocio.Bem;
 import negocio.Leilao;
 
 import java.sql.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -63,12 +65,18 @@ public class LeilaoJavaDb {
             PreparedStatement stmt = con.prepareStatement(
                     "INSERT INTO LEILAO (LOTE_ID_foreign_key, leilao_dataInicio, leilao_dataFim, leilao_arremate, leilao_vendedor, leilao_comprador) VALUES (?,?,?,?,?,?)" //                             1        2         3            4          5             6
                     );
-            //stmt.setString(1, l.getLoteID());
-            //stmt.setString(2, b.getDetalhes());
-            //stmt.setString(3, b.getCategoria());
-            //stmt.setString(4, l.getLoteID());
-            //stmt.setString(5, b.getDetalhes());
-            //stmt.setString(6, b.getCategoria());
+            String loteId = Integer.toString(l.getLoteId());
+            
+            DateFormat dataString = new SimpleDateFormat("yyyy-MM-dd"); //converter Data para String
+            String dataIni = dataString.format(l.getDataIni());
+            String dataFim = dataString.format(l.getDataFim());
+            String arremate = Double.toString(l.getArremate());
+            stmt.setString(1, loteId);
+            stmt.setString(2, dataIni);
+            stmt.setString(3, dataFim);
+            stmt.setString(4, arremate);
+            stmt.setString(5, l.getVendedor());
+            stmt.setString(6, l.getComprador());
             
             int ret = stmt.executeUpdate();
             con.close();
@@ -88,9 +96,9 @@ public class LeilaoJavaDb {
             while(resultado.next()) {
                 int loteId = Integer.parseInt(resultado.getString("LOTE_ID_foreign_key"));
                 
-                DateTimeFormatter formatoData = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                LocalDate dataIni = LocalDate.parse(resultado.getString("leilao_dataInicio"),formatoData);
-                LocalDate dataFim = LocalDate.parse(resultado.getString("leilao_dataFim"),formatoData);
+                DateTimeFormatter stringData = DateTimeFormatter.ofPattern("yyyy-MM-dd"); //converter String para Data
+                LocalDate dataIni = LocalDate.parse(resultado.getString("leilao_dataInicio"),stringData);
+                LocalDate dataFim = LocalDate.parse(resultado.getString("leilao_dataFim"),stringData);
                 double arremate = Double.parseDouble(resultado.getString("leilao_arremate"));
                 String vendedor = resultado.getString("leilao_vendedor");
                 String comprador = resultado.getString("leilao_comprador");
@@ -105,6 +113,60 @@ public class LeilaoJavaDb {
         }
 	}
 	
+    public List<Leilao> getAtivos() throws DAOException {
+        try {
+            Connection con = getConnection();
+            Statement stmt = con.createStatement();
+            ResultSet resultado = stmt.executeQuery("SELECT * FROM LEILAO");
+            List<Leilao> listaLeiloesAtivos = new ArrayList<Leilao>();
+            while(resultado.next()) {
+                int loteId = Integer.parseInt(resultado.getString("LOTE_ID_foreign_key"));
+                
+                DateTimeFormatter stringData = DateTimeFormatter.ofPattern("yyyy-MM-dd"); //converter String para Data
+                LocalDate dataIni = LocalDate.parse(resultado.getString("leilao_dataInicio"),stringData);
+                LocalDate dataFim = LocalDate.parse(resultado.getString("leilao_dataFim"),stringData);
+                double arremate = Double.parseDouble(resultado.getString("leilao_arremate"));
+                String vendedor = resultado.getString("leilao_vendedor");
+                String comprador = resultado.getString("leilao_comprador");
+                
+                Leilao l = new Leilao(loteId, dataIni, dataFim, arremate, vendedor, comprador);
+        
+                if(dataFim.isAfter(LocalDate.now())){ //data de fim do leilão for depois de hoje, leilão não terminou
+                	listaLeiloesAtivos.add(l);
+                }
+            }
+            return listaLeiloesAtivos;
+        } catch (SQLException ex) {
+            throw new DAOException("Falha ao buscar.", ex);
+        }
+	}
+	
+    public List<Leilao> getEncerrados() throws DAOException {
+        try {
+            Connection con = getConnection();
+            Statement stmt = con.createStatement();
+            ResultSet resultado = stmt.executeQuery("SELECT * FROM LEILAO");
+            List<Leilao> listaLeiloesEncerrados = new ArrayList<Leilao>();
+            while(resultado.next()) {
+                int loteId = Integer.parseInt(resultado.getString("LOTE_ID_foreign_key"));
+                DateTimeFormatter stringData = DateTimeFormatter.ofPattern("yyyy-MM-dd"); //converter String para Data
+                LocalDate dataIni = LocalDate.parse(resultado.getString("leilao_dataInicio"),stringData);
+                LocalDate dataFim = LocalDate.parse(resultado.getString("leilao_dataFim"),stringData);
+                double arremate = Double.parseDouble(resultado.getString("leilao_arremate"));
+                String vendedor = resultado.getString("leilao_vendedor");
+                String comprador = resultado.getString("leilao_comprador");
+                
+                Leilao l = new Leilao(loteId, dataIni, dataFim, arremate, vendedor, comprador);
+                
+                if(dataFim.isBefore(LocalDate.now())){ //data de fim do leilão for antes de hoje, leilão já terminou
+                	listaLeiloesEncerrados.add(l);
+                }
+            }
+            return listaLeiloesEncerrados;
+        } catch (SQLException ex) {
+            throw new DAOException("Falha ao buscar.", ex);
+        }
+	}
 	
 	
 	

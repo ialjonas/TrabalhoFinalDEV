@@ -3,23 +3,23 @@ package negocio;
 import java.util.ArrayList;
 
 public class Lote {
+	private int bemId;
 
-	private ArrayList<Bem> loteBem;
-	private static Lote instanciaDeLote = null;
-
-	private Lote() {
-		loteBem = new ArrayList<Bem>();
+	public Lote(int bemId) {
+		this.bemId = bemId;
 	}
 
-	public static Lote getInstance() {
-		if (instanciaDeLote == null) {
-			instanciaDeLote = new Lote();
-		}
-		return instanciaDeLote;
+	public int getBemId() {
+		return bemId;
 	}
 
-	public boolean cadastrar(Bem b) {
-		return loteBem.add(b);
+	public void setBemId(int bemId) {
+		this.bemId = bemId;
+	}
+
+	@Override
+	public String toString() {
+		return "Lote [bemId=" + bemId + "]";
 	}
 	
 }

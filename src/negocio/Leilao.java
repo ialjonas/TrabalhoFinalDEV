@@ -69,8 +69,8 @@ public class Leilao {
 
 	@Override
 	public String toString() {
-		return "Leilao [loteId=" + loteId + ", dataIni=" + dataIni + ", dataFim=" + dataFim + ", arremate=" + arremate
-				+ ", vendedor=" + vendedor + ", comprador=" + comprador + "]";
+		return "Informações do Leilao: Data inicio: " + dataIni + ", data fim: " + dataFim + ", Valor arremate: " + arremate
+				+ ", Vendedor: " + vendedor + ", Comprador: " + comprador +" Id do Lote: " + loteId;
 	}
 	
 	
