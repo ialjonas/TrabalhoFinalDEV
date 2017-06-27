@@ -71,6 +71,27 @@ public class BemJavaDb {
         }
     }
 	
+	public Bem getBemPorBemID(int bemId) throws DAOException {
+        try {
+            Connection con = getConnection();
+            PreparedStatement stmt = con.prepareStatement(
+                    "SELECT * FROM BEM WHERE bem_id=?"
+                    );
+            stmt.setString(1, Integer.toString(bemId));
+            ResultSet resultado = stmt.executeQuery();
+            Bem b = null;
+            if(resultado.next()) {
+                int bem_Id = Integer.parseInt(resultado.getString("bem_id"));
+                String descricao = resultado.getString("bem_descricao");
+                String detalhes = resultado.getString("bem_detalhes");
+                String categoria = resultado.getString("bem_categoria");
+                b = new Bem(bem_Id,descricao,detalhes,categoria);
+            }
+            return b;
+        } catch (SQLException ex) {
+            throw new DAOException("Falha ao buscar.", ex);
+        }
+    }
 	
     public List<Bem> getTodos() throws DAOException {
         try {

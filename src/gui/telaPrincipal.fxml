@@ -9,7 +9,7 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="436.0" prefWidth="703.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.telaPrincipalController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="582.0" prefWidth="703.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.telaPrincipalController">
    <children>
       <MenuBar layoutX="80.0" layoutY="2.0" prefHeight="25.0" prefWidth="181.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <menus>
@@ -40,5 +40,22 @@
       </Label>
       <CheckBox fx:id="cbAndamento" layoutX="81.0" layoutY="79.0" mnemonicParsing="false" text="Em andamento" />
       <CheckBox fx:id="cbTerminados" layoutX="198.0" layoutY="79.0" mnemonicParsing="false" text="Terminados" />
+      <Button fx:id="bDetalheLeilao" layoutX="81.0" layoutY="433.0" mnemonicParsing="false" onAction="#DetalheLeilao" prefHeight="25.0" prefWidth="287.0" text="Ver detalhes do leilão" />
+      <Label layoutX="397.0" layoutY="106.0" text="Data Inicio" />
+      <TextField fx:id="tfDataIni" layoutX="397.0" layoutY="123.0" prefHeight="25.0" prefWidth="118.0" />
+      <TextField fx:id="tfDataFim" layoutX="535.0" layoutY="123.0" prefHeight="25.0" prefWidth="118.0" />
+      <Label layoutX="535.0" layoutY="106.0" text="Data Fim" />
+      <Label layoutX="535.0" layoutY="157.0" text="Tipo de Lance" />
+      <TextField fx:id="tfTipoLance" layoutX="535.0" layoutY="174.0" prefHeight="25.0" prefWidth="118.0" />
+      <TextField fx:id="tfTipoLeilao" layoutX="397.0" layoutY="174.0" prefHeight="25.0" prefWidth="118.0" />
+      <Label layoutX="397.0" layoutY="157.0" text="Tipo de Leilão" />
+      <Label layoutX="397.0" layoutY="209.0" text="Lote" />
+      <TextArea fx:id="taLote" layoutX="397.0" layoutY="226.0" prefHeight="77.0" prefWidth="252.0" />
+      <Label layoutX="395.0" layoutY="367.0" text="Usuario Vencedor (corrente)" />
+      <TextField fx:id="tfNomeVencedor" layoutX="395.0" layoutY="384.0" prefHeight="25.0" prefWidth="252.0" />
+      <TextField fx:id="tfNomeCriador" layoutX="395.0" layoutY="333.0" prefHeight="25.0" prefWidth="252.0" />
+      <Label layoutX="395.0" layoutY="316.0" text="Comprador / Vendedor" />
+      <TextField fx:id="tfValorLanceVencedor" layoutX="395.0" layoutY="434.0" prefHeight="25.0" prefWidth="252.0" />
+      <Label layoutX="395.0" layoutY="417.0" text="Lance Vencedor (corrente)" />
    </children>
 </AnchorPane>

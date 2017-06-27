@@ -39,21 +39,6 @@ public class LeilaoJavaDb {
 		 */
 	}
 
-	private static void createDB() throws DAOException {
-		try {
-			Connection con = DriverManager.getConnection("jdbc:derby:DBTF_Dev_2017-1;create=true");
-			Statement sta = con.createStatement();
-			String sql = "CREATE TABLE Pessoas ("
-					+ "ID INTEGER NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),"
-					+ "NOME VARCHAR(100) NOT NULL," + "TELEFONE CHAR(8) NOT NULL," + "SEXO CHAR(1) NOT NULL" + ")";
-			sta.executeUpdate(sql);
-			sta.close();
-			con.close();
-		} catch (SQLException ex) {
-			throw new DAOException(ex.getMessage());
-		}
-	}
-
 	private static Connection getConnection() throws SQLException {
 		// DBTF_Dev_2017-1 sera o nome do diretorio criado localmente
 		return DriverManager.getConnection("jdbc:derby:DBTF_Dev_2017-1");
@@ -63,7 +48,7 @@ public class LeilaoJavaDb {
         try {
             Connection con = getConnection();
             PreparedStatement stmt = con.prepareStatement(
-                    "INSERT INTO LEILAO (LOTE_ID_foreign_key, leilao_dataInicio, leilao_dataFim, leilao_arremate, leilao_vendedor, leilao_comprador) VALUES (?,?,?,?,?,?)" //                             1        2         3            4          5             6
+                    "INSERT INTO LEILAO (LOTE_ID_foreign_key, leilao_dataInicio, leilao_dataFim, leilao_arremate, leilao_criador, leilao_vencedor) VALUES (?,?,?,?,?,?)" //                             1        2         3            4          5             6
                     );
             String loteId = Integer.toString(l.getLoteId());
             
@@ -75,8 +60,8 @@ public class LeilaoJavaDb {
             stmt.setString(2, dataIni);
             stmt.setString(3, dataFim);
             stmt.setString(4, arremate);
-            stmt.setString(5, l.getVendedor());
-            stmt.setString(6, l.getComprador());
+            stmt.setString(5, l.getCriador());
+            stmt.setString(6, l.getVencedor());
             
             int ret = stmt.executeUpdate();
             con.close();
@@ -95,15 +80,16 @@ public class LeilaoJavaDb {
             List<Leilao> listaLeiloes = new ArrayList<Leilao>();
             while(resultado.next()) {
                 int loteId = Integer.parseInt(resultado.getString("LOTE_ID_foreign_key"));
-                
                 DateTimeFormatter stringData = DateTimeFormatter.ofPattern("yyyy-MM-dd"); //converter String para Data
                 LocalDate dataIni = LocalDate.parse(resultado.getString("leilao_dataInicio"),stringData);
                 LocalDate dataFim = LocalDate.parse(resultado.getString("leilao_dataFim"),stringData);
                 double arremate = Double.parseDouble(resultado.getString("leilao_arremate"));
-                String vendedor = resultado.getString("leilao_vendedor");
-                String comprador = resultado.getString("leilao_comprador");
+                String criador = resultado.getString("leilao_criador");
+                String vencedor = resultado.getString("leilao_vencedor");
+                String tipo_leilao = resultado.getString("leilao_tipo");
+                String tipo_lance = resultado.getString("leilao_tipo_lance");
                 
-                Leilao l = new Leilao(loteId, dataIni, dataFim, arremate, vendedor, comprador);
+                Leilao l = new Leilao(loteId, dataIni, dataFim, arremate, criador, vencedor,tipo_leilao,tipo_lance);
         
                 listaLeiloes.add(l);
             }
@@ -120,16 +106,17 @@ public class LeilaoJavaDb {
             ResultSet resultado = stmt.executeQuery("SELECT * FROM LEILAO");
             List<Leilao> listaLeiloesAtivos = new ArrayList<Leilao>();
             while(resultado.next()) {
-                int loteId = Integer.parseInt(resultado.getString("LOTE_ID_foreign_key"));
-                
+            	int loteId = Integer.parseInt(resultado.getString("LOTE_ID_foreign_key"));
                 DateTimeFormatter stringData = DateTimeFormatter.ofPattern("yyyy-MM-dd"); //converter String para Data
                 LocalDate dataIni = LocalDate.parse(resultado.getString("leilao_dataInicio"),stringData);
                 LocalDate dataFim = LocalDate.parse(resultado.getString("leilao_dataFim"),stringData);
                 double arremate = Double.parseDouble(resultado.getString("leilao_arremate"));
-                String vendedor = resultado.getString("leilao_vendedor");
-                String comprador = resultado.getString("leilao_comprador");
+                String criador = resultado.getString("leilao_criador");
+                String vencedor = resultado.getString("leilao_vencedor");
+                String tipo_leilao = resultado.getString("leilao_tipo");
+                String tipo_lance = resultado.getString("leilao_tipo_lance");
                 
-                Leilao l = new Leilao(loteId, dataIni, dataFim, arremate, vendedor, comprador);
+                Leilao l = new Leilao(loteId, dataIni, dataFim, arremate, criador, vencedor,tipo_leilao,tipo_lance);
         
                 if(dataFim.isAfter(LocalDate.now())){ //data de fim do leilão for depois de hoje, leilão não terminou
                 	listaLeiloesAtivos.add(l);
@@ -148,15 +135,17 @@ public class LeilaoJavaDb {
             ResultSet resultado = stmt.executeQuery("SELECT * FROM LEILAO");
             List<Leilao> listaLeiloesEncerrados = new ArrayList<Leilao>();
             while(resultado.next()) {
-                int loteId = Integer.parseInt(resultado.getString("LOTE_ID_foreign_key"));
+            	int loteId = Integer.parseInt(resultado.getString("LOTE_ID_foreign_key"));
                 DateTimeFormatter stringData = DateTimeFormatter.ofPattern("yyyy-MM-dd"); //converter String para Data
                 LocalDate dataIni = LocalDate.parse(resultado.getString("leilao_dataInicio"),stringData);
                 LocalDate dataFim = LocalDate.parse(resultado.getString("leilao_dataFim"),stringData);
                 double arremate = Double.parseDouble(resultado.getString("leilao_arremate"));
-                String vendedor = resultado.getString("leilao_vendedor");
-                String comprador = resultado.getString("leilao_comprador");
+                String criador = resultado.getString("leilao_criador");
+                String vencedor = resultado.getString("leilao_vencedor");
+                String tipo_leilao = resultado.getString("leilao_tipo");
+                String tipo_lance = resultado.getString("leilao_tipo_lance");
                 
-                Leilao l = new Leilao(loteId, dataIni, dataFim, arremate, vendedor, comprador);
+                Leilao l = new Leilao(loteId, dataIni, dataFim, arremate, criador, vencedor,tipo_leilao,tipo_lance);
                 
                 if(dataFim.isBefore(LocalDate.now())){ //data de fim do leilão for antes de hoje, leilão já terminou
                 	listaLeiloesEncerrados.add(l);

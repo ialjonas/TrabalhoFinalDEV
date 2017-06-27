@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 import dados.BemJavaDb;
 import dados.DAOException;
 import dados.LeilaoJavaDb;
+import dados.LoteJavaDb;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,14 +19,20 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 import negocio.Leilao;
+import negocio.Lote;
 
 public class telaPrincipalController implements Initializable{
 	LeilaoJavaDb leilaoDB=LeilaoJavaDb.getInstance();
+	LoteJavaDb loteDB=LoteJavaDb.getInstance();
+	BemJavaDb bemDB=BemJavaDb.getInstance();
 	ObservableList<Leilao> listaLeiloes = FXCollections.observableArrayList();
 	
 	@FXML
@@ -43,16 +50,43 @@ public class telaPrincipalController implements Initializable{
 	@FXML
 	private MenuItem miSobre;
 	
-    @FXML
+	@FXML
+	private CheckBox cbTerminados;
+
+	@FXML
+	private CheckBox cbAndamento;
+	
+	@FXML
     private ListView<Leilao> lvLeiloes;
     
     @FXML
-    private CheckBox cbTerminados;
+    private Button bDetalheLeilao;
+    
+    @FXML
+    private TextField tfDataIni;
+    
+    @FXML
+    private TextField tfDataFim;
+    
+    @FXML
+    private TextField tfTipoLeilao;
+    
+    @FXML
+    private TextField tfTipoLance;
+    
+    @FXML
+    private TextArea taLote;
+    
+    @FXML
+    private TextField tfNomeCriador;
 
     @FXML
-    private CheckBox cbAndamento;
-    
+    private TextField tfNomeVencedor;
 
+    @FXML
+    private TextField tfValorLanceVencedor;
+
+    
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		try {
@@ -107,6 +141,24 @@ public class telaPrincipalController implements Initializable{
 	        } catch(Exception e) {
 	           e.printStackTrace();
 	        }
+    }
+    
+
+    @FXML
+    void DetalheLeilao(ActionEvent event) throws DAOException {
+    	int index=lvLeiloes.getSelectionModel().getSelectedIndex(); //pega o indice do item clicado na view
+		tfDataIni.setText(leilaoDB.getTodos().get(index).getDataIni().toString());
+		tfDataFim.setText(leilaoDB.getTodos().get(index).getDataFim().toString());
+		tfTipoLeilao.setText(leilaoDB.getTodos().get(index).getTipo());
+		tfTipoLance.setText(leilaoDB.getTodos().get(index).getTipoLance());
+		taLote.setText(
+				"Bem no lote: "+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getTodos().get(index).getLoteId()).getBemId()).getDescricao()+
+				"\n"+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getTodos().get(index).getLoteId()).getBemId()).getDetalhes()+
+				"\nCategoria: "+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getTodos().get(index).getLoteId()).getBemId()).getCategoria()
+				);
+		tfNomeCriador.setText(leilaoDB.getTodos().get(index).getCriador());
+		tfNomeVencedor.setText(leilaoDB.getTodos().get(index).getVencedor());
+		tfValorLanceVencedor.setText(Double.toString(leilaoDB.getTodos().get(index).getArremate()));
     }
 	
     
