@@ -8,6 +8,8 @@ import com.sun.javafx.font.freetype.FTFactory;
 import dados.DAOException;
 import dados.Usuario_PfJavaDb;
 import dados.Usuario_PjJavaDb;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -64,49 +66,52 @@ public class telaNovoUsuarioController implements Initializable{
 		cbTipo.setItems(itensChoiseTipo);
 		cbTipo.setTooltip(new Tooltip("Pessoa Física ou Juridica"));
 		
-		/*
-		cbTipo.valueProperty().addListener((obs1, v1, n1) -> {
-			lNome.setText(v1);
-			lNome.setText(n1);
-		});
-		
-		cbTipo.valueProperty().addListener((obs1, v2, n2) -> {
-			lDado.setText(v2);
-			lDado.setText(n2);
-		});
-		*/
-		
-		
+		cbTipo.valueProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String valorAntigo, String novaLabel) {
+	        	refresh(novaLabel);
+			}
+	    });
+	}
+	
+	private void refresh(String novaLabel){
+		switch (novaLabel) {
+        case ("Pessoa Juridica"):
+        	lNome.setText("Razão Social");
+        	lDado.setText("CNPJ");
+        	Mascaras.cnpjField(this.tfDado);
+        	lDado.setDisable(false);
+			lNome.setDisable(false);
+			lEmail.setDisable(false);
+			tfNome.setEditable(true);
+			tfEmail.setEditable(true);
+			tfDado.setEditable(true);
+            break;
+        case ("Pessoa Física"):
+        	lNome.setText("Nome");
+        	lDado.setText("CPF");
+        	Mascaras.cpfField(this.tfDado);
+        	lDado.setDisable(false);
+			lNome.setDisable(false);
+			lEmail.setDisable(false);
+			tfNome.setEditable(true);
+			tfEmail.setEditable(true);
+			tfDado.setEditable(true);
+            break;
+        
+        default:
+        	lNome.setText("Nome Completo / Razao");
+        	lDado.setText("CPF / CNPJ");
+        	lDado.setDisable(true);
+			lNome.setDisable(true);
+			lEmail.setDisable(true);
+			tfNome.setEditable(false);
+			tfEmail.setEditable(false);
+			tfDado.setEditable(false);
+		}
 	}
 	
 	
-    @FXML
-    void Refresh(MouseEvent event) {
-    	if(cbTipo.getSelectionModel().getSelectedIndex()==0){ //selecionado Empresa
-			lDado.setText("CNPJ");
-			lNome.setText("Razão Social");
-			Mascaras.cnpjField(this.tfDado);
-			lDado.setDisable(false);
-			lNome.setDisable(false);
-			lEmail.setDisable(false);
-			tfNome.setEditable(true);
-			tfEmail.setEditable(true);
-			tfDado.setEditable(true);
-		}
-    	if(cbTipo.getSelectionModel().getSelectedIndex()==1){ //selecionado Pessoa Fisica
-    		lDado.setText("CPF");
-    		lNome.setText("Nome Completo");
-    		Mascaras.cpfField(tfDado);
-    		lDado.setDisable(false);
-			lNome.setDisable(false);
-			lEmail.setDisable(false);
-			tfNome.setEditable(true);
-			tfEmail.setEditable(true);
-			tfDado.setEditable(true);
-    	} 
-    	
-    }
-    
     @FXML
     void Adicionar(ActionEvent event) throws DAOException {
     	if(cbTipo.getSelectionModel().getSelectedIndex()==0){//selecionado Empresa

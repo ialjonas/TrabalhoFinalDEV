@@ -9,6 +9,8 @@ import dados.DAOException;
 import dados.LeilaoJavaDb;
 import dados.LoteJavaDb;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -21,9 +23,11 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 import negocio.Leilao;
@@ -33,6 +37,7 @@ public class telaPrincipalController implements Initializable{
 	LeilaoJavaDb leilaoDB=LeilaoJavaDb.getInstance();
 	LoteJavaDb loteDB=LoteJavaDb.getInstance();
 	BemJavaDb bemDB=BemJavaDb.getInstance();
+	ObservableList<String> itensChoisestatus = FXCollections.observableArrayList("Encerrados","Em Andamento","Todos");
 	ObservableList<Leilao> listaLeiloes = FXCollections.observableArrayList();
 	
 	@FXML
@@ -50,11 +55,8 @@ public class telaPrincipalController implements Initializable{
 	@FXML
 	private MenuItem miSobre;
 	
-	@FXML
-	private CheckBox cbTerminados;
-
-	@FXML
-	private CheckBox cbAndamento;
+    @FXML
+    private ChoiceBox<String> cbStatus;
 	
 	@FXML
     private ListView<Leilao> lvLeiloes;
@@ -89,15 +91,68 @@ public class telaPrincipalController implements Initializable{
     
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		try {
-			for(int i=0;i<leilaoDB.getTodos().size();i++){
-				listaLeiloes.add(leilaoDB.getTodos().get(i));
+		cbStatus.setItems(itensChoisestatus);
+		cbStatus.setTooltip(new Tooltip("Selecione o status do leilão"));
+		
+		cbStatus.valueProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String valorAntigo, String novoValor) {
+	        	refresh(novoValor);
 			}
-			lvLeiloes.setItems(listaLeiloes);
-			
-		} catch (DAOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	    });
+		
+		
+		
+	}
+	
+	private void refresh(String novoValor){
+		switch (novoValor) {
+        case ("Encerrados"):
+        	listaLeiloes.clear();
+        	try {
+    			for(int i=0;i<leilaoDB.getEncerrados().size();i++){
+    				listaLeiloes.add(leilaoDB.getTodos().get(i));
+    			}
+    			lvLeiloes.setItems(listaLeiloes);
+    			
+    		} catch (DAOException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+            break;
+        
+        case ("Em Andamento"):
+        	listaLeiloes.clear();
+        	try {
+    			for(int i=0;i<leilaoDB.getAtivos().size();i++){
+    				listaLeiloes.add(leilaoDB.getTodos().get(i));
+    			}
+    			lvLeiloes.setItems(listaLeiloes);
+    			
+    		} catch (DAOException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+        	
+        	break;
+        
+        case ("Todos"):
+        	listaLeiloes.clear();
+        	try {
+    			for(int i=0;i<leilaoDB.getTodos().size();i++){
+    				listaLeiloes.add(leilaoDB.getTodos().get(i));
+    			}
+    			lvLeiloes.setItems(listaLeiloes);
+    			
+    		} catch (DAOException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+        	
+        	break;
+        
+        default:
+        	
 		}
 	}
 	 
