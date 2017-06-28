@@ -10,17 +10,17 @@ import negocio.Usuario_PJ;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class Usuario_PfJavaDb {
-	private static Usuario_PfJavaDb ref;
+public class Usuario_PfDAOJavaDb {
+	private static Usuario_PfDAOJavaDb ref;
 
-	public static Usuario_PfJavaDb getInstance(){
+	public static Usuario_PfDAOJavaDb getInstance(){
 		if (ref == null){
-			ref = new Usuario_PfJavaDb();
+			ref = new Usuario_PfDAOJavaDb();
 		}
 		return ref;
 	}
 
-	private Usuario_PfJavaDb(){
+	private Usuario_PfDAOJavaDb(){
 		try {
 			Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
 		} catch (ClassNotFoundException e) {

@@ -8,17 +8,17 @@ import negocio.Bem;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class BemJavaDb {
-	private static BemJavaDb ref;
+public class BemDAOJavaDb {
+	private static BemDAOJavaDb ref;
 
-	public static BemJavaDb getInstance(){
+	public static BemDAOJavaDb getInstance(){
 		if (ref == null){
-			ref = new BemJavaDb();
+			ref = new BemDAOJavaDb();
 		}
 		return ref;
 	}
 
-	private BemJavaDb(){
+	private BemDAOJavaDb(){
 		try {
 			Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
 		} catch (ClassNotFoundException e) {

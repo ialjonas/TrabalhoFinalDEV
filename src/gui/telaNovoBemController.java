@@ -3,7 +3,7 @@ package gui;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import dados.BemJavaDb;
+import dados.BemDAOJavaDb;
 import dados.DAOException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,7 +21,7 @@ import javafx.stage.Stage;
 import negocio.Bem;
 
 public class telaNovoBemController implements Initializable {
-	BemJavaDb bemDB=BemJavaDb.getInstance();
+	BemDAOJavaDb bemDB=BemDAOJavaDb.getInstance();
 	ObservableList<String> itensChoiseCategoria = FXCollections.observableArrayList(
 			"Informatica","Mobiliário","Veículos","nova"
 	);

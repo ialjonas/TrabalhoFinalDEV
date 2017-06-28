@@ -3,9 +3,9 @@ package gui;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import dados.BemJavaDb;
+import dados.BemDAOJavaDb;
 import dados.DAOException;
-import dados.LoteJavaDb;
+import dados.LoteDAOJavaDb;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -20,8 +20,8 @@ import negocio.Bem;
 import negocio.Lote;
 
 public class telaNovoLoteController implements Initializable {
-	BemJavaDb bemDB=BemJavaDb.getInstance();
-	LoteJavaDb loteDB=LoteJavaDb.getInstance();
+	BemDAOJavaDb bemDB=BemDAOJavaDb.getInstance();
+	LoteDAOJavaDb loteDB=LoteDAOJavaDb.getInstance();
 	ObservableList<Bem> listaBens=FXCollections.observableArrayList();
     
     @FXML

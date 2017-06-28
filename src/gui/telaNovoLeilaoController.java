@@ -3,10 +3,10 @@ package gui;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import dados.BemJavaDb;
+import dados.BemDAOJavaDb;
 import dados.DAOException;
-import dados.Usuario_PfJavaDb;
-import dados.Usuario_PjJavaDb;
+import dados.Usuario_PfDAOJavaDb;
+import dados.Usuario_PjDAOJavaDb;
 import negocio.Usuario;
 import negocio.Usuario_PF;
 import negocio.Usuario_PJ;
@@ -26,8 +26,8 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 public class telaNovoLeilaoController implements Initializable {
-	Usuario_PjJavaDb Usuario_PjJavaDbDB=Usuario_PjJavaDb.getInstance();
-	Usuario_PfJavaDb Usuario_PfJavaDbDB=Usuario_PfJavaDb.getInstance();
+	Usuario_PjDAOJavaDb Usuario_PjJavaDbDB=Usuario_PjDAOJavaDb.getInstance();
+	Usuario_PfDAOJavaDb Usuario_PfJavaDbDB=Usuario_PfDAOJavaDb.getInstance();
 	
 	ObservableList<String> itensChoiseLeilao = FXCollections.observableArrayList("Demanda","Oferta");
 	ObservableList<String> itensChoiseLance = FXCollections.observableArrayList("Aberto","Fechado");

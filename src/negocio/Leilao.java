@@ -4,11 +4,10 @@ import java.time.LocalDate;
 
 public class Leilao {
 	private int loteId,leilaoId;
-	private LocalDate dataIni, dataFim;
 	private double arremate;
-	private String criador, vencedor,tipo,tipoLance;
+	private String criador, vencedor,tipo,tipoLance,dataIni, dataFim;
 	
-	public Leilao(int loteId, LocalDate dataIni, LocalDate dataFim, double arremate, String criador, String vencedor,
+	public Leilao(int loteId, String dataIni, String dataFim, double arremate, String criador, String vencedor,
 			String tipo, String tipoLance) {
 		super();
 		this.loteId = loteId;
@@ -21,7 +20,7 @@ public class Leilao {
 		this.tipoLance = tipoLance;
 	}
 	
-	public Leilao(int leilaoId, int loteId, LocalDate dataIni, LocalDate dataFim, double arremate, String criador, String vencedor,
+	public Leilao(int leilaoId, int loteId, String dataIni, String dataFim, double arremate, String criador, String vencedor,
 			String tipo, String tipoLance) {
 		super();
 		this.leilaoId = leilaoId;
@@ -45,16 +44,16 @@ public class Leilao {
 	public void setLoteId(int loteId) {
 		this.loteId = loteId;
 	}
-	public LocalDate getDataIni() {
+	public String getDataIni() {
 		return dataIni;
 	}
-	public void setDataIni(LocalDate dataIni) {
+	public void setDataIni(String dataIni) {
 		this.dataIni = dataIni;
 	}
-	public LocalDate getDataFim() {
+	public String getDataFim() {
 		return dataFim;
 	}
-	public void setDataFim(LocalDate dataFim) {
+	public void setDataFim(String dataFim) {
 		this.dataFim = dataFim;
 	}
 	public double getArremate() {

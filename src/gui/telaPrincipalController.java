@@ -4,10 +4,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import dados.BemJavaDb;
+import dados.BemDAOJavaDb;
 import dados.DAOException;
-import dados.LeilaoJavaDb;
-import dados.LoteJavaDb;
+import dados.LeilaoDAOJavaDb;
+import dados.LoteDAOJavaDb;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -34,9 +34,9 @@ import negocio.Leilao;
 import negocio.Lote;
 
 public class telaPrincipalController implements Initializable{
-	LeilaoJavaDb leilaoDB=LeilaoJavaDb.getInstance();
-	LoteJavaDb loteDB=LoteJavaDb.getInstance();
-	BemJavaDb bemDB=BemJavaDb.getInstance();
+	LeilaoDAOJavaDb leilaoDB=LeilaoDAOJavaDb.getInstance();
+	LoteDAOJavaDb loteDB=LoteDAOJavaDb.getInstance();
+	BemDAOJavaDb bemDB=BemDAOJavaDb.getInstance();
 	ObservableList<String> itensChoisestatus = FXCollections.observableArrayList("Encerrados","Em Andamento","Todos");
 	ObservableList<Leilao> listaLeiloes = FXCollections.observableArrayList();
 	

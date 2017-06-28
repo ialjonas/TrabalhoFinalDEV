@@ -1,10 +1,10 @@
 ----------------------------------------------------------------
-Tue Jun 27 20:42:29 BRT 2017:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.8.2.2 - (1181258): instance a816c00e-015c-ebef-49cb-0000067a8668 
-on database directory H:\workspace\TrabalhoFinalDEV\DBTF_Dev_2017-1  with class loader sun.misc.Launcher$AppClassLoader@73d16e93 
-Loaded from file:/H:/workspace/TrabalhoFinalDEV/derby.jar
+Wed Jun 28 00:24:46 BRT 2017:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.8.2.2 - (1181258): instance a816c00e-015c-ecba-c84c-00000496cff0 
+on database directory D:\Workspace\TrabalhoFinalDEV\DBTF_Dev_2017-1  with class loader sun.misc.Launcher$AppClassLoader@73d16e93 
+Loaded from file:/D:/Workspace/TrabalhoFinalDEV/derby.jar
 java.vendor=Oracle Corporation
 java.runtime.version=1.8.0_121-b13
-user.dir=H:\workspace\TrabalhoFinalDEV
+user.dir=D:\Workspace\TrabalhoFinalDEV
 derby.system.home=null
 Database Class Loader started - derby.database.classpath=''

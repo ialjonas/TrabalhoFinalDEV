@@ -9,17 +9,17 @@ import negocio.Lote;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class LoteJavaDb {
-	private static LoteJavaDb ref;
+public class LoteDAOJavaDb {
+	private static LoteDAOJavaDb ref;
 
-	public static LoteJavaDb getInstance(){
+	public static LoteDAOJavaDb getInstance(){
 		if (ref == null){
-			ref = new LoteJavaDb();
+			ref = new LoteDAOJavaDb();
 		}
 		return ref;
 	}
 
-	private LoteJavaDb(){
+	private LoteDAOJavaDb(){
 		try {
 			Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
 		} catch (ClassNotFoundException e) {
