@@ -1,6 +1,6 @@
 ----------------------------------------------------------------
-Wed Jun 28 00:24:46 BRT 2017:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.8.2.2 - (1181258): instance a816c00e-015c-ecba-c84c-00000496cff0 
+Wed Jun 28 02:43:35 BRT 2017:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.8.2.2 - (1181258): instance a816c00e-015c-ed39-e12d-000004995990 
 on database directory D:\Workspace\TrabalhoFinalDEV\DBTF_Dev_2017-1  with class loader sun.misc.Launcher$AppClassLoader@73d16e93 
 Loaded from file:/D:/Workspace/TrabalhoFinalDEV/derby.jar
 java.vendor=Oracle Corporation

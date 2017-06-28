@@ -2,15 +2,8 @@
 package dados;
 
 import java.util.List;
-
-import negocio.Bem;
 import negocio.Leilao;
-
 import java.sql.*;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class LeilaoDAOJavaDb {
@@ -50,16 +43,10 @@ public class LeilaoDAOJavaDb {
             PreparedStatement stmt = con.prepareStatement(
                     "INSERT INTO LEILAO (LOTE_ID_foreign_key, leilao_dataInicio, leilao_dataFim, leilao_arremate, leilao_criador, leilao_vencedor) VALUES (?,?,?,?,?,?)" //                             1        2         3            4          5             6
                     );
-            String loteId = Integer.toString(l.getLoteId());
-            
-            DateFormat dataString = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss"); //converter Data para String
-            String dataIni = dataString.format(l.getDataIni());
-            String dataFim = dataString.format(l.getDataFim());
-            String arremate = Double.toString(l.getArremate());
-            stmt.setString(1, loteId);
-            stmt.setString(2, dataIni);
-            stmt.setString(3, dataFim);
-            stmt.setString(4, arremate);
+            stmt.setString(1, Integer.toString(l.getLoteId()));
+            stmt.setString(2, l.getDataIni());
+            stmt.setString(3, l.getDataFim());
+            stmt.setString(4, Double.toString(l.getArremate()));
             stmt.setString(5, l.getCriador());
             stmt.setString(6, l.getVencedor());
             
@@ -72,13 +59,14 @@ public class LeilaoDAOJavaDb {
     }
 	
 	
-    public List<Leilao> getTodos() throws DAOException {
+    public List<Leilao> getTodos() throws DAOException { //retorna lista de todos os leilões
         try {
             Connection con = getConnection();
             Statement stmt = con.createStatement();
             ResultSet resultado = stmt.executeQuery("SELECT * FROM LEILAO");
             List<Leilao> listaLeiloes = new ArrayList<Leilao>();
             while(resultado.next()) {
+            	int leilaoId = Integer.parseInt(resultado.getString("leilao_id"));
                 int loteId = Integer.parseInt(resultado.getString("LOTE_ID_foreign_key"));
                 String dataIni = resultado.getString("leilao_dataInicio");
                 String dataFim = resultado.getString("leilao_dataFim");
@@ -88,8 +76,7 @@ public class LeilaoDAOJavaDb {
                 String tipo_leilao = resultado.getString("leilao_tipo");
                 String tipo_lance = resultado.getString("leilao_tipo_lance");
                 
-                Leilao l = new Leilao(loteId, dataIni, dataFim, arremate, criador, vencedor,tipo_leilao,tipo_lance);
-        
+                Leilao l = new Leilao(leilaoId,loteId, dataIni, dataFim, arremate, criador, vencedor,tipo_leilao,tipo_lance);
                 listaLeiloes.add(l);
             }
             return listaLeiloes;
@@ -98,14 +85,15 @@ public class LeilaoDAOJavaDb {
         }
 	}
 	
-    public List<Leilao> getAtivos() throws DAOException {
+    public List<Leilao> getAtivos() throws DAOException { //retorna lista de leilões ativos
         try {
             Connection con = getConnection();
             Statement stmt = con.createStatement();
-            ResultSet resultado = stmt.executeQuery("SELECT * FROM LEILAO WHERE leilao_dataFim > CURRENT_TIMESTAMP");
+            ResultSet resultado = stmt.executeQuery("SELECT * FROM LEILAO WHERE leilao_dataFim > CURRENT TIMESTAMP");
             List<Leilao> listaLeiloesAtivos = new ArrayList<Leilao>();
             while(resultado.next()) {
-            	int loteId = Integer.parseInt(resultado.getString("LOTE_ID_foreign_key"));
+            	int leilaoId = Integer.parseInt(resultado.getString("leilao_id"));
+                int loteId = Integer.parseInt(resultado.getString("LOTE_ID_foreign_key"));
                 String dataIni = resultado.getString("leilao_dataInicio");
                 String dataFim = resultado.getString("leilao_dataFim");
                 double arremate = Double.parseDouble(resultado.getString("leilao_arremate"));
@@ -114,7 +102,7 @@ public class LeilaoDAOJavaDb {
                 String tipo_leilao = resultado.getString("leilao_tipo");
                 String tipo_lance = resultado.getString("leilao_tipo_lance");
                 
-                Leilao l = new Leilao(loteId, dataIni, dataFim, arremate, criador, vencedor,tipo_leilao,tipo_lance);
+                Leilao l = new Leilao(leilaoId,loteId, dataIni, dataFim, arremate, criador, vencedor,tipo_leilao,tipo_lance);
                 listaLeiloesAtivos.add(l);
                 
             }
@@ -124,14 +112,15 @@ public class LeilaoDAOJavaDb {
         }
 	}
 	
-    public List<Leilao> getEncerrados() throws DAOException {
+    public List<Leilao> getEncerrados() throws DAOException { //retorna lista de leilões já encerrados
         try {
             Connection con = getConnection();
             Statement stmt = con.createStatement();
-            ResultSet resultado = stmt.executeQuery("SELECT * FROM LEILAO WHERE leilao_dataFim < CURRENT_TIMESTAMP");
+            ResultSet resultado = stmt.executeQuery("SELECT * FROM LEILAO WHERE leilao_dataFim < CURRENT TIMESTAMP");
             List<Leilao> listaLeiloesEncerrados = new ArrayList<Leilao>();
             while(resultado.next()) {
-            	int loteId = Integer.parseInt(resultado.getString("LOTE_ID_foreign_key"));
+            	int leilaoId = Integer.parseInt(resultado.getString("leilao_id"));
+                int loteId = Integer.parseInt(resultado.getString("LOTE_ID_foreign_key"));
                 String dataIni = resultado.getString("leilao_dataInicio");
                 String dataFim = resultado.getString("leilao_dataFim");
                 double arremate = Double.parseDouble(resultado.getString("leilao_arremate"));
@@ -140,7 +129,7 @@ public class LeilaoDAOJavaDb {
                 String tipo_leilao = resultado.getString("leilao_tipo");
                 String tipo_lance = resultado.getString("leilao_tipo_lance");
                 
-                Leilao l = new Leilao(loteId, dataIni, dataFim, arremate, criador, vencedor,tipo_leilao,tipo_lance);
+                Leilao l = new Leilao(leilaoId,loteId, dataIni, dataFim, arremate, criador, vencedor,tipo_leilao,tipo_lance);
                 listaLeiloesEncerrados.add(l);
                 
             }
@@ -149,8 +138,118 @@ public class LeilaoDAOJavaDb {
             throw new DAOException("Falha ao buscar.", ex);
         }
 	}
+    
+    public List<Leilao> getTipoOferta() throws DAOException { //retorna lista de leilões de Oferta
+        try {
+        	Connection con = getConnection();
+            PreparedStatement stmt = con.prepareStatement("SELECT * FROM LEILAO WHERE leilao_tipo=?");
+            stmt.setString(1, "Oferta");
+            ResultSet resultado = stmt.executeQuery();
+            List<Leilao> listaLeiloesOferta = new ArrayList<Leilao>();
+            while(resultado.next()) {
+            	int leilaoId = Integer.parseInt(resultado.getString("leilao_id"));
+                int loteId = Integer.parseInt(resultado.getString("LOTE_ID_foreign_key"));
+                String dataIni = resultado.getString("leilao_dataInicio");
+                String dataFim = resultado.getString("leilao_dataFim");
+                double arremate = Double.parseDouble(resultado.getString("leilao_arremate"));
+                String criador = resultado.getString("leilao_criador");
+                String vencedor = resultado.getString("leilao_vencedor");
+                String tipo_leilao = resultado.getString("leilao_tipo");
+                String tipo_lance = resultado.getString("leilao_tipo_lance");
+                
+                Leilao l = new Leilao(leilaoId,loteId, dataIni, dataFim, arremate, criador, vencedor,tipo_leilao,tipo_lance);
+                listaLeiloesOferta.add(l);
+                
+            }
+            return listaLeiloesOferta;
+        } catch (SQLException ex) {
+            throw new DAOException("Falha ao buscar.", ex);
+        }
+	}
 	
+    public List<Leilao> getTipoDemanda() throws DAOException { //retorna lista de leilões de Demanda
+        try {
+        	Connection con = getConnection();
+            PreparedStatement stmt = con.prepareStatement("SELECT * FROM LEILAO WHERE leilao_tipo=?");
+            stmt.setString(1, "Demanda");
+            ResultSet resultado = stmt.executeQuery();
+            List<Leilao> listaLeiloesDemanda = new ArrayList<Leilao>();
+            while(resultado.next()) {
+            	int leilaoId = Integer.parseInt(resultado.getString("leilao_id"));
+                int loteId = Integer.parseInt(resultado.getString("LOTE_ID_foreign_key"));
+                String dataIni = resultado.getString("leilao_dataInicio");
+                String dataFim = resultado.getString("leilao_dataFim");
+                double arremate = Double.parseDouble(resultado.getString("leilao_arremate"));
+                String criador = resultado.getString("leilao_criador");
+                String vencedor = resultado.getString("leilao_vencedor");
+                String tipo_leilao = resultado.getString("leilao_tipo");
+                String tipo_lance = resultado.getString("leilao_tipo_lance");
+                
+                Leilao l = new Leilao(leilaoId,loteId, dataIni, dataFim, arremate, criador, vencedor,tipo_leilao,tipo_lance);
+                listaLeiloesDemanda.add(l);
+                
+            }
+            return listaLeiloesDemanda;
+        } catch (SQLException ex) {
+            throw new DAOException("Falha ao buscar.", ex);
+        }
+	}
+    
+    public List<Leilao> getLanceAberto() throws DAOException { //retorna lista de leilões de lance aberto
+        try {
+        	Connection con = getConnection();
+            PreparedStatement stmt = con.prepareStatement("SELECT * FROM LEILAO WHERE leilao_tipo_lance=?");
+            stmt.setString(1, "Aberto");
+            ResultSet resultado = stmt.executeQuery();
+            List<Leilao> listaLeiloesLanceAberto = new ArrayList<Leilao>();
+            while(resultado.next()) {
+            	int leilaoId = Integer.parseInt(resultado.getString("leilao_id"));
+                int loteId = Integer.parseInt(resultado.getString("LOTE_ID_foreign_key"));
+                String dataIni = resultado.getString("leilao_dataInicio");
+                String dataFim = resultado.getString("leilao_dataFim");
+                double arremate = Double.parseDouble(resultado.getString("leilao_arremate"));
+                String criador = resultado.getString("leilao_criador");
+                String vencedor = resultado.getString("leilao_vencedor");
+                String tipo_leilao = resultado.getString("leilao_tipo");
+                String tipo_lance = resultado.getString("leilao_tipo_lance");
+                
+                Leilao l = new Leilao(leilaoId,loteId, dataIni, dataFim, arremate, criador, vencedor,tipo_leilao,tipo_lance);
+                listaLeiloesLanceAberto.add(l);
+                
+            }
+            return listaLeiloesLanceAberto;
+        } catch (SQLException ex) {
+            throw new DAOException("Falha ao buscar.", ex);
+        }
+	}
 	
+    public List<Leilao> getLanceFechado() throws DAOException { //retorna lista de leilões de lance fechado
+        try {
+        	Connection con = getConnection();
+            PreparedStatement stmt = con.prepareStatement("SELECT * FROM LEILAO WHERE leilao_tipo_lance=?");
+            stmt.setString(1, "Fechado");
+            ResultSet resultado = stmt.executeQuery();
+            List<Leilao> listaLeiloesLanceFechado = new ArrayList<Leilao>();
+            while(resultado.next()) {
+            	int leilaoId = Integer.parseInt(resultado.getString("leilao_id"));
+                int loteId = Integer.parseInt(resultado.getString("LOTE_ID_foreign_key"));
+                String dataIni = resultado.getString("leilao_dataInicio");
+                String dataFim = resultado.getString("leilao_dataFim");
+                double arremate = Double.parseDouble(resultado.getString("leilao_arremate"));
+                String criador = resultado.getString("leilao_criador");
+                String vencedor = resultado.getString("leilao_vencedor");
+                String tipo_leilao = resultado.getString("leilao_tipo");
+                String tipo_lance = resultado.getString("leilao_tipo_lance");
+                
+                Leilao l = new Leilao(leilaoId,loteId, dataIni, dataFim, arremate, criador, vencedor,tipo_leilao,tipo_lance);
+                listaLeiloesLanceFechado.add(l);
+                
+            }
+            return listaLeiloesLanceFechado;
+        } catch (SQLException ex) {
+            throw new DAOException("Falha ao buscar.", ex);
+        }
+	}
 	
 	
 	

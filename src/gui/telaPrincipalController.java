@@ -37,7 +37,9 @@ public class telaPrincipalController implements Initializable{
 	LeilaoDAOJavaDb leilaoDB=LeilaoDAOJavaDb.getInstance();
 	LoteDAOJavaDb loteDB=LoteDAOJavaDb.getInstance();
 	BemDAOJavaDb bemDB=BemDAOJavaDb.getInstance();
-	ObservableList<String> itensChoisestatus = FXCollections.observableArrayList("Encerrados","Em Andamento","Todos");
+	ObservableList<String> itensChoisestatus = FXCollections.observableArrayList(
+			"Selecione um status para exibir","Todos","Em Andamento","Encerrados","Leilão de oferta","Leilão de demanda","Lance aberto","Lance fechado"
+	);
 	ObservableList<Leilao> listaLeiloes = FXCollections.observableArrayList();
 	
 	@FXML
@@ -63,6 +65,9 @@ public class telaPrincipalController implements Initializable{
     
     @FXML
     private Button bDetalheLeilao;
+    
+    @FXML
+    private TextField tfLeilaoId;
     
     @FXML
     private TextField tfDataIni;
@@ -92,6 +97,7 @@ public class telaPrincipalController implements Initializable{
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		cbStatus.setItems(itensChoisestatus);
+		cbStatus.getSelectionModel().select(0);
 		cbStatus.setTooltip(new Tooltip("Selecione o status do leilão"));
 		
 		cbStatus.valueProperty().addListener(new ChangeListener<String>() {
@@ -100,9 +106,6 @@ public class telaPrincipalController implements Initializable{
 	        	refresh(novoValor);
 			}
 	    });
-		
-		
-		
 	}
 	
 	private void refresh(String novoValor){
@@ -111,7 +114,7 @@ public class telaPrincipalController implements Initializable{
         	listaLeiloes.clear();
         	try {
     			for(int i=0;i<leilaoDB.getEncerrados().size();i++){
-    				listaLeiloes.add(leilaoDB.getTodos().get(i));
+    				listaLeiloes.add(leilaoDB.getEncerrados().get(i));
     			}
     			lvLeiloes.setItems(listaLeiloes);
     			
@@ -125,7 +128,7 @@ public class telaPrincipalController implements Initializable{
         	listaLeiloes.clear();
         	try {
     			for(int i=0;i<leilaoDB.getAtivos().size();i++){
-    				listaLeiloes.add(leilaoDB.getTodos().get(i));
+    				listaLeiloes.add(leilaoDB.getAtivos().get(i));
     			}
     			lvLeiloes.setItems(listaLeiloes);
     			
@@ -144,12 +147,74 @@ public class telaPrincipalController implements Initializable{
     			}
     			lvLeiloes.setItems(listaLeiloes);
     			
+    			
     		} catch (DAOException e) {
     			// TODO Auto-generated catch block
     			e.printStackTrace();
     		}
         	
         	break;
+        	
+        case ("Leilão de oferta"):
+        	listaLeiloes.clear();
+        	try {
+    			for(int i=0;i<leilaoDB.getTipoOferta().size();i++){
+    				listaLeiloes.add(leilaoDB.getTipoOferta().get(i));
+    			}
+    			lvLeiloes.setItems(listaLeiloes);
+    			
+    		} catch (DAOException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+        	
+        	break;
+        	
+        case ("Leilão de demanda"):
+        	listaLeiloes.clear();
+        	try {
+    			for(int i=0;i<leilaoDB.getTipoDemanda().size();i++){
+    				listaLeiloes.add(leilaoDB.getTipoDemanda().get(i));
+    			}
+    			lvLeiloes.setItems(listaLeiloes);
+    			
+    		} catch (DAOException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+        	
+        	break;
+        
+        case ("Lance aberto"):
+        	listaLeiloes.clear();
+        	try {
+    			for(int i=0;i<leilaoDB.getLanceAberto().size();i++){
+    				listaLeiloes.add(leilaoDB.getLanceAberto().get(i));
+    			}
+    			lvLeiloes.setItems(listaLeiloes);
+    			
+    		} catch (DAOException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+        	
+        	break;
+        	
+        case ("Lance fechado"):
+        	listaLeiloes.clear();
+        	try {
+    			for(int i=0;i<leilaoDB.getLanceFechado().size();i++){
+    				listaLeiloes.add(leilaoDB.getLanceFechado().get(i));
+    			}
+    			lvLeiloes.setItems(listaLeiloes);
+    			
+    		} catch (DAOException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+        	
+        	break;
+
         
         default:
         	
@@ -200,20 +265,41 @@ public class telaPrincipalController implements Initializable{
     
 
     @FXML
-    void DetalheLeilao(ActionEvent event) throws DAOException {
+    void DetalheLeilao(ActionEvent event){
+    	
+
+    	//falta implementar solução para problema de consultas incorretas, já tenho a solução
+    	
     	int index=lvLeiloes.getSelectionModel().getSelectedIndex(); //pega o indice do item clicado na view
-		tfDataIni.setText(leilaoDB.getTodos().get(index).getDataIni().toString());
-		tfDataFim.setText(leilaoDB.getTodos().get(index).getDataFim().toString());
-		tfTipoLeilao.setText(leilaoDB.getTodos().get(index).getTipo());
-		tfTipoLance.setText(leilaoDB.getTodos().get(index).getTipoLance());
-		taLote.setText(
-				"Bem no lote: "+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getTodos().get(index).getLoteId()).getBemId()).getDescricao()+
-				"\n"+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getTodos().get(index).getLoteId()).getBemId()).getDetalhes()+
-				"\nCategoria: "+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getTodos().get(index).getLoteId()).getBemId()).getCategoria()
-				);
-		tfNomeCriador.setText(leilaoDB.getTodos().get(index).getCriador());
-		tfNomeVencedor.setText(leilaoDB.getTodos().get(index).getVencedor());
-		tfValorLanceVencedor.setText(Double.toString(leilaoDB.getTodos().get(index).getArremate()));
+    	try {
+			tfLeilaoId.setText(Integer.toString(leilaoDB.getTodos().get(index).getLeilaoId()));
+			tfDataIni.setText(leilaoDB.getTodos().get(index).getDataIni());
+			tfDataFim.setText(leilaoDB.getTodos().get(index).getDataFim());
+			tfTipoLeilao.setText(leilaoDB.getTodos().get(index).getTipo());
+			tfTipoLance.setText(leilaoDB.getTodos().get(index).getTipoLance());
+			taLote.setText(
+					"Bem no lote: "+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getTodos().get(index).getLoteId()).getBemId()).getDescricao()+
+					"\n"+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getTodos().get(index).getLoteId()).getBemId()).getDetalhes()+
+					"\nCategoria: "+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getTodos().get(index).getLoteId()).getBemId()).getCategoria()
+					);
+			tfNomeCriador.setText(leilaoDB.getTodos().get(index).getCriador());
+			tfNomeVencedor.setText(leilaoDB.getTodos().get(index).getVencedor());
+			tfValorLanceVencedor.setText(Double.toString(leilaoDB.getTodos().get(index).getArremate()));
+		} catch (DAOException e) {
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Atenção!");
+			alert.setHeaderText(null);
+			alert.setContentText(e.toString());
+			alert.showAndWait();
+		}
+	    catch (ArrayIndexOutOfBoundsException e) {
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Atenção!");
+			alert.setHeaderText(null);
+			alert.setContentText("Selecione um leilão para ver os detalhes.\n\nMensagem do sistema: "+e.toString());
+			alert.showAndWait();
+		}
+		
     }
 	
     

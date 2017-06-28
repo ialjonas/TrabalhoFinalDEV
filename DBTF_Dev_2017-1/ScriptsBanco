@@ -325,7 +325,7 @@ INSERT INTO LEILAO(LOTE_ID_foreign_key, leilao_dataInicio, leilao_dataFim, leila
 VALUES(002, '2017-06-06 21:40:00', '2017-07-02 20:30:00', 2345, '20.986.654.0001-10', '199.456.789-10','Demanda','Aberto');
  
 INSERT INTO LEILAO(LOTE_ID_foreign_key, leilao_dataInicio, leilao_dataFim, leilao_arremate, leilao_criador, leilao_vencedor, leilao_tipo, leilao_tipo_lance)
-VALUES(003, '2017-06.06 17:40:00', '2017-07-10 20:00:00', 9486, '200.456.789-10','20.146.613.0001-10','Oferta','Aberto');
+VALUES(003, '2017-06-06 17:40:00', '2017-07-10 20:00:00', 9486, '200.456.789-10','20.146.613.0001-10','Oferta','Aberto');
  
 INSERT INTO LEILAO(LOTE_ID_foreign_key, leilao_dataInicio, leilao_dataFim, leilao_arremate, leilao_criador, leilao_vencedor, leilao_tipo, leilao_tipo_lance)
 VALUES(004, '2017-06-01 23:40:00', '2017-06-25 20:40:00', 8434, '20.546.627.0001-10', '201.456.789-10','Oferta','Fechado');
@@ -348,4 +348,3 @@ VALUES(017, '2017-06-10 12:50:00', '2017-06-17 14:00:00', 666, '20.588.666.0001-
 -- DROP TABLE LEILAO
 -- DROP TABLE LOTE
 -- DROP TABLE BEM
-
