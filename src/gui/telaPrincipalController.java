@@ -96,6 +96,16 @@ public class telaPrincipalController implements Initializable{
     
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		tfLeilaoId.setEditable(false);
+		tfDataIni.setEditable(false);
+		tfDataFim.setEditable(false);
+		tfTipoLeilao.setEditable(false);
+		tfTipoLance.setEditable(false);
+		taLote.setEditable(false);
+		tfNomeCriador.setEditable(false);
+		tfNomeVencedor.setEditable(false);
+		tfValorLanceVencedor.setEditable(false);
+		
 		cbStatus.setItems(itensChoisestatus);
 		cbStatus.getSelectionModel().select(0);
 		cbStatus.setTooltip(new Tooltip("Selecione o status do leilão"));
@@ -110,6 +120,21 @@ public class telaPrincipalController implements Initializable{
 	
 	private void controleCbStatus(String novoValor){
 		switch (novoValor) {
+		
+		case ("Selecione um status para exibir"):
+        	listaLeiloes.clear();
+			tfLeilaoId.setText(null);
+			tfDataIni.setText(null);
+			tfDataFim.setText(null);
+			tfTipoLeilao.setText(null);
+			tfTipoLance.setText(null);
+			taLote.setText(null);
+			tfNomeCriador.setText(null);
+			tfNomeVencedor.setText(null);
+			tfValorLanceVencedor.setText(null);
+        	
+            break;
+		
         case ("Encerrados"):
         	listaLeiloes.clear();
         	try {
