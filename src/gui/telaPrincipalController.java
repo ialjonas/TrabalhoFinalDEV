@@ -30,6 +30,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
+import negocio.Bem;
 import negocio.Leilao;
 import negocio.Lote;
 
@@ -116,6 +117,41 @@ public class telaPrincipalController implements Initializable{
 				controleCbStatus(novoValor);
 			}
 	    });
+		
+		//monitoramento da lista de leilões
+		lvLeiloes.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Leilao>() {
+			@Override
+			public void changed(ObservableValue<? extends Leilao> observable, Leilao oldValue, Leilao newValue) {
+				int index=lvLeiloes.getSelectionModel().getSelectedIndex(); //pega o indice do item clicado na view
+				if(cbStatus.getSelectionModel().getSelectedItem().equals("Todos")){
+					PopulaDetalheTodos(index);
+				}
+				if(cbStatus.getSelectionModel().getSelectedItem().equals("Em Andamento")){
+					PopulaDetalheLeilaoEmAndamento(index);
+				}
+				
+				if(cbStatus.getSelectionModel().getSelectedItem().equals("Encerrados")){
+					PopulaDetalheLeilaoEncerrado(index);
+				}
+				
+				if(cbStatus.getSelectionModel().getSelectedItem().equals("Leilão de oferta")){
+					PopulaDetalheLeilaoOferta(index);
+				}
+				
+				if(cbStatus.getSelectionModel().getSelectedItem().equals("Leilão de demanda")){
+					PopulaDetalheLeilaoDemanda(index);
+				}
+				
+				if(cbStatus.getSelectionModel().getSelectedItem().equals("Lance aberto")){
+					PopulaDetalheLeilaoLanceAberto(index);
+				}
+				
+				if(cbStatus.getSelectionModel().getSelectedItem().equals("Lance fechado")){
+					PopulaDetalheLeilaoLanceAberto(index);
+				}
+				
+			}
+		});
 	}
 	
 	private void controleCbStatus(String novoValor){
@@ -289,8 +325,7 @@ public class telaPrincipalController implements Initializable{
 
     @FXML
     void DetalheLeilao(ActionEvent event){
-    	//falta terminar a solução para problema de consultas incorretas, já tenho a solução
-    	int index=lvLeiloes.getSelectionModel().getSelectedIndex(); //pega o indice do item clicado na view
+       	int index=lvLeiloes.getSelectionModel().getSelectedIndex(); //pega o indice do item clicado na view
     	
     	if(cbStatus.getSelectionModel().getSelectedItem().equals("Todos")){
     		PopulaDetalheTodos(index);
