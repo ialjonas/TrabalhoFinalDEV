@@ -26,13 +26,6 @@ public class LoteDAOJavaDb {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		// Cria o banco de dados vazio
-		// Retirar do comentário se necessário
-		/*
-		 * try { createDB(); } catch (Exception ex) { System.out.println(
-		 * "Problemas para criar o banco: "+ex.getMessage()); System.exit(0); }
-		 */
 	}
 
 	private static Connection getConnection() throws SQLException {
@@ -44,10 +37,10 @@ public class LoteDAOJavaDb {
         try {
             Connection con = getConnection();
             PreparedStatement stmt = con.prepareStatement(
-                    "INSERT INTO LOTE (BEM_ID_foreign_key) VALUES (?)"
+                    "INSERT INTO LOTE (BEM_ID_foreign_key, lote_valor) VALUES (?,?)"
                     );
-            String bemId = Integer.toString(l.getBemId());
-            stmt.setString(1, bemId);
+            stmt.setString(1, Integer.toString(l.getBemId()));
+            stmt.setString(2, Double.toString(l.getValor()));
             int ret = stmt.executeUpdate();
             con.close();
             return (ret>0);
@@ -68,7 +61,8 @@ public class LoteDAOJavaDb {
             if(resultado.next()) {
                 int lote_id = Integer.parseInt(resultado.getString("lote_id"));
                 int bem_id= Integer.parseInt(resultado.getString("BEM_ID_foreign_key"));
-                l = new Lote(lote_id,bem_id);
+                double lote_valor=Double.parseDouble(resultado.getString("lote_valor"));
+                l = new Lote(lote_id,bem_id,lote_valor);
             }
             return l;
         } catch (SQLException ex) {
@@ -84,8 +78,10 @@ public class LoteDAOJavaDb {
             ResultSet resultado = stmt.executeQuery("SELECT * FROM LOTE");
             List<Lote> listaLotes = new ArrayList<Lote>();
             while(resultado.next()) {
-                int bemId=Integer.parseInt(resultado.getString("BEM_ID_foreign_key"));
-                Lote l = new Lote (bemId);
+            	int lote_id = Integer.parseInt(resultado.getString("lote_id"));
+                int bem_id= Integer.parseInt(resultado.getString("BEM_ID_foreign_key"));
+                double lote_valor=Double.parseDouble(resultado.getString("lote_valor"));
+                Lote l =new Lote(lote_id,bem_id,lote_valor);
                 listaLotes.add(l);
             }
             return listaLotes;

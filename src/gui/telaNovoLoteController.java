@@ -54,8 +54,8 @@ public class telaNovoLoteController implements Initializable {
     void Adicionar(ActionEvent event) throws DAOException {
 		int index=lvBens.getSelectionModel().getSelectedIndex(); //pega o indice do item clicado na view
 		taLote.setText("Bem ID: "+bemDB.getTodos().get(index).getBemId()+"\n Produto: "+bemDB.getTodos().get(index).getDescricao()+"\n"+bemDB.getTodos().get(index).getDetalhes()+"\n"+"Categoria: "+bemDB.getTodos().get(index).getCategoria());
-		Lote l=new Lote(bemDB.getTodos().get(index).getBemId());
-		loteDB.adicionar(l);
+		//Lote l=new Lote(bemDB.getTodos().get(index).getBemId());
+		//loteDB.adicionar(l);
 	}
     
 	@FXML

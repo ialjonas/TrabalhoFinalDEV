@@ -26,13 +26,6 @@ public class Usuario_PjDAOJavaDb {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		// Cria o banco de dados vazio
-		// Retirar do comentário se necessário
-		/*
-		 * try { createDB(); } catch (Exception ex) { System.out.println(
-		 * "Problemas para criar o banco: "+ex.getMessage()); System.exit(0); }
-		 */
 	}
 
 	private static void createDB() throws DAOException {

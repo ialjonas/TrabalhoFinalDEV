@@ -4,14 +4,19 @@ import java.util.ArrayList;
 
 public class Lote {
 	private int bemId, loteId;
-
-	public Lote(int bemId) {
+	private double valor;
+	
+	public Lote(int bemId, double valor) {
+		super();
 		this.bemId = bemId;
+		this.valor = valor;
 	}
 	
-	public Lote(int loteId, int bemId) {
+	public Lote(int loteId, int bemId, double valor) {
+		super();
 		this.loteId = loteId;
 		this.bemId = bemId;
+		this.valor = valor;
 	}
 
 	public int getBemId() {
@@ -21,20 +26,18 @@ public class Lote {
 	public void setBemId(int bemId) {
 		this.bemId = bemId;
 	}
-	
+
 	public int getLoteId() {
 		return loteId;
 	}
 
-	public void setLoteId(int loteId) {
-		this.loteId = loteId;
+	public double getValor() {
+		return valor;
 	}
 
-	@Override
-	public String toString() {
-		return "Lote [bemId=" + bemId + ", loteId=" + loteId + "]";
+	public void setValor(double valor) {
+		this.valor = valor;
 	}
-
 	
-	
+		
 }

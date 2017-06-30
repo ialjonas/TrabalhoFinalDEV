@@ -23,7 +23,8 @@ CREATE TABLE LOTE(
 	lote_id INTEGER NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY
 		(START WITH 1, INCREMENT BY 1),
 	BEM_ID_foreign_key INTEGER NOT NULL,
-	CONSTRAINT bem_id FOREIGN KEY (BEM_ID_foreign_key) REFERENCES BEM(bem_id)
+	CONSTRAINT bem_id FOREIGN KEY (BEM_ID_foreign_key) REFERENCES BEM(bem_id),
+	lote_valor DOUBLE
 );
 
 CREATE TABLE LEILAO(
@@ -34,7 +35,6 @@ CREATE TABLE LEILAO(
 	leilao_dataInicio TIMESTAMP NOT NULL, 
 	leilao_dataFim TIMESTAMP NOT NULL, 
 	leilao_arremate DOUBLE,
-	leilao_criador CHAR(18) NOT NULL, 
 	leilao_vencedor CHAR(18),
 	leilao_tipo CHAR(18) NOT NULL,
 	leilao_tipo_lance CHAR(18) NOT NULL

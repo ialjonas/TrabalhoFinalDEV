@@ -5,22 +5,21 @@ import java.time.LocalDate;
 public class Leilao {
 	private int loteId,leilaoId;
 	private double arremate;
-	private String criador, vencedor,tipo,tipoLance,dataIni, dataFim;
+	private String vencedor,tipo,tipoLance,dataIni, dataFim;
 	
-	public Leilao(int loteId, String dataIni, String dataFim, double arremate, String criador, String vencedor,
+	public Leilao(int loteId, String dataIni, String dataFim, double arremate,String vencedor,
 			String tipo, String tipoLance) {
 		super();
 		this.loteId = loteId;
 		this.dataIni = dataIni;
 		this.dataFim = dataFim;
 		this.arremate = arremate;
-		this.criador = criador;
 		this.vencedor = vencedor;
 		this.tipo = tipo;
 		this.tipoLance = tipoLance;
 	}
 	
-	public Leilao(int leilaoId, int loteId, String dataIni, String dataFim, double arremate, String criador, String vencedor,
+	public Leilao(int leilaoId, int loteId, String dataIni, String dataFim, double arremate,String vencedor,
 			String tipo, String tipoLance) {
 		super();
 		this.leilaoId = leilaoId;
@@ -28,7 +27,6 @@ public class Leilao {
 		this.dataIni = dataIni;
 		this.dataFim = dataFim;
 		this.arremate = arremate;
-		this.criador = criador;
 		this.vencedor = vencedor;
 		this.tipo = tipo;
 		this.tipoLance = tipoLance;
@@ -62,12 +60,7 @@ public class Leilao {
 	public void setArremate(double arremate) {
 		this.arremate = arremate;
 	}
-	public String getCriador() {
-		return criador;
-	}
-	public void setCriador(String criador) {
-		this.criador = criador;
-	}
+
 	public String getVencedor() {
 		return vencedor;
 	}
@@ -91,7 +84,7 @@ public class Leilao {
 	@Override
 	public String toString() {
 		return "Informações do Leilao: Data inicio: " + dataIni + ", data fim: " + dataFim + ", tipo: " + tipo + ", tipoLance: " + tipoLance
-				+ ", Valor arremate: " + arremate + ", Criador: " + criador + ", Vencedor: " + vencedor +" Id do Lote: " + loteId;
+				+ ", Valor arremate: " + arremate + ", Vencedor: " + vencedor +" Id do Lote: " + loteId;
 	}
 	
 	

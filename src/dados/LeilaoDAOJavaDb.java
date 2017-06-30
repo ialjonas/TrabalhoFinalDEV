@@ -23,13 +23,6 @@ public class LeilaoDAOJavaDb {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		// Cria o banco de dados vazio
-		// Retirar do comentário se necessário
-		/*
-		 * try { createDB(); } catch (Exception ex) { System.out.println(
-		 * "Problemas para criar o banco: "+ex.getMessage()); System.exit(0); }
-		 */
 	}
 
 	private static Connection getConnection() throws SQLException {
@@ -41,16 +34,15 @@ public class LeilaoDAOJavaDb {
         try {
             Connection con = getConnection();
             PreparedStatement stmt = con.prepareStatement(
-                    "INSERT INTO LEILAO (LOTE_ID_foreign_key, leilao_dataInicio, leilao_dataFim, leilao_arremate, leilao_criador, leilao_vencedor,leilao_tipo, leilao_tipo_lance) VALUES (?,?,?,?,?,?,?,?)" //                             1        2         3            4          5             6
+                    "INSERT INTO LEILAO (LOTE_ID_foreign_key, leilao_dataInicio, leilao_dataFim, leilao_arremate, leilao_vencedor,leilao_tipo, leilao_tipo_lance) VALUES (?,?,?,?,?,?,?)" //                             1        2         3            4          5             6
                     );
             stmt.setString(1, Integer.toString(l.getLoteId()));
             stmt.setString(2, l.getDataIni());
             stmt.setString(3, l.getDataFim());
             stmt.setString(4, Double.toString(l.getArremate()));
-            stmt.setString(5, l.getCriador());
-            stmt.setString(6, l.getVencedor());
-            stmt.setString(7, l.getTipo());
-            stmt.setString(8, l.getTipoLance());
+            stmt.setString(5, l.getVencedor());
+            stmt.setString(6, l.getTipo());
+            stmt.setString(7, l.getTipoLance());
             
             int ret = stmt.executeUpdate();
             con.close();
@@ -73,12 +65,11 @@ public class LeilaoDAOJavaDb {
                 String dataIni = resultado.getString("leilao_dataInicio");
                 String dataFim = resultado.getString("leilao_dataFim");
                 double arremate = Double.parseDouble(resultado.getString("leilao_arremate"));
-                String criador = resultado.getString("leilao_criador");
                 String vencedor = resultado.getString("leilao_vencedor");
                 String tipo_leilao = resultado.getString("leilao_tipo");
                 String tipo_lance = resultado.getString("leilao_tipo_lance");
                 
-                Leilao l = new Leilao(leilaoId,loteId, dataIni, dataFim, arremate, criador, vencedor,tipo_leilao,tipo_lance);
+                Leilao l = new Leilao(leilaoId,loteId, dataIni, dataFim, arremate, vencedor,tipo_leilao,tipo_lance);
                 listaLeiloes.add(l);
             }
             return listaLeiloes;
@@ -99,12 +90,11 @@ public class LeilaoDAOJavaDb {
                 String dataIni = resultado.getString("leilao_dataInicio");
                 String dataFim = resultado.getString("leilao_dataFim");
                 double arremate = Double.parseDouble(resultado.getString("leilao_arremate"));
-                String criador = resultado.getString("leilao_criador");
                 String vencedor = resultado.getString("leilao_vencedor");
                 String tipo_leilao = resultado.getString("leilao_tipo");
                 String tipo_lance = resultado.getString("leilao_tipo_lance");
                 
-                Leilao l = new Leilao(leilaoId,loteId, dataIni, dataFim, arremate, criador, vencedor,tipo_leilao,tipo_lance);
+                Leilao l = new Leilao(leilaoId,loteId, dataIni, dataFim, arremate, vencedor,tipo_leilao,tipo_lance);
                 listaLeiloesAtivos.add(l);
                 
             }
@@ -126,12 +116,11 @@ public class LeilaoDAOJavaDb {
                 String dataIni = resultado.getString("leilao_dataInicio");
                 String dataFim = resultado.getString("leilao_dataFim");
                 double arremate = Double.parseDouble(resultado.getString("leilao_arremate"));
-                String criador = resultado.getString("leilao_criador");
                 String vencedor = resultado.getString("leilao_vencedor");
                 String tipo_leilao = resultado.getString("leilao_tipo");
                 String tipo_lance = resultado.getString("leilao_tipo_lance");
                 
-                Leilao l = new Leilao(leilaoId,loteId, dataIni, dataFim, arremate, criador, vencedor,tipo_leilao,tipo_lance);
+                Leilao l = new Leilao(leilaoId,loteId, dataIni, dataFim, arremate, vencedor,tipo_leilao,tipo_lance);
                 listaLeiloesEncerrados.add(l);
                 
             }
@@ -154,12 +143,11 @@ public class LeilaoDAOJavaDb {
                 String dataIni = resultado.getString("leilao_dataInicio");
                 String dataFim = resultado.getString("leilao_dataFim");
                 double arremate = Double.parseDouble(resultado.getString("leilao_arremate"));
-                String criador = resultado.getString("leilao_criador");
                 String vencedor = resultado.getString("leilao_vencedor");
                 String tipo_leilao = resultado.getString("leilao_tipo");
                 String tipo_lance = resultado.getString("leilao_tipo_lance");
                 
-                Leilao l = new Leilao(leilaoId,loteId, dataIni, dataFim, arremate, criador, vencedor,tipo_leilao,tipo_lance);
+                Leilao l = new Leilao(leilaoId,loteId, dataIni, dataFim, arremate, vencedor,tipo_leilao,tipo_lance);
                 listaLeiloesOferta.add(l);
                 
             }
@@ -182,12 +170,11 @@ public class LeilaoDAOJavaDb {
                 String dataIni = resultado.getString("leilao_dataInicio");
                 String dataFim = resultado.getString("leilao_dataFim");
                 double arremate = Double.parseDouble(resultado.getString("leilao_arremate"));
-                String criador = resultado.getString("leilao_criador");
                 String vencedor = resultado.getString("leilao_vencedor");
                 String tipo_leilao = resultado.getString("leilao_tipo");
                 String tipo_lance = resultado.getString("leilao_tipo_lance");
                 
-                Leilao l = new Leilao(leilaoId,loteId, dataIni, dataFim, arremate, criador, vencedor,tipo_leilao,tipo_lance);
+                Leilao l = new Leilao(leilaoId,loteId, dataIni, dataFim, arremate, vencedor,tipo_leilao,tipo_lance);
                 listaLeiloesDemanda.add(l);
                 
             }
@@ -210,12 +197,11 @@ public class LeilaoDAOJavaDb {
                 String dataIni = resultado.getString("leilao_dataInicio");
                 String dataFim = resultado.getString("leilao_dataFim");
                 double arremate = Double.parseDouble(resultado.getString("leilao_arremate"));
-                String criador = resultado.getString("leilao_criador");
                 String vencedor = resultado.getString("leilao_vencedor");
                 String tipo_leilao = resultado.getString("leilao_tipo");
                 String tipo_lance = resultado.getString("leilao_tipo_lance");
                 
-                Leilao l = new Leilao(leilaoId,loteId, dataIni, dataFim, arremate, criador, vencedor,tipo_leilao,tipo_lance);
+                Leilao l = new Leilao(leilaoId,loteId, dataIni, dataFim, arremate, vencedor,tipo_leilao,tipo_lance);
                 listaLeiloesLanceAberto.add(l);
                 
             }
@@ -238,12 +224,11 @@ public class LeilaoDAOJavaDb {
                 String dataIni = resultado.getString("leilao_dataInicio");
                 String dataFim = resultado.getString("leilao_dataFim");
                 double arremate = Double.parseDouble(resultado.getString("leilao_arremate"));
-                String criador = resultado.getString("leilao_criador");
                 String vencedor = resultado.getString("leilao_vencedor");
                 String tipo_leilao = resultado.getString("leilao_tipo");
                 String tipo_lance = resultado.getString("leilao_tipo_lance");
                 
-                Leilao l = new Leilao(leilaoId,loteId, dataIni, dataFim, arremate, criador, vencedor,tipo_leilao,tipo_lance);
+                Leilao l = new Leilao(leilaoId,loteId, dataIni, dataFim, arremate, vencedor,tipo_leilao,tipo_lance);
                 listaLeiloesLanceFechado.add(l);
                 
             }
@@ -252,8 +237,5 @@ public class LeilaoDAOJavaDb {
             throw new DAOException("Falha ao buscar.", ex);
         }
 	}
-	
-	
-	
 	
 }

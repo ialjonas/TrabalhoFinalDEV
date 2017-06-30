@@ -49,18 +49,12 @@ public class telaNovoLeilaoController implements Initializable {
 	ObservableList<Bem> listaBens=FXCollections.observableArrayList();
 	ObservableList<String> itensChoiseLeilao = FXCollections.observableArrayList("Demanda","Oferta");
 	ObservableList<String> itensChoiseLance = FXCollections.observableArrayList("Aberto","Fechado");
-	ObservableList<Usuario> itensCbUser = FXCollections.observableArrayList();
-	ObservableList<Usuario> itensPJCbUser = FXCollections.observableArrayList();
-	ObservableList<Usuario> itensPFCbUser = FXCollections.observableArrayList();
-	
+
 	@FXML
     private ListView<Bem> lvBens; //listar bens disponíveis para add ao lote com o clique
     
     @FXML
     private TextArea taLote;
-	    
-    @FXML
-    private ComboBox<Usuario> cbUser;
 
     @FXML
     private DatePicker dpInicio;
@@ -95,30 +89,6 @@ public class telaNovoLeilaoController implements Initializable {
 		cbLance.setItems(itensChoiseLance);
 		cbLeilao.setItems(itensChoiseLeilao);
 		
-		//alimentaçao da lista de usuarios PJ + Pf
-		try {
-			for(int i=0;i<Usuario_PjJavaDbDB.getTodos().size();i++){
-				itensCbUser.add(Usuario_PjJavaDbDB.getTodos().get(i));
-			}
-			for(int i=0;i<Usuario_PfJavaDbDB.getTodos().size();i++){
-				itensCbUser.add(Usuario_PfJavaDbDB.getTodos().get(i));
-			}
-			
-			
-		} catch (DAOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		cbUser.setItems(itensCbUser);
-		
-		//monitoramento da ChoiceBox com os tipos de leilão
-		cbLeilao.valueProperty().addListener(new ChangeListener<String>() {
-			@Override
-			public void changed(ObservableValue<? extends String> observable, String valorAntigo, String novoValor) {
-				controleCbLeilao(novoValor);
-			}
-	    });
-		
 		//alimentaçao da lista de bens disponíveis para add ao lote
 		try {
 			for(int i=0;i<bemDB.getTodos().size();i++){
@@ -146,22 +116,6 @@ public class telaNovoLeilaoController implements Initializable {
 	    });
 	}
 	
-	//altera o o Label com o tipo de leilão de acordo com o campo selecionado na ChoiceBox cbLeilao
-	private void controleCbLeilao(String novoValor){
-		switch (novoValor) {
-        case ("Demanda"):
-        	lCompraVende.setText("Comprador");
-        break;
-        
-        case ("Oferta"):
-        	lCompraVende.setText("Vendedor");
-        break;
-              
-        default:
-        	
-		}
-	}
-	
 	public void setTfInfoLote(String text){
 		tfInfoLote.setText(text);
 	}
@@ -174,11 +128,13 @@ public class telaNovoLeilaoController implements Initializable {
 				bemDB.getTodos().get(
 						lvBens.getSelectionModel().getSelectedIndex() //pega o indice do item clicado na view
 						)
-				.getBemId());
+				.getBemId(),
+				Double.parseDouble(tfValor.getText())
+				);
 		
 		loteDB.adicionar(l);
-		//loteIdTemp=loteDB.getTodos().get
 		tfInfoLote.setText(bemDB.getBemPorBemID(l.getBemId()).toString()+"");
+		//loteIdTemp=bemDB.getBemPorBemID(l.getBemId());
     }
 	
     @FXML
@@ -186,11 +142,10 @@ public class telaNovoLeilaoController implements Initializable {
     	//lê os campos selecionados e executa a ação
     	
     	Leilao le=new Leilao(
-    			loteIdTemp,
+    			1,
     			dpInicio.getValue().toString()+" 20:40:00",
     			dpFim.getValue().toString()+" 20:40:00",
     			Double.parseDouble(tfValor.getText()),
-    			cbUser.getSelectionModel().getSelectedItem().getNome(),
     			"",
     			cbLeilao.getSelectionModel().getSelectedItem().toString(),
     			cbLance.getSelectionModel().getSelectedItem().toString()
@@ -228,10 +183,6 @@ public class telaNovoLeilaoController implements Initializable {
     		alert.showAndWait();
     		r.printStackTrace();	
     	}
-    	
-    	
-    	
-    
     	
     	Stage stage = (Stage) bConcluido.getScene().getWindow();
         stage.close();

@@ -84,9 +84,6 @@ public class telaPrincipalController implements Initializable{
     
     @FXML
     private TextArea taLote;
-    
-    @FXML
-    private TextField tfNomeCriador;
 
     @FXML
     private TextField tfNomeVencedor;
@@ -103,7 +100,6 @@ public class telaPrincipalController implements Initializable{
 		tfTipoLeilao.setEditable(false);
 		tfTipoLance.setEditable(false);
 		taLote.setEditable(false);
-		tfNomeCriador.setEditable(false);
 		tfNomeVencedor.setEditable(false);
 		tfValorLanceVencedor.setEditable(false);
 		
@@ -131,7 +127,6 @@ public class telaPrincipalController implements Initializable{
 			tfTipoLeilao.setText(null);
 			tfTipoLance.setText(null);
 			taLote.setText(null);
-			tfNomeCriador.setText(null);
 			tfNomeVencedor.setText(null);
 			tfValorLanceVencedor.setText(null);
         	
@@ -342,7 +337,6 @@ public class telaPrincipalController implements Initializable{
 					"\n"+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getTodos().get(index).getLoteId()).getBemId()).getDetalhes()+
 					"\nCategoria: "+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getTodos().get(index).getLoteId()).getBemId()).getCategoria()
 					);
-			tfNomeCriador.setText(leilaoDB.getTodos().get(index).getCriador());
 			tfNomeVencedor.setText(leilaoDB.getTodos().get(index).getVencedor());
 			tfValorLanceVencedor.setText(Double.toString(leilaoDB.getTodos().get(index).getArremate()));
 		} catch (DAOException e) {
@@ -373,7 +367,6 @@ public class telaPrincipalController implements Initializable{
 					"\n"+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getAtivos().get(index).getLoteId()).getBemId()).getDetalhes()+
 					"\nCategoria: "+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getAtivos().get(index).getLoteId()).getBemId()).getCategoria()
 					);
-			tfNomeCriador.setText(leilaoDB.getAtivos().get(index).getCriador());
 			tfNomeVencedor.setText(leilaoDB.getAtivos().get(index).getVencedor());
 			tfValorLanceVencedor.setText(Double.toString(leilaoDB.getAtivos().get(index).getArremate()));
 		} catch (DAOException e) {
@@ -404,7 +397,6 @@ public class telaPrincipalController implements Initializable{
 					"\n"+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getEncerrados().get(index).getLoteId()).getBemId()).getDetalhes()+
 					"\nCategoria: "+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getEncerrados().get(index).getLoteId()).getBemId()).getCategoria()
 					);
-			tfNomeCriador.setText(leilaoDB.getEncerrados().get(index).getCriador());
 			tfNomeVencedor.setText(leilaoDB.getEncerrados().get(index).getVencedor());
 			tfValorLanceVencedor.setText(Double.toString(leilaoDB.getEncerrados().get(index).getArremate()));
 		} catch (DAOException e) {
@@ -435,7 +427,6 @@ public class telaPrincipalController implements Initializable{
 					"\n"+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getTipoOferta().get(index).getLoteId()).getBemId()).getDetalhes()+
 					"\nCategoria: "+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getTipoOferta().get(index).getLoteId()).getBemId()).getCategoria()
 					);
-			tfNomeCriador.setText(leilaoDB.getTipoOferta().get(index).getCriador());
 			tfNomeVencedor.setText(leilaoDB.getTipoOferta().get(index).getVencedor());
 			tfValorLanceVencedor.setText(Double.toString(leilaoDB.getTipoOferta().get(index).getArremate()));
 		} catch (DAOException e) {
@@ -466,7 +457,6 @@ public class telaPrincipalController implements Initializable{
 					"\n"+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getTipoDemanda().get(index).getLoteId()).getBemId()).getDetalhes()+
 					"\nCategoria: "+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getTipoDemanda().get(index).getLoteId()).getBemId()).getCategoria()
 					);
-			tfNomeCriador.setText(leilaoDB.getTipoDemanda().get(index).getCriador());
 			tfNomeVencedor.setText(leilaoDB.getTipoDemanda().get(index).getVencedor());
 			tfValorLanceVencedor.setText(Double.toString(leilaoDB.getTipoDemanda().get(index).getArremate()));
 		} catch (DAOException e) {
@@ -497,7 +487,6 @@ public class telaPrincipalController implements Initializable{
 					"\n"+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getLanceAberto().get(index).getLoteId()).getBemId()).getDetalhes()+
 					"\nCategoria: "+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getLanceAberto().get(index).getLoteId()).getBemId()).getCategoria()
 					);
-			tfNomeCriador.setText(leilaoDB.getLanceAberto().get(index).getCriador());
 			tfNomeVencedor.setText(leilaoDB.getLanceAberto().get(index).getVencedor());
 			tfValorLanceVencedor.setText(Double.toString(leilaoDB.getLanceAberto().get(index).getArremate()));
 		} catch (DAOException e) {
@@ -528,7 +517,6 @@ public class telaPrincipalController implements Initializable{
 					"\n"+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getLanceFechado().get(index).getLoteId()).getBemId()).getDetalhes()+
 					"\nCategoria: "+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getLanceFechado().get(index).getLoteId()).getBemId()).getCategoria()
 					);
-			tfNomeCriador.setText(leilaoDB.getLanceFechado().get(index).getCriador());
 			tfNomeVencedor.setText(leilaoDB.getLanceFechado().get(index).getVencedor());
 			tfValorLanceVencedor.setText(Double.toString(leilaoDB.getLanceFechado().get(index).getArremate()));
 		} catch (DAOException e) {
