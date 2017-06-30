@@ -1,14 +1,17 @@
 package gui;
 
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 import dados.BemDAOJavaDb;
 import dados.DAOException;
+import dados.LeilaoDAOJavaDb;
 import dados.LoteDAOJavaDb;
 import dados.Usuario_PfDAOJavaDb;
 import dados.Usuario_PjDAOJavaDb;
 import negocio.Bem;
+import negocio.Leilao;
 import negocio.Lote;
 import negocio.Usuario;
 import negocio.Usuario_PF;
@@ -23,6 +26,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
@@ -31,13 +35,16 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 
 public class telaNovoLeilaoController implements Initializable {
+	private int loteIdTemp=0;
 	Usuario_PjDAOJavaDb Usuario_PjJavaDbDB=Usuario_PjDAOJavaDb.getInstance();
 	Usuario_PfDAOJavaDb Usuario_PfJavaDbDB=Usuario_PfDAOJavaDb.getInstance();
 	BemDAOJavaDb bemDB=BemDAOJavaDb.getInstance();
 	LoteDAOJavaDb loteDB=LoteDAOJavaDb.getInstance();
+	LeilaoDAOJavaDb leilaoDB=LeilaoDAOJavaDb.getInstance();
 	
 	ObservableList<Bem> listaBens=FXCollections.observableArrayList();
 	ObservableList<String> itensChoiseLeilao = FXCollections.observableArrayList("Demanda","Oferta");
@@ -160,18 +167,71 @@ public class telaNovoLeilaoController implements Initializable {
 	}
 	
 	
-	
+	//adiciona o bem selecionado a um novo lote
     @FXML
     void Adicionar(ActionEvent event) throws DAOException {
-    	int index=lvBens.getSelectionModel().getSelectedIndex(); //pega o indice do item clicado na view
-		Lote l=new Lote(bemDB.getTodos().get(index).getBemId());
+		Lote l=new Lote(
+				bemDB.getTodos().get(
+						lvBens.getSelectionModel().getSelectedIndex() //pega o indice do item clicado na view
+						)
+				.getBemId());
+		
 		loteDB.adicionar(l);
+		//loteIdTemp=loteDB.getTodos().get
 		tfInfoLote.setText(bemDB.getBemPorBemID(l.getBemId()).toString()+"");
     }
 	
     @FXML
     void Concluido(ActionEvent event) {
     	//lê os campos selecionados e executa a ação
+    	
+    	Leilao le=new Leilao(
+    			loteIdTemp,
+    			dpInicio.getValue().toString()+" 20:40:00",
+    			dpFim.getValue().toString()+" 20:40:00",
+    			Double.parseDouble(tfValor.getText()),
+    			cbUser.getSelectionModel().getSelectedItem().getNome(),
+    			"",
+    			cbLeilao.getSelectionModel().getSelectedItem().toString(),
+    			cbLance.getSelectionModel().getSelectedItem().toString()
+    			);
+    	try {
+    		System.out.println(le.toString());
+			leilaoDB.adicionar(le);
+		} 
+    	catch (DAOException e) {
+			// TODO Auto-generated catch block
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Atenção!");
+			alert.setHeaderText(null);
+			alert.setContentText(e.toString());
+			alert.showAndWait();
+			e.printStackTrace();	
+		}
+    	
+    	catch (NullPointerException n) {
+    		// TODO Auto-generated catch block
+    		Alert alert = new Alert(AlertType.INFORMATION);
+    		alert.setTitle("Atenção!");
+    		alert.setHeaderText(null);
+    		alert.setContentText(n.toString());
+    		alert.showAndWait();
+    		n.printStackTrace();	
+    	}
+    	
+    	catch (RuntimeException r) {
+    		// TODO Auto-generated catch block
+    		Alert alert = new Alert(AlertType.INFORMATION);
+    		alert.setTitle("Atenção!");
+    		alert.setHeaderText(null);
+    		alert.setContentText(r.toString());
+    		alert.showAndWait();
+    		r.printStackTrace();	
+    	}
+    	
+    	
+    	
+    
     	
     	Stage stage = (Stage) bConcluido.getScene().getWindow();
         stage.close();

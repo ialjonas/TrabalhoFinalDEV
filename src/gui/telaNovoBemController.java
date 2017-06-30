@@ -23,7 +23,7 @@ import negocio.Bem;
 public class telaNovoBemController implements Initializable {
 	BemDAOJavaDb bemDB=BemDAOJavaDb.getInstance();
 	ObservableList<String> itensChoiseCategoria = FXCollections.observableArrayList(
-			"Informatica","Mobiliário","Veículos","nova"
+			"Informatica","Móveis e decoração","Eletrônicos","Games","Esportes","Eletrodomésticos","Diversos"
 	);
 
     @FXML

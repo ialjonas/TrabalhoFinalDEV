@@ -41,7 +41,7 @@ public class LeilaoDAOJavaDb {
         try {
             Connection con = getConnection();
             PreparedStatement stmt = con.prepareStatement(
-                    "INSERT INTO LEILAO (LOTE_ID_foreign_key, leilao_dataInicio, leilao_dataFim, leilao_arremate, leilao_criador, leilao_vencedor) VALUES (?,?,?,?,?,?)" //                             1        2         3            4          5             6
+                    "INSERT INTO LEILAO (LOTE_ID_foreign_key, leilao_dataInicio, leilao_dataFim, leilao_arremate, leilao_criador, leilao_vencedor,leilao_tipo, leilao_tipo_lance) VALUES (?,?,?,?,?,?,?,?)" //                             1        2         3            4          5             6
                     );
             stmt.setString(1, Integer.toString(l.getLoteId()));
             stmt.setString(2, l.getDataIni());
@@ -49,6 +49,8 @@ public class LeilaoDAOJavaDb {
             stmt.setString(4, Double.toString(l.getArremate()));
             stmt.setString(5, l.getCriador());
             stmt.setString(6, l.getVencedor());
+            stmt.setString(7, l.getTipo());
+            stmt.setString(8, l.getTipoLance());
             
             int ret = stmt.executeUpdate();
             con.close();

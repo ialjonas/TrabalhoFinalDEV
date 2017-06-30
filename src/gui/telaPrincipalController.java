@@ -112,6 +112,7 @@ public class telaPrincipalController implements Initializable{
 		cbStatus.setTooltip(new Tooltip("Selecione o status do leilão"));
 		
 		cbStatus.valueProperty().addListener(new ChangeListener<String>() {
+			
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String valorAntigo, String novoValor) {
 				controleCbStatus(novoValor);
@@ -292,6 +293,14 @@ public class telaPrincipalController implements Initializable{
     void DetalheLeilao(ActionEvent event){
        	int index=lvLeiloes.getSelectionModel().getSelectedIndex(); //pega o indice do item clicado na view
     	
+       	if(cbStatus.getSelectionModel().getSelectedItem().equals("Selecione um status para exibir")){
+       		Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Atenção!");
+			alert.setHeaderText(null);
+			alert.setContentText("Selecione um status para exibir os leilões disponíveis");
+			alert.showAndWait();
+    	}
+       	
     	if(cbStatus.getSelectionModel().getSelectedItem().equals("Todos")){
     		PopulaDetalheTodos(index);
     	}
