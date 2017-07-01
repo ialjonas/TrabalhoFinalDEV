@@ -67,9 +67,7 @@ public class BemDAOJavaDb {
 	public Bem getBemPorBemID(int bemId) throws DAOException {
         try {
             Connection con = getConnection();
-            PreparedStatement stmt = con.prepareStatement(
-                    "SELECT * FROM BEM WHERE bem_id=?"
-                    );
+            PreparedStatement stmt = con.prepareStatement("SELECT * FROM BEM WHERE bem_id=?");
             stmt.setString(1, Integer.toString(bemId));
             ResultSet resultado = stmt.executeQuery();
             Bem b = null;

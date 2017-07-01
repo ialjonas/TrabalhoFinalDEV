@@ -8,6 +8,8 @@ import dados.BemDAOJavaDb;
 import dados.DAOException;
 import dados.LeilaoDAOJavaDb;
 import dados.LoteDAOJavaDb;
+import dados.Usuario_PfDAOJavaDb;
+import dados.Usuario_PjDAOJavaDb;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -33,15 +35,24 @@ import javafx.stage.Stage;
 import negocio.Bem;
 import negocio.Leilao;
 import negocio.Lote;
+import negocio.Usuario;
 
 public class telaPrincipalController implements Initializable{
+	Usuario_PjDAOJavaDb Usuario_PjDB=Usuario_PjDAOJavaDb.getInstance();
+	Usuario_PfDAOJavaDb Usuario_PfDB=Usuario_PfDAOJavaDb.getInstance();
 	LeilaoDAOJavaDb leilaoDB=LeilaoDAOJavaDb.getInstance();
 	LoteDAOJavaDb loteDB=LoteDAOJavaDb.getInstance();
 	BemDAOJavaDb bemDB=BemDAOJavaDb.getInstance();
+	
 	ObservableList<String> itensChoisestatus = FXCollections.observableArrayList(
 			"Selecione um status para exibir","Todos","Em Andamento","Encerrados","Leilão de oferta","Leilão de demanda","Lance aberto","Lance fechado"
 	);
+	ObservableList<String> itensChoiseusuarios = FXCollections.observableArrayList(
+			"Selecione um tipo de usuário","Pessoa Física","Pessoa Juridica"
+	);
+	
 	ObservableList<Leilao> listaLeiloes = FXCollections.observableArrayList();
+	ObservableList<Usuario> listaUsuarios = FXCollections.observableArrayList();
 	
 	@FXML
 	private MenuItem miUsuario;
@@ -60,12 +71,24 @@ public class telaPrincipalController implements Initializable{
 	
     @FXML
     private ChoiceBox<String> cbStatus;
+    
+    @FXML
+    private ChoiceBox<String> cbUsuarios;
 	
 	@FXML
     private ListView<Leilao> lvLeiloes;
+	
+    @FXML
+    private ListView<Usuario> lvUsuarios;
     
     @FXML
     private Button bDetalheLeilao;
+    
+    @FXML
+    private Button bselecionaUsuario;
+    
+    @FXML
+    private Button bDarLance;
     
     @FXML
     private TextField tfLeilaoId;
@@ -81,6 +104,12 @@ public class telaPrincipalController implements Initializable{
     
     @FXML
     private TextField tfTipoLance;
+    
+    @FXML
+    private TextField tfUsuarioSelecionado;
+    
+    @FXML
+    private TextField tfLance;
     
     @FXML
     private TextArea taLote;
@@ -102,22 +131,39 @@ public class telaPrincipalController implements Initializable{
 		taLote.setEditable(false);
 		tfNomeVencedor.setEditable(false);
 		tfValorLanceVencedor.setEditable(false);
+		tfUsuarioSelecionado.setEditable(false);
+		tfLance.setEditable(false);
 		
 		cbStatus.setItems(itensChoisestatus);
 		cbStatus.getSelectionModel().select(0);
 		cbStatus.setTooltip(new Tooltip("Selecione o status do leilão"));
 		
+		cbUsuarios.setItems(itensChoiseusuarios);
+		cbUsuarios.getSelectionModel().select(0);
+		cbUsuarios.setTooltip(new Tooltip("Selecione um tipo de usuário"));
+		
+		
+		//monitoramento da ChoiceBox de stauts dos leilões
 		cbStatus.valueProperty().addListener(new ChangeListener<String>() {
-			
 			@Override
-			public void changed(ObservableValue<? extends String> observable, String valorAntigo, String novoValor) {
-				controleCbStatus(novoValor);
+			public void changed(ObservableValue<? extends String> observable, String valorAntigoCbStatus, String novoValorCbStatus) {
+				controleCbStatus(novoValorCbStatus);
 			}
 	    });
+		
+		//monitoramento da ChoiceBox de usuários
+		cbUsuarios.valueProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValuecbUsuarios, String newValuecbUsuarios) {
+				controleCbUsuarios(newValuecbUsuarios);
+				
+			}
+		});
 	}
 	
-	private void controleCbStatus(String novoValor){
-		switch (novoValor) {
+	//alimentaçao da lista de leiloes com base na ChoiceBox de status dos leilões
+	private void controleCbStatus(String novoValorCbStatus){
+		switch (novoValorCbStatus) {
 		
 		case ("Selecione um status para exibir"):
         	listaLeiloes.clear();
@@ -129,7 +175,6 @@ public class telaPrincipalController implements Initializable{
 			taLote.setText(null);
 			tfNomeVencedor.setText(null);
 			tfValorLanceVencedor.setText(null);
-        	
             break;
 		
         case ("Encerrados"):
@@ -158,7 +203,6 @@ public class telaPrincipalController implements Initializable{
     			// TODO Auto-generated catch block
     			e.printStackTrace();
     		}
-        	
         	break;
         
         case ("Todos"):
@@ -174,7 +218,6 @@ public class telaPrincipalController implements Initializable{
     			// TODO Auto-generated catch block
     			e.printStackTrace();
     		}
-        	
         	break;
         	
         case ("Leilão de oferta"):
@@ -186,10 +229,8 @@ public class telaPrincipalController implements Initializable{
     			lvLeiloes.setItems(listaLeiloes);
     			
     		} catch (DAOException e) {
-    			// TODO Auto-generated catch block
     			e.printStackTrace();
     		}
-        	
         	break;
         	
         case ("Leilão de demanda"):
@@ -201,10 +242,8 @@ public class telaPrincipalController implements Initializable{
     			lvLeiloes.setItems(listaLeiloes);
     			
     		} catch (DAOException e) {
-    			// TODO Auto-generated catch block
     			e.printStackTrace();
     		}
-        	
         	break;
         
         case ("Lance aberto"):
@@ -216,10 +255,8 @@ public class telaPrincipalController implements Initializable{
     			lvLeiloes.setItems(listaLeiloes);
     			
     		} catch (DAOException e) {
-    			// TODO Auto-generated catch block
     			e.printStackTrace();
     		}
-        	
         	break;
         	
         case ("Lance fechado"):
@@ -231,16 +268,15 @@ public class telaPrincipalController implements Initializable{
     			lvLeiloes.setItems(listaLeiloes);
     			
     		} catch (DAOException e) {
-    			// TODO Auto-generated catch block
     			e.printStackTrace();
     		}
-        	
         	break;
         default:
         	
 		}
 	}
-	 
+	
+	//menu novo leilão
 	@FXML
 	void NovoLeilao(ActionEvent event) throws IOException {
 		try {
@@ -255,6 +291,7 @@ public class telaPrincipalController implements Initializable{
 	        }
 	}
 	
+	//menu novo bem	
 	@FXML
     void NovoBem(ActionEvent event) {
 		try {
@@ -268,7 +305,8 @@ public class telaPrincipalController implements Initializable{
 	           e.printStackTrace();
 	        }
     }
-
+	
+	//menu novo usuario
     @FXML
     void NovoUsuario(ActionEvent event) {
     	try {
@@ -283,10 +321,10 @@ public class telaPrincipalController implements Initializable{
 	        }
     }
     
-
+    //açao do botao de detalhes do leilão
     @FXML
     void DetalheLeilao(ActionEvent event){
-       	int index=lvLeiloes.getSelectionModel().getSelectedIndex(); //pega o indice do item clicado na view
+       	int indexLeilao=lvLeiloes.getSelectionModel().getSelectedIndex(); //pega o indice do item clicado na view
     	
        	if(cbStatus.getSelectionModel().getSelectedItem().equals("Selecione um status para exibir")){
        		Alert alert = new Alert(AlertType.INFORMATION);
@@ -297,48 +335,85 @@ public class telaPrincipalController implements Initializable{
     	}
        	
     	if(cbStatus.getSelectionModel().getSelectedItem().equals("Todos")){
-    		PopulaDetalheTodos(index);
+    		PopulaDetalheTodos(indexLeilao);
     	}
     	if(cbStatus.getSelectionModel().getSelectedItem().equals("Em Andamento")){
-    		PopulaDetalheLeilaoEmAndamento(index);
+    		PopulaDetalheLeilaoEmAndamento(indexLeilao);
     	}
     	
     	if(cbStatus.getSelectionModel().getSelectedItem().equals("Encerrados")){
-    		PopulaDetalheLeilaoEncerrado(index);
+    		PopulaDetalheLeilaoEncerrado(indexLeilao);
     	}
     	
     	if(cbStatus.getSelectionModel().getSelectedItem().equals("Leilão de oferta")){
-    		PopulaDetalheLeilaoOferta(index);
+    		PopulaDetalheLeilaoOferta(indexLeilao);
     	}
     	
     	if(cbStatus.getSelectionModel().getSelectedItem().equals("Leilão de demanda")){
-    		PopulaDetalheLeilaoDemanda(index);
+    		PopulaDetalheLeilaoDemanda(indexLeilao);
     	}
     	
     	if(cbStatus.getSelectionModel().getSelectedItem().equals("Lance aberto")){
-    		PopulaDetalheLeilaoLanceAberto(index);
+    		PopulaDetalheLeilaoLanceAberto(indexLeilao);
     	}
     	
     	if(cbStatus.getSelectionModel().getSelectedItem().equals("Lance fechado")){
-    		PopulaDetalheLeilaoLanceAberto(index);
-    	}
-    		
+    		PopulaDetalheLeilaoLanceAberto(indexLeilao);
+    	}	
     }
     
-    public void PopulaDetalheTodos(int index){
+ // TODO Refatorar
+    ////////////////////////////////////////////////////////
+    /*
+      public void PopulaDetalhesLeilao(int indexLeilao){
+    	Leilao l = lvLeiloes.getSelectionModel().getSelectedItem();
     	try {
-			tfLeilaoId.setText(Integer.toString(leilaoDB.getTodos().get(index).getLeilaoId()));
-			tfDataIni.setText(leilaoDB.getTodos().get(index).getDataIni());
-			tfDataFim.setText(leilaoDB.getTodos().get(index).getDataFim());
-			tfTipoLeilao.setText(leilaoDB.getTodos().get(index).getTipo());
-			tfTipoLance.setText(leilaoDB.getTodos().get(index).getTipoLance());
+			tfLeilaoId.setText(Integer.toString(l.getLeilaoId()));
+			tfDataIni.setText(l.getDataIni());
+			tfDataFim.setText(l.getDataIni());
+			tfTipoLeilao.setText(l.getTipo());
+			tfTipoLance.setText(l.getTipoLance());
 			taLote.setText(
-					"Bem no lote: "+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getTodos().get(index).getLoteId()).getBemId()).getDescricao()+
-					"\n"+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getTodos().get(index).getLoteId()).getBemId()).getDetalhes()+
-					"\nCategoria: "+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getTodos().get(index).getLoteId()).getBemId()).getCategoria()
+					"Bem no lote: "+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(l.getLoteId()).getBemId()).getDescricao()+
+					"\n"+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(l.getLoteId()).getBemId()).getDetalhes()+
+					"\nCategoria: "+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(l.getLoteId()).getBemId()).getCategoria()
 					);
-			tfNomeVencedor.setText(leilaoDB.getTodos().get(index).getVencedor());
-			tfValorLanceVencedor.setText(Double.toString(leilaoDB.getTodos().get(index).getArremate()));
+			tfNomeVencedor.setText(lvLeiloes.getSelectionModel().getSelectedItem().getVencedor());
+			tfValorLanceVencedor.setText(Double.toString(lvLeiloes.getSelectionModel().getSelectedItem().getArremate()));
+		} catch (DAOException e) {
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Atenção!");
+			alert.setHeaderText(null);
+			alert.setContentText(e.toString());
+			alert.showAndWait();
+		}
+	    catch (ArrayIndexOutOfBoundsException e) {
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Atenção!");
+			alert.setHeaderText(null);
+			alert.setContentText("Selecione um leilão para ver os detalhes.\n\nMensagem do sistema: "+e.toString());
+			alert.showAndWait();
+		}
+    }
+     
+     
+     */
+    ///////////////////////////////////////////////////////////
+    
+    public void PopulaDetalheTodos(int indexLeilao){
+    	try {
+			tfLeilaoId.setText(Integer.toString(leilaoDB.getTodos().get(indexLeilao).getLeilaoId()));
+			tfDataIni.setText(leilaoDB.getTodos().get(indexLeilao).getDataIni());
+			tfDataFim.setText(leilaoDB.getTodos().get(indexLeilao).getDataFim());
+			tfTipoLeilao.setText(leilaoDB.getTodos().get(indexLeilao).getTipo());
+			tfTipoLance.setText(leilaoDB.getTodos().get(indexLeilao).getTipoLance());
+			taLote.setText(
+					"Bem no lote: "+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getTodos().get(indexLeilao).getLoteId()).getBemId()).getDescricao()+
+					"\n"+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getTodos().get(indexLeilao).getLoteId()).getBemId()).getDetalhes()+
+					"\nCategoria: "+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getTodos().get(indexLeilao).getLoteId()).getBemId()).getCategoria()
+					);
+			tfNomeVencedor.setText(leilaoDB.getTodos().get(indexLeilao).getVencedor());
+			tfValorLanceVencedor.setText(Double.toString(leilaoDB.getTodos().get(indexLeilao).getArremate()));
 		} catch (DAOException e) {
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Atenção!");
@@ -355,20 +430,20 @@ public class telaPrincipalController implements Initializable{
 		}
     }
     
-    public void PopulaDetalheLeilaoEmAndamento(int index){
+    public void PopulaDetalheLeilaoEmAndamento(int indexLeilao){
     	try {
-			tfLeilaoId.setText(Integer.toString(leilaoDB.getAtivos().get(index).getLeilaoId()));
-			tfDataIni.setText(leilaoDB.getAtivos().get(index).getDataIni());
-			tfDataFim.setText(leilaoDB.getAtivos().get(index).getDataFim());
-			tfTipoLeilao.setText(leilaoDB.getAtivos().get(index).getTipo());
-			tfTipoLance.setText(leilaoDB.getAtivos().get(index).getTipoLance());
+			tfLeilaoId.setText(Integer.toString(leilaoDB.getAtivos().get(indexLeilao).getLeilaoId()));
+			tfDataIni.setText(leilaoDB.getAtivos().get(indexLeilao).getDataIni());
+			tfDataFim.setText(leilaoDB.getAtivos().get(indexLeilao).getDataFim());
+			tfTipoLeilao.setText(leilaoDB.getAtivos().get(indexLeilao).getTipo());
+			tfTipoLance.setText(leilaoDB.getAtivos().get(indexLeilao).getTipoLance());
 			taLote.setText(
-					"Bem no lote: "+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getAtivos().get(index).getLoteId()).getBemId()).getDescricao()+
-					"\n"+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getAtivos().get(index).getLoteId()).getBemId()).getDetalhes()+
-					"\nCategoria: "+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getAtivos().get(index).getLoteId()).getBemId()).getCategoria()
+					"Bem no lote: "+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getAtivos().get(indexLeilao).getLoteId()).getBemId()).getDescricao()+
+					"\n"+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getAtivos().get(indexLeilao).getLoteId()).getBemId()).getDetalhes()+
+					"\nCategoria: "+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getAtivos().get(indexLeilao).getLoteId()).getBemId()).getCategoria()
 					);
-			tfNomeVencedor.setText(leilaoDB.getAtivos().get(index).getVencedor());
-			tfValorLanceVencedor.setText(Double.toString(leilaoDB.getAtivos().get(index).getArremate()));
+			tfNomeVencedor.setText(leilaoDB.getAtivos().get(indexLeilao).getVencedor());
+			tfValorLanceVencedor.setText(Double.toString(leilaoDB.getAtivos().get(indexLeilao).getArremate()));
 		} catch (DAOException e) {
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Atenção!");
@@ -385,20 +460,20 @@ public class telaPrincipalController implements Initializable{
 		}
     }
     
-    public void PopulaDetalheLeilaoEncerrado(int index){
+    public void PopulaDetalheLeilaoEncerrado(int indexLeilao){
     	try {
-			tfLeilaoId.setText(Integer.toString(leilaoDB.getEncerrados().get(index).getLeilaoId()));
-			tfDataIni.setText(leilaoDB.getEncerrados().get(index).getDataIni());
-			tfDataFim.setText(leilaoDB.getEncerrados().get(index).getDataFim());
-			tfTipoLeilao.setText(leilaoDB.getEncerrados().get(index).getTipo());
-			tfTipoLance.setText(leilaoDB.getEncerrados().get(index).getTipoLance());
+			tfLeilaoId.setText(Integer.toString(leilaoDB.getEncerrados().get(indexLeilao).getLeilaoId()));
+			tfDataIni.setText(leilaoDB.getEncerrados().get(indexLeilao).getDataIni());
+			tfDataFim.setText(leilaoDB.getEncerrados().get(indexLeilao).getDataFim());
+			tfTipoLeilao.setText(leilaoDB.getEncerrados().get(indexLeilao).getTipo());
+			tfTipoLance.setText(leilaoDB.getEncerrados().get(indexLeilao).getTipoLance());
 			taLote.setText(
-					"Bem no lote: "+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getEncerrados().get(index).getLoteId()).getBemId()).getDescricao()+
-					"\n"+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getEncerrados().get(index).getLoteId()).getBemId()).getDetalhes()+
-					"\nCategoria: "+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getEncerrados().get(index).getLoteId()).getBemId()).getCategoria()
+					"Bem no lote: "+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getEncerrados().get(indexLeilao).getLoteId()).getBemId()).getDescricao()+
+					"\n"+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getEncerrados().get(indexLeilao).getLoteId()).getBemId()).getDetalhes()+
+					"\nCategoria: "+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getEncerrados().get(indexLeilao).getLoteId()).getBemId()).getCategoria()
 					);
-			tfNomeVencedor.setText(leilaoDB.getEncerrados().get(index).getVencedor());
-			tfValorLanceVencedor.setText(Double.toString(leilaoDB.getEncerrados().get(index).getArremate()));
+			tfNomeVencedor.setText(leilaoDB.getEncerrados().get(indexLeilao).getVencedor());
+			tfValorLanceVencedor.setText(Double.toString(leilaoDB.getEncerrados().get(indexLeilao).getArremate()));
 		} catch (DAOException e) {
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Atenção!");
@@ -415,20 +490,20 @@ public class telaPrincipalController implements Initializable{
 		}
     }
     
-    public void PopulaDetalheLeilaoOferta(int index){
+    public void PopulaDetalheLeilaoOferta(int indexLeilao){
     	try {
-			tfLeilaoId.setText(Integer.toString(leilaoDB.getTipoOferta().get(index).getLeilaoId()));
-			tfDataIni.setText(leilaoDB.getTipoOferta().get(index).getDataIni());
-			tfDataFim.setText(leilaoDB.getTipoOferta().get(index).getDataFim());
-			tfTipoLeilao.setText(leilaoDB.getTipoOferta().get(index).getTipo());
-			tfTipoLance.setText(leilaoDB.getTipoOferta().get(index).getTipoLance());
+			tfLeilaoId.setText(Integer.toString(leilaoDB.getTipoOferta().get(indexLeilao).getLeilaoId()));
+			tfDataIni.setText(leilaoDB.getTipoOferta().get(indexLeilao).getDataIni());
+			tfDataFim.setText(leilaoDB.getTipoOferta().get(indexLeilao).getDataFim());
+			tfTipoLeilao.setText(leilaoDB.getTipoOferta().get(indexLeilao).getTipo());
+			tfTipoLance.setText(leilaoDB.getTipoOferta().get(indexLeilao).getTipoLance());
 			taLote.setText(
-					"Bem no lote: "+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getTipoOferta().get(index).getLoteId()).getBemId()).getDescricao()+
-					"\n"+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getTipoOferta().get(index).getLoteId()).getBemId()).getDetalhes()+
-					"\nCategoria: "+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getTipoOferta().get(index).getLoteId()).getBemId()).getCategoria()
+					"Bem no lote: "+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getTipoOferta().get(indexLeilao).getLoteId()).getBemId()).getDescricao()+
+					"\n"+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getTipoOferta().get(indexLeilao).getLoteId()).getBemId()).getDetalhes()+
+					"\nCategoria: "+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getTipoOferta().get(indexLeilao).getLoteId()).getBemId()).getCategoria()
 					);
-			tfNomeVencedor.setText(leilaoDB.getTipoOferta().get(index).getVencedor());
-			tfValorLanceVencedor.setText(Double.toString(leilaoDB.getTipoOferta().get(index).getArremate()));
+			tfNomeVencedor.setText(leilaoDB.getTipoOferta().get(indexLeilao).getVencedor());
+			tfValorLanceVencedor.setText(Double.toString(leilaoDB.getTipoOferta().get(indexLeilao).getArremate()));
 		} catch (DAOException e) {
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Atenção!");
@@ -445,20 +520,20 @@ public class telaPrincipalController implements Initializable{
 		}
     }
     
-    public void PopulaDetalheLeilaoDemanda(int index){
+    public void PopulaDetalheLeilaoDemanda(int indexLeilao){
     	try {
-			tfLeilaoId.setText(Integer.toString(leilaoDB.getTipoDemanda().get(index).getLeilaoId()));
-			tfDataIni.setText(leilaoDB.getTipoDemanda().get(index).getDataIni());
-			tfDataFim.setText(leilaoDB.getTipoDemanda().get(index).getDataFim());
-			tfTipoLeilao.setText(leilaoDB.getTipoDemanda().get(index).getTipo());
-			tfTipoLance.setText(leilaoDB.getTipoDemanda().get(index).getTipoLance());
+			tfLeilaoId.setText(Integer.toString(leilaoDB.getTipoDemanda().get(indexLeilao).getLeilaoId()));
+			tfDataIni.setText(leilaoDB.getTipoDemanda().get(indexLeilao).getDataIni());
+			tfDataFim.setText(leilaoDB.getTipoDemanda().get(indexLeilao).getDataFim());
+			tfTipoLeilao.setText(leilaoDB.getTipoDemanda().get(indexLeilao).getTipo());
+			tfTipoLance.setText(leilaoDB.getTipoDemanda().get(indexLeilao).getTipoLance());
 			taLote.setText(
-					"Bem no lote: "+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getTipoDemanda().get(index).getLoteId()).getBemId()).getDescricao()+
-					"\n"+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getTipoDemanda().get(index).getLoteId()).getBemId()).getDetalhes()+
-					"\nCategoria: "+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getTipoDemanda().get(index).getLoteId()).getBemId()).getCategoria()
+					"Bem no lote: "+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getTipoDemanda().get(indexLeilao).getLoteId()).getBemId()).getDescricao()+
+					"\n"+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getTipoDemanda().get(indexLeilao).getLoteId()).getBemId()).getDetalhes()+
+					"\nCategoria: "+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getTipoDemanda().get(indexLeilao).getLoteId()).getBemId()).getCategoria()
 					);
-			tfNomeVencedor.setText(leilaoDB.getTipoDemanda().get(index).getVencedor());
-			tfValorLanceVencedor.setText(Double.toString(leilaoDB.getTipoDemanda().get(index).getArremate()));
+			tfNomeVencedor.setText(leilaoDB.getTipoDemanda().get(indexLeilao).getVencedor());
+			tfValorLanceVencedor.setText(Double.toString(leilaoDB.getTipoDemanda().get(indexLeilao).getArremate()));
 		} catch (DAOException e) {
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Atenção!");
@@ -475,20 +550,20 @@ public class telaPrincipalController implements Initializable{
 		}
     }
     
-    public void PopulaDetalheLeilaoLanceAberto(int index){
+    public void PopulaDetalheLeilaoLanceAberto(int indexLeilao){
     	try {
-			tfLeilaoId.setText(Integer.toString(leilaoDB.getLanceAberto().get(index).getLeilaoId()));
-			tfDataIni.setText(leilaoDB.getLanceAberto().get(index).getDataIni());
-			tfDataFim.setText(leilaoDB.getLanceAberto().get(index).getDataFim());
-			tfTipoLeilao.setText(leilaoDB.getLanceAberto().get(index).getTipo());
-			tfTipoLance.setText(leilaoDB.getLanceAberto().get(index).getTipoLance());
+			tfLeilaoId.setText(Integer.toString(leilaoDB.getLanceAberto().get(indexLeilao).getLeilaoId()));
+			tfDataIni.setText(leilaoDB.getLanceAberto().get(indexLeilao).getDataIni());
+			tfDataFim.setText(leilaoDB.getLanceAberto().get(indexLeilao).getDataFim());
+			tfTipoLeilao.setText(leilaoDB.getLanceAberto().get(indexLeilao).getTipo());
+			tfTipoLance.setText(leilaoDB.getLanceAberto().get(indexLeilao).getTipoLance());
 			taLote.setText(
-					"Bem no lote: "+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getLanceAberto().get(index).getLoteId()).getBemId()).getDescricao()+
-					"\n"+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getLanceAberto().get(index).getLoteId()).getBemId()).getDetalhes()+
-					"\nCategoria: "+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getLanceAberto().get(index).getLoteId()).getBemId()).getCategoria()
+					"Bem no lote: "+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getLanceAberto().get(indexLeilao).getLoteId()).getBemId()).getDescricao()+
+					"\n"+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getLanceAberto().get(indexLeilao).getLoteId()).getBemId()).getDetalhes()+
+					"\nCategoria: "+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getLanceAberto().get(indexLeilao).getLoteId()).getBemId()).getCategoria()
 					);
-			tfNomeVencedor.setText(leilaoDB.getLanceAberto().get(index).getVencedor());
-			tfValorLanceVencedor.setText(Double.toString(leilaoDB.getLanceAberto().get(index).getArremate()));
+			tfNomeVencedor.setText(leilaoDB.getLanceAberto().get(indexLeilao).getVencedor());
+			tfValorLanceVencedor.setText(Double.toString(leilaoDB.getLanceAberto().get(indexLeilao).getArremate()));
 		} catch (DAOException e) {
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Atenção!");
@@ -505,20 +580,20 @@ public class telaPrincipalController implements Initializable{
 		}
     }
     
-    public void PopulaDetalheLeilaoLanceFechado(int index){
+    public void PopulaDetalheLeilaoLanceFechado(int indexLeilao){
     	try {
-			tfLeilaoId.setText(Integer.toString(leilaoDB.getLanceFechado().get(index).getLeilaoId()));
-			tfDataIni.setText(leilaoDB.getLanceFechado().get(index).getDataIni());
-			tfDataFim.setText(leilaoDB.getLanceFechado().get(index).getDataFim());
-			tfTipoLeilao.setText(leilaoDB.getLanceFechado().get(index).getTipo());
-			tfTipoLance.setText(leilaoDB.getLanceFechado().get(index).getTipoLance());
+			tfLeilaoId.setText(Integer.toString(leilaoDB.getLanceFechado().get(indexLeilao).getLeilaoId()));
+			tfDataIni.setText(leilaoDB.getLanceFechado().get(indexLeilao).getDataIni());
+			tfDataFim.setText(leilaoDB.getLanceFechado().get(indexLeilao).getDataFim());
+			tfTipoLeilao.setText(leilaoDB.getLanceFechado().get(indexLeilao).getTipo());
+			tfTipoLance.setText(leilaoDB.getLanceFechado().get(indexLeilao).getTipoLance());
 			taLote.setText(
-					"Bem no lote: "+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getLanceFechado().get(index).getLoteId()).getBemId()).getDescricao()+
-					"\n"+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getLanceFechado().get(index).getLoteId()).getBemId()).getDetalhes()+
-					"\nCategoria: "+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getLanceFechado().get(index).getLoteId()).getBemId()).getCategoria()
+					"Bem no lote: "+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getLanceFechado().get(indexLeilao).getLoteId()).getBemId()).getDescricao()+
+					"\n"+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getLanceFechado().get(indexLeilao).getLoteId()).getBemId()).getDetalhes()+
+					"\nCategoria: "+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(leilaoDB.getLanceFechado().get(indexLeilao).getLoteId()).getBemId()).getCategoria()
 					);
-			tfNomeVencedor.setText(leilaoDB.getLanceFechado().get(index).getVencedor());
-			tfValorLanceVencedor.setText(Double.toString(leilaoDB.getLanceFechado().get(index).getArremate()));
+			tfNomeVencedor.setText(leilaoDB.getLanceFechado().get(indexLeilao).getVencedor());
+			tfValorLanceVencedor.setText(Double.toString(leilaoDB.getLanceFechado().get(indexLeilao).getArremate()));
 		} catch (DAOException e) {
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Atenção!");
@@ -532,14 +607,118 @@ public class telaPrincipalController implements Initializable{
 			alert.setHeaderText(null);
 			alert.setContentText("Selecione um leilão para ver os detalhes.\n\nMensagem do sistema: "+e.toString());
 			alert.showAndWait();
-		}
+		}	
+    }
+    
+  //alimentaçao da lista de usuarios com base na ChoiceBox de usuários	
+  	private void controleCbUsuarios(String newValuecbUsuarios){
+  		switch (newValuecbUsuarios) {
+  		
+	  		case ("Selecione um tipo de usuário"):
+	  			listaUsuarios.clear();
+	  			break;
+	  		
+	        case ("Pessoa Física"):  
+	        	listaUsuarios.clear();
+	          	try {
+	          		for(int i=0;i<Usuario_PfDB.getTodos().size();i++){
+	          			listaUsuarios.add(Usuario_PfDB.getTodos().get(i));
+	      			}
+	      			lvUsuarios.setItems(listaUsuarios);
+	      			
+	      		} catch (DAOException e) {
+	      			// TODO Auto-generated catch block
+	      			e.printStackTrace();
+	      		} 	
+	          	break;
+	          
+	        case ("Pessoa Juridica"):
+	          	listaUsuarios.clear();
+	          	try {
+	      			for(int i=0;i<Usuario_PjDB.getTodos().size();i++){
+	      				listaUsuarios.add(Usuario_PjDB.getTodos().get(i));
+	      			}
+	      			lvUsuarios.setItems(listaUsuarios);
+	      		} catch (DAOException e) {
+	      			// TODO Auto-generated catch block
+	      			e.printStackTrace();
+	      		}
+	          	break;
+	          
+	        default:
+	          	
+	        break;
+  		}
+  	}
+     
+    @FXML
+    void SelecionarUsuario(ActionEvent event) {
+    	int indexUsuario=lvUsuarios.getSelectionModel().getSelectedIndex(); //pega o indice do item clicado na view
     	
+       	if(cbUsuarios.getSelectionModel().getSelectedItem().equals("Selecione um tipo de usuário")){
+       		Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Atenção!");
+			alert.setHeaderText(null);
+			alert.setContentText("Primeiro selecione o tipo de usuário para visualizar");
+			alert.showAndWait();
+    	}
+       	
+    	if(cbUsuarios.getSelectionModel().getSelectedItem().equals("Pessoa Física")){
+    		PopulaUsuarioPF(indexUsuario);
+    	}
+    
+    	if(cbUsuarios.getSelectionModel().getSelectedItem().equals("Pessoa Juridica")){
+    		PopulaUsuarioPJ(indexUsuario);
+    	}
     }
-	
+       
+    public void PopulaUsuarioPJ(int indexUsuario){
+    	
+    	try {
+			tfUsuarioSelecionado.setText(
+					Usuario_PjDB.getTodos().get(indexUsuario).getNome()+", e-mail:"+Usuario_PjDB.getTodos().get(indexUsuario).getEmail()
+					);
+    	} catch (DAOException e) {
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Atenção!");
+			alert.setHeaderText(null);
+			alert.setContentText(e.toString());
+			alert.showAndWait();
+		}
+	    catch (ArrayIndexOutOfBoundsException e) {
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Atenção!");
+			alert.setHeaderText(null);
+			alert.setContentText("Selecione um leilão para ver os detalhes.\n\nMensagem do sistema: "+e.toString());
+			alert.showAndWait();
+		}
+    }
     
+    public void PopulaUsuarioPF(int indexUsuario){
+    	try {
+			tfUsuarioSelecionado.setText(Usuario_PfDB.getTodos().get(indexUsuario).getNome()+", e-mail:"+Usuario_PfDB.getTodos().get(indexUsuario).getEmail());
+    	} catch (DAOException e) {
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Atenção!");
+			alert.setHeaderText(null);
+			alert.setContentText(e.toString());
+			alert.showAndWait();
+		}
+	    catch (ArrayIndexOutOfBoundsException e) {
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Atenção!");
+			alert.setHeaderText(null);
+			alert.setContentText("Selecione um leilão para ver os detalhes.\n\nMensagem do sistema: "+e.toString());
+			alert.showAndWait();
+		}
+    }
     
-	
-    //,""
+    //TODO terminar Lance
+    @FXML
+    void DarLance(ActionEvent event) {
+    	//Lance la=new Lance(tfLeilaoId,lvUsuarios.getSelectionModel().getSelectedItem().);
+
+    }
     
     @FXML
     void Sobre(ActionEvent event) {
@@ -549,8 +728,6 @@ public class telaPrincipalController implements Initializable{
 		alert.setContentText("Desenvolvido por: \n Guilherme Dohms\n Ial Jonas\n Lariel Negreiros \n \nProfessor: \n Michael Mora");
 		alert.showAndWait();
     }
-
-	
 	
 	@FXML
     void Fechar(ActionEvent event) {

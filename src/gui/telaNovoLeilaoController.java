@@ -40,8 +40,6 @@ import javafx.stage.Stage;
 
 public class telaNovoLeilaoController implements Initializable {
 	private int loteIdTemp=0;
-	Usuario_PjDAOJavaDb Usuario_PjJavaDbDB=Usuario_PjDAOJavaDb.getInstance();
-	Usuario_PfDAOJavaDb Usuario_PfJavaDbDB=Usuario_PfDAOJavaDb.getInstance();
 	BemDAOJavaDb bemDB=BemDAOJavaDb.getInstance();
 	LoteDAOJavaDb loteDB=LoteDAOJavaDb.getInstance();
 	LeilaoDAOJavaDb leilaoDB=LeilaoDAOJavaDb.getInstance();

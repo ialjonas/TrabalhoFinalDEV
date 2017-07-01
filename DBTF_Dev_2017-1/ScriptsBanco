@@ -45,9 +45,20 @@ CREATE TABLE LANCE(
 		(START WITH 1, INCREMENT BY 1),
 	LEILAO_ID_foreign_key INTEGER NOT NULL,
 	CONSTRAINT leilao_id FOREIGN KEY (LEILAO_ID_foreign_key) REFERENCES LEILAO(leilao_id),
-	usuario_id CHAR (18),
+	usuario_id CHAR(18),
 	lance_valor DOUBLE NOT NULL,
-	lance_data  TIMESTAMP NOT NULL
+	lance_data TIMESTAMP NOT NULL
+);
+
+
+CREATE TABLE LANCE(
+	lance_id INTEGER NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY
+		(START WITH 1, INCREMENT BY 1),
+	LEILAO_ID_foreign_key INTEGER NOT NULL,
+	CONSTRAINT leilao_id FOREIGN KEY (LEILAO_ID_foreign_key) REFERENCES LEILAO(leilao_id),
+	usuario_id CHAR(18),
+	lance_valor DOUBLE NOT NULL,
+	lance_data TIMESTAMP NOT NULL
 );
 
 -- população DB Tabela USUARIO_PF
