@@ -47,6 +47,7 @@ public class telaNovoLeilaoController implements Initializable {
 	LeilaoDAOJavaDb leilaoDB=LeilaoDAOJavaDb.getInstance();
 	
 	ObservableList<Bem> listaBens=FXCollections.observableArrayList();
+	ObservableList<Lote> listaLote=FXCollections.observableArrayList();
 	ObservableList<String> itensChoiseLeilao = FXCollections.observableArrayList("Demanda","Oferta");
 	ObservableList<String> itensChoiseLance = FXCollections.observableArrayList("Aberto","Fechado");
 
@@ -134,7 +135,11 @@ public class telaNovoLeilaoController implements Initializable {
 		
 		loteDB.adicionar(l);
 		tfInfoLote.setText(bemDB.getBemPorBemID(l.getBemId()).toString()+"");
-		//loteIdTemp=bemDB.getBemPorBemID(l.getBemId());
+		
+		for(int i=0;i<loteDB.getTodos().size();i++){
+			//listaLote.add(loteDB.getTodos().get(i));
+			loteIdTemp=loteDB.getTodos().get(loteDB.getTodos().size()-1).getLoteId();
+		}
     }
 	
     @FXML
@@ -142,7 +147,7 @@ public class telaNovoLeilaoController implements Initializable {
     	//lê os campos selecionados e executa a ação
     	
     	Leilao le=new Leilao(
-    			1,
+    			loteIdTemp,
     			dpInicio.getValue().toString()+" 20:40:00",
     			dpFim.getValue().toString()+" 20:40:00",
     			Double.parseDouble(tfValor.getText()),

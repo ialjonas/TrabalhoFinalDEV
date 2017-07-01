@@ -40,6 +40,16 @@ CREATE TABLE LEILAO(
 	leilao_tipo_lance CHAR(18) NOT NULL
 );
 
+CREATE TABLE LANCE(
+	lance_id INTEGER NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTIFY
+		(START WITH 1, INCREMENT BY 1),
+	LEILAO_ID_foreign_key INTEGER NOT NULL,
+	CONSTRAINT leilao_id FOREIGN KEY (LEILAO_ID_foreign_key) REFERENCES LEILAO(leilao_id),
+	usuario_id CHAR (18),
+	lance_valor DOUBLE NOT NULL,
+	lance_data  TIMESTAMP NOT NULL
+);
+
 -- população DB Tabela USUARIO_PF
 
 INSERT INTO USUARIO_PF(usuario_cpf, usuario_nome, usuario_email)
