@@ -9,12 +9,12 @@ import negocio.Usuario;
 import negocio.Usuario_PF;
 
 public class TesteUsuario_PF {
- 
+
 	private Usuario_PF pf1;
 
 	@Before
 	public void setUp() throws Exception {
-		pf1 = new Usuario_PF("Ial", "12345678912", "email@email.com");
+		pf1 = new Usuario_PF("12345678912", "ial", "email@email.com");
 	}
 
 	@Test
@@ -46,14 +46,20 @@ public class TesteUsuario_PF {
 	@Test
 	public void testaGetEmail() {
 		String email = pf1.getEmail();
-		assertEquals(email, pf1.getCPF());
+		assertEquals(email, pf1.getEmail());
 	}
 
 	@Test
 	public void testaSetEmail() {
 		pf1.setEmail("novoEmail@email.com");
 		String email = pf1.getEmail();
-		assertEquals(email, pf1.getCPF());
+		assertEquals(email, pf1.getEmail());
+	}
+
+	@Test
+	public void testaToString() {
+		String msg = pf1.toString();
+		assertEquals(msg, pf1.toString());
 	}
 
 }
