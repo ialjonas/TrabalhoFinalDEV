@@ -41,17 +41,6 @@ CREATE TABLE LEILAO(
 );
 
 CREATE TABLE LANCE(
-	lance_id INTEGER NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTIFY
-		(START WITH 1, INCREMENT BY 1),
-	LEILAO_ID_foreign_key INTEGER NOT NULL,
-	CONSTRAINT leilao_id FOREIGN KEY (LEILAO_ID_foreign_key) REFERENCES LEILAO(leilao_id),
-	usuario_id CHAR(18),
-	lance_valor DOUBLE NOT NULL,
-	lance_data TIMESTAMP NOT NULL
-);
-
-
-CREATE TABLE LANCE(
 	lance_id INTEGER NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY
 		(START WITH 1, INCREMENT BY 1),
 	LEILAO_ID_foreign_key INTEGER NOT NULL,
@@ -283,85 +272,73 @@ VALUES('Esteira para Braço de Sofá', 'Esteira para Braço de Sofá Flexível com Po
 
 -- população DB Tabela LOTE
 
-INSERT INTO LOTE(BEM_ID_foreign_key)
-VALUES(037);
+INSERT INTO LOTE(BEM_ID_foreign_key, lote_valor)
+VALUES(037, 104.45);
 
-INSERT INTO LOTE(BEM_ID_foreign_key)
-VALUES(046);
+INSERT INTO LOTE(BEM_ID_foreign_key, lote_valor)
+VALUES(046, 340.00);
 
-INSERT INTO LOTE(BEM_ID_foreign_key)
-VALUES(002);
+INSERT INTO LOTE(BEM_ID_foreign_key, lote_valor)
+VALUES(002, 87);
 
-INSERT INTO LOTE(BEM_ID_foreign_key)
-VALUES(001);
+INSERT INTO LOTE(BEM_ID_foreign_key, lote_valor)
+VALUES(001, 1965);
 
-INSERT INTO LOTE(BEM_ID_foreign_key)
-VALUES(030);
+INSERT INTO LOTE(BEM_ID_foreign_key, lote_valor)
+VALUES(030, 199.90);
 
-INSERT INTO LOTE(BEM_ID_foreign_key)
-VALUES(028);
+INSERT INTO LOTE(BEM_ID_foreign_key, lote_valor)
+VALUES(028, 78);
 
-INSERT INTO LOTE(BEM_ID_foreign_key)
-VALUES(020);
+INSERT INTO LOTE(BEM_ID_foreign_key, lote_valor)
+VALUES(020, 2049.05);
 
-INSERT INTO LOTE(BEM_ID_foreign_key)
-VALUES(019);
+INSERT INTO LOTE(BEM_ID_foreign_key, lote_valor)
+VALUES(019, 34.90);
 
-INSERT INTO LOTE(BEM_ID_foreign_key)
-VALUES(018);
+INSERT INTO LOTE(BEM_ID_foreign_key, lote_valor)
+VALUES(018, 24.50);
 
-INSERT INTO LOTE(BEM_ID_foreign_key)
-VALUES(015);
+INSERT INTO LOTE(BEM_ID_foreign_key, lote_valor)
+VALUES(015, 345);
 
-INSERT INTO LOTE(BEM_ID_foreign_key)
-VALUES(013);
+INSERT INTO LOTE(BEM_ID_foreign_key, lote_valor)
+VALUES(013, 225.90);
 
-INSERT INTO LOTE(BEM_ID_foreign_key)
-VALUES(012);
+INSERT INTO LOTE(BEM_ID_foreign_key, lote_valor)
+VALUES(012, 3450.00);
 
-INSERT INTO LOTE(BEM_ID_foreign_key)
-VALUES(011);
+INSERT INTO LOTE(BEM_ID_foreign_key, lote_valor)
+VALUES(011, 500);
 
-INSERT INTO LOTE(BEM_ID_foreign_key)
-VALUES(050);
-
-INSERT INTO LOTE(BEM_ID_foreign_key)
-VALUES(034);
-
-INSERT INTO LOTE(BEM_ID_foreign_key)
-VALUES(032);
-
-INSERT INTO LOTE(BEM_ID_foreign_key)
-VALUES(033);
-
-INSERT INTO LOTE(BEM_ID_foreign_key)
-VALUES(041);
+INSERT INTO LOTE(BEM_ID_foreign_key, lote_valor)
+VALUES(050, 20.40);
 
 -- população DB Tabela LEILAO
 -- yyyy-mm-dd hh:mm:ss
-INSERT INTO LEILAO(LOTE_ID_foreign_key, leilao_dataInicio, leilao_dataFim, leilao_arremate, leilao_criador, leilao_vencedor, leilao_tipo, leilao_tipo_lance)
-VALUES(001, '2017-06-11 20:40:00', '2017-06-29 20:40:00', 1234, '122.456.789-10','20.588.666.0001-10','Oferta','Aberto');
+INSERT INTO LEILAO(LOTE_ID_foreign_key, leilao_dataInicio, leilao_dataFim, leilao_arremate, leilao_vencedor, leilao_tipo, leilao_tipo_lance)
+VALUES(001, '2017-06-11 20:40:00', '2017-06-29 20:40:00', 1234, '20.588.666.0001-10','Oferta','Aberto');
  
-INSERT INTO LEILAO(LOTE_ID_foreign_key, leilao_dataInicio, leilao_dataFim, leilao_arremate, leilao_criador, leilao_vencedor, leilao_tipo, leilao_tipo_lance)
-VALUES(002, '2017-06-06 21:40:00', '2017-07-02 20:30:00', 2345, '20.986.654.0001-10', '199.456.789-10','Demanda','Aberto');
+INSERT INTO LEILAO(LOTE_ID_foreign_key, leilao_dataInicio, leilao_dataFim, leilao_arremate, leilao_vencedor, leilao_tipo, leilao_tipo_lance)
+VALUES(002, '2017-06-06 21:40:00', '2017-07-02 20:30:00', 2345, '199.456.789-10','Demanda','Aberto');
  
-INSERT INTO LEILAO(LOTE_ID_foreign_key, leilao_dataInicio, leilao_dataFim, leilao_arremate, leilao_criador, leilao_vencedor, leilao_tipo, leilao_tipo_lance)
-VALUES(003, '2017-06-06 17:40:00', '2017-07-10 20:00:00', 9486, '200.456.789-10','20.146.613.0001-10','Oferta','Aberto');
+INSERT INTO LEILAO(LOTE_ID_foreign_key, leilao_dataInicio, leilao_dataFim, leilao_arremate, leilao_vencedor, leilao_tipo, leilao_tipo_lance)
+VALUES(003, '2017-06-06 17:40:00', '2017-07-10 20:00:00', 9486, '200.456.789-10','Oferta','Aberto');
  
-INSERT INTO LEILAO(LOTE_ID_foreign_key, leilao_dataInicio, leilao_dataFim, leilao_arremate, leilao_criador, leilao_vencedor, leilao_tipo, leilao_tipo_lance)
-VALUES(004, '2017-06-01 23:40:00', '2017-06-25 20:40:00', 8434, '20.546.627.0001-10', '201.456.789-10','Oferta','Fechado');
+INSERT INTO LEILAO(LOTE_ID_foreign_key, leilao_dataInicio, leilao_dataFim, leilao_arremate, leilao_vencedor, leilao_tipo, leilao_tipo_lance)
+VALUES(004, '2017-06-01 23:40:00', '2017-06-25 20:40:00', 8434, '201.456.789-10','Oferta','Fechado');
  
-INSERT INTO LEILAO(LOTE_ID_foreign_key, leilao_dataInicio, leilao_dataFim, leilao_arremate, leilao_criador, leilao_vencedor, leilao_tipo, leilao_tipo_lance)
-VALUES(005, '2017-06-22 13:10:00', '2017-06-03 21:15:00', 300, '23.672.745.0001-10', '188.456.789-10','Oferta','Fechado');
+INSERT INTO LEILAO(LOTE_ID_foreign_key, leilao_dataInicio, leilao_dataFim, leilao_arremate, leilao_vencedor, leilao_tipo, leilao_tipo_lance)
+VALUES(005, '2017-06-22 13:10:00', '2017-06-03 21:15:00', 300, '188.456.789-10','Oferta','Fechado');
  
-INSERT INTO LEILAO(LOTE_ID_foreign_key, leilao_dataInicio, leilao_dataFim, leilao_arremate, leilao_criador, leilao_vencedor, leilao_tipo, leilao_tipo_lance)
-VALUES(006, '2017-06-25 10:20:00', '2017-06-25 22:40:00', 12, '20.982.735.0001-10', '177.456.789-10','Oferta','Fechado');
+INSERT INTO LEILAO(LOTE_ID_foreign_key, leilao_dataInicio, leilao_dataFim, leilao_arremate, leilao_vencedor, leilao_tipo, leilao_tipo_lance)
+VALUES(006, '2017-06-25 10:20:00', '2017-06-25 22:40:00', 12, '177.456.789-10','Oferta','Fechado');
  
-INSERT INTO LEILAO(LOTE_ID_foreign_key, leilao_dataInicio, leilao_dataFim, leilao_arremate, leilao_criador, leilao_vencedor, leilao_tipo, leilao_tipo_lance)
-VALUES(007, '2017-06-17 20:30:00', '2017-06-22 20:00:00', 666, '20.588.666.0001-10', '144.456.789-10','Demanda','Aberto');
+INSERT INTO LEILAO(LOTE_ID_foreign_key, leilao_dataInicio, leilao_dataFim, leilao_arremate, leilao_vencedor, leilao_tipo, leilao_tipo_lance)
+VALUES(007, '2017-06-17 20:30:00', '2017-06-22 20:00:00', 666, '144.456.789-10','Demanda','Aberto');
  
-INSERT INTO LEILAO(LOTE_ID_foreign_key, leilao_dataInicio, leilao_dataFim, leilao_arremate, leilao_criador, leilao_vencedor, leilao_tipo, leilao_tipo_lance)
-VALUES(017, '2017-06-10 12:50:00', '2017-06-17 14:00:00', 666, '20.588.666.0001-10', '201.456.789-10','Demanda','Fechado'); 
+INSERT INTO LEILAO(LOTE_ID_foreign_key, leilao_dataInicio, leilao_dataFim, leilao_arremate, leilao_vencedor, leilao_tipo, leilao_tipo_lance)
+VALUES(014, '2017-06-10 12:50:00', '2017-06-17 14:00:00', 666, '201.456.789-10','Demanda','Fechado'); 
 
 -- AUXILIAR
 -- DROP TABLE USUARIO_PF

@@ -33,11 +33,13 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 import negocio.Bem;
+import negocio.Lance;
 import negocio.Leilao;
 import negocio.Lote;
 import negocio.Usuario;
 
 public class telaPrincipalController implements Initializable{
+	Leilao l_temp;
 	Usuario_PjDAOJavaDb Usuario_PjDB=Usuario_PjDAOJavaDb.getInstance();
 	Usuario_PfDAOJavaDb Usuario_PfDB=Usuario_PfDAOJavaDb.getInstance();
 	LeilaoDAOJavaDb leilaoDB=LeilaoDAOJavaDb.getInstance();
@@ -276,64 +278,20 @@ public class telaPrincipalController implements Initializable{
 		}
 	}
 	
-	//menu novo leilão
-	@FXML
-	void NovoLeilao(ActionEvent event) throws IOException {
-		try {
-	        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("telaNovoLeilao.fxml"));
-	                Parent parentNovoLeilao = (Parent) fxmlLoader.load();
-	                Stage stageNovoLeilao = new Stage();
-	                stageNovoLeilao.setScene(new Scene(parentNovoLeilao));
-	                stageNovoLeilao.setTitle("Novo Leilão");
-	                stageNovoLeilao.show();
-	        } catch(Exception e) {
-	           e.printStackTrace();
-	        }
-	}
 	
-	//menu novo bem	
-	@FXML
-    void NovoBem(ActionEvent event) {
-		try {
-	        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("telaNovoBem.fxml"));
-	                Parent parentNovoBem = (Parent) fxmlLoader.load();
-	                Stage stageNovoBem = new Stage();
-	                stageNovoBem.setScene(new Scene(parentNovoBem));
-	                stageNovoBem.setTitle("Novo Bem");
-	                stageNovoBem.show();
-	        } catch(Exception e) {
-	           e.printStackTrace();
-	        }
-    }
-	
-	//menu novo usuario
-    @FXML
-    void NovoUsuario(ActionEvent event) {
-    	try {
-	        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("telaNovoUsuario.fxml"));
-	                Parent parentNovoUsuario = (Parent) fxmlLoader.load();
-	                Stage stageNovoUsuario = new Stage();
-	                stageNovoUsuario.setScene(new Scene(parentNovoUsuario));
-	                stageNovoUsuario.setTitle("Novo Usuário");
-	                stageNovoUsuario.show();
-	        } catch(Exception e) {
-	           e.printStackTrace();
-	        }
-    }
-    
     //açao do botao de detalhes do leilão
     @FXML
-    void DetalheLeilao(ActionEvent event){
-       	int indexLeilao=lvLeiloes.getSelectionModel().getSelectedIndex(); //pega o indice do item clicado na view
-    	
+    void DetalheLeilao(ActionEvent event){    	
        	if(cbStatus.getSelectionModel().getSelectedItem().equals("Selecione um status para exibir")){
        		Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Atenção!");
 			alert.setHeaderText(null);
 			alert.setContentText("Selecione um status para exibir os leilões disponíveis");
 			alert.showAndWait();
-    	}
+    	}else 
+    		PopulaDetalhesLeilao();
        	
+       	/*
     	if(cbStatus.getSelectionModel().getSelectedItem().equals("Todos")){
     		PopulaDetalheTodos(indexLeilao);
     	}
@@ -359,27 +317,25 @@ public class telaPrincipalController implements Initializable{
     	
     	if(cbStatus.getSelectionModel().getSelectedItem().equals("Lance fechado")){
     		PopulaDetalheLeilaoLanceAberto(indexLeilao);
-    	}	
+    	}	*/
     }
     
- // TODO Refatorar
-    ////////////////////////////////////////////////////////
-    /*
-      public void PopulaDetalhesLeilao(int indexLeilao){
-    	Leilao l = lvLeiloes.getSelectionModel().getSelectedItem();
+   
+      public void PopulaDetalhesLeilao(){
+    	l_temp = lvLeiloes.getSelectionModel().getSelectedItem();
     	try {
-			tfLeilaoId.setText(Integer.toString(l.getLeilaoId()));
-			tfDataIni.setText(l.getDataIni());
-			tfDataFim.setText(l.getDataIni());
-			tfTipoLeilao.setText(l.getTipo());
-			tfTipoLance.setText(l.getTipoLance());
+			tfLeilaoId.setText(Integer.toString(l_temp.getLeilaoId()));
+			tfDataIni.setText(l_temp.getDataIni());
+			tfDataFim.setText(l_temp.getDataFim());
+			tfTipoLeilao.setText(l_temp.getTipo());
+			tfTipoLance.setText(l_temp.getTipoLance());
 			taLote.setText(
-					"Bem no lote: "+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(l.getLoteId()).getBemId()).getDescricao()+
-					"\n"+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(l.getLoteId()).getBemId()).getDetalhes()+
-					"\nCategoria: "+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(l.getLoteId()).getBemId()).getCategoria()
+					"Bem no lote: "+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(l_temp.getLoteId()).getBemId()).getDescricao()+
+					"\n"+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(l_temp.getLoteId()).getBemId()).getDetalhes()+
+					"\nCategoria: "+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(l_temp.getLoteId()).getBemId()).getCategoria()
 					);
-			tfNomeVencedor.setText(lvLeiloes.getSelectionModel().getSelectedItem().getVencedor());
-			tfValorLanceVencedor.setText(Double.toString(lvLeiloes.getSelectionModel().getSelectedItem().getArremate()));
+			tfNomeVencedor.setText(l_temp.getVencedor());
+			tfValorLanceVencedor.setText(Double.toString(l_temp.getArremate()));
 		} catch (DAOException e) {
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Atenção!");
@@ -396,10 +352,8 @@ public class telaPrincipalController implements Initializable{
 		}
     }
      
-     
-     */
-    ///////////////////////////////////////////////////////////
-    
+   
+   /* 
     public void PopulaDetalheTodos(int indexLeilao){
     	try {
 			tfLeilaoId.setText(Integer.toString(leilaoDB.getTodos().get(indexLeilao).getLeilaoId()));
@@ -610,6 +564,8 @@ public class telaPrincipalController implements Initializable{
 		}	
     }
     
+    */
+    
   //alimentaçao da lista de usuarios com base na ChoiceBox de usuários	
   	private void controleCbUsuarios(String newValuecbUsuarios){
   		switch (newValuecbUsuarios) {
@@ -671,9 +627,8 @@ public class telaPrincipalController implements Initializable{
     		PopulaUsuarioPJ(indexUsuario);
     	}
     }
-       
+           
     public void PopulaUsuarioPJ(int indexUsuario){
-    	
     	try {
 			tfUsuarioSelecionado.setText(
 					Usuario_PjDB.getTodos().get(indexUsuario).getNome()+", e-mail:"+Usuario_PjDB.getTodos().get(indexUsuario).getEmail()
@@ -711,14 +666,70 @@ public class telaPrincipalController implements Initializable{
 			alert.setContentText("Selecione um leilão para ver os detalhes.\n\nMensagem do sistema: "+e.toString());
 			alert.showAndWait();
 		}
+    	tfLance.setEditable(true);
     }
     
     //TODO terminar Lance
     @FXML
     void DarLance(ActionEvent event) {
-    	//Lance la=new Lance(tfLeilaoId,lvUsuarios.getSelectionModel().getSelectedItem().);
+    	Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Atenção!");
+		alert.setHeaderText(null);
+		alert.setContentText("ainda não implementado");
+		alert.showAndWait();
+    	//Lance la=new Lance(
+    			//l_temp.getLeilaoId(),
+    			//lvUsuarios.getSelectionModel().getSelectedItem().
+    			
+    		//	);
 
     }
+    
+  //menu novo leilão
+  	@FXML
+  	void NovoLeilao(ActionEvent event) throws IOException {
+  		try {
+  	        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("telaNovoLeilao.fxml"));
+  	                Parent parentNovoLeilao = (Parent) fxmlLoader.load();
+  	                Stage stageNovoLeilao = new Stage();
+  	                stageNovoLeilao.setScene(new Scene(parentNovoLeilao));
+  	                stageNovoLeilao.setTitle("Novo Leilão");
+  	                stageNovoLeilao.show();
+  	        } catch(Exception e) {
+  	           e.printStackTrace();
+  	        }
+  	}
+  	
+  	//menu novo bem	
+  	@FXML
+      void NovoBem(ActionEvent event) {
+  		try {
+  	        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("telaNovoBem.fxml"));
+  	                Parent parentNovoBem = (Parent) fxmlLoader.load();
+  	                Stage stageNovoBem = new Stage();
+  	                stageNovoBem.setScene(new Scene(parentNovoBem));
+  	                stageNovoBem.setTitle("Novo Bem");
+  	                stageNovoBem.show();
+  	        } catch(Exception e) {
+  	           e.printStackTrace();
+  	        }
+      }
+  	
+  	//menu novo usuario
+      @FXML
+      void NovoUsuario(ActionEvent event) {
+      	try {
+  	        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("telaNovoUsuario.fxml"));
+  	                Parent parentNovoUsuario = (Parent) fxmlLoader.load();
+  	                Stage stageNovoUsuario = new Stage();
+  	                stageNovoUsuario.setScene(new Scene(parentNovoUsuario));
+  	                stageNovoUsuario.setTitle("Novo Usuário");
+  	                stageNovoUsuario.show();
+  	        } catch(Exception e) {
+  	           e.printStackTrace();
+  	        }
+      }
+      
     
     @FXML
     void Sobre(ActionEvent event) {
