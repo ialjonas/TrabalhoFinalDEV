@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
@@ -13,7 +17,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="494.0" prefWidth="1015.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.telaPrincipalController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="494.0" prefWidth="1015.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.telaPrincipalController">
    <children>
       <MenuBar layoutX="80.0" layoutY="2.0" prefHeight="25.0" prefWidth="181.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <menus>
@@ -44,35 +48,37 @@
       </Label>
       <Label layoutX="374.0" layoutY="106.0" text="Data Inicio" />
       <TextField fx:id="tfDataIni" layoutX="374.0" layoutY="123.0" prefHeight="25.0" prefWidth="118.0" />
-      <TextField fx:id="tfDataFim" layoutX="512.0" layoutY="123.0" prefHeight="25.0" prefWidth="118.0" />
-      <Label layoutX="512.0" layoutY="106.0" text="Data Fim" />
-      <Label layoutX="512.0" layoutY="157.0" text="Tipo de Lance" />
-      <TextField fx:id="tfTipoLance" layoutX="512.0" layoutY="174.0" prefHeight="25.0" prefWidth="118.0" />
+      <TextField fx:id="tfDataFim" layoutX="508.0" layoutY="123.0" prefHeight="25.0" prefWidth="118.0" />
+      <Label layoutX="508.0" layoutY="106.0" text="Data Fim" />
+      <Label layoutX="508.0" layoutY="157.0" text="Tipo de Lance" />
+      <TextField fx:id="tfTipoLance" layoutX="508.0" layoutY="174.0" prefHeight="25.0" prefWidth="118.0" />
       <TextField fx:id="tfTipoLeilao" layoutX="374.0" layoutY="174.0" prefHeight="25.0" prefWidth="118.0" />
       <Label layoutX="374.0" layoutY="157.0" text="Tipo de Leilão" />
       <Label layoutX="374.0" layoutY="209.0" text="Lote" />
-      <TextArea fx:id="taLote" layoutX="374.0" layoutY="226.0" prefHeight="126.0" prefWidth="252.0" />
-      <Label layoutX="372.0" layoutY="367.0" text="Usuario Vencedor (corrente)" />
-      <TextField fx:id="tfNomeVencedor" layoutX="372.0" layoutY="384.0" prefHeight="25.0" prefWidth="252.0" />
-      <TextField fx:id="tfValorLanceVencedor" layoutX="372.0" layoutY="434.0" prefHeight="25.0" prefWidth="252.0" />
-      <Label layoutX="372.0" layoutY="417.0" text="Lance Vencedor (corrente)" />
+      <TextArea fx:id="taLote" layoutX="374.0" layoutY="226.0" prefHeight="99.0" prefWidth="252.0" />
+      <Label layoutX="374.0" layoutY="334.0" text="Usuario Vencedor (corrente)" />
+      <TextField fx:id="tfNomeVencedor" layoutX="374.0" layoutY="351.0" prefHeight="25.0" prefWidth="252.0" />
+      <TextField fx:id="tfValorLanceVencedor" layoutX="374.0" layoutY="401.0" prefHeight="25.0" prefWidth="252.0" />
+      <Label layoutX="374.0" layoutY="384.0" text="Lance Vencedor (corrente)" />
       <ChoiceBox fx:id="cbStatus" layoutX="58.0" layoutY="76.0" prefHeight="25.0" prefWidth="287.0" />
       <TextField fx:id="tfLeilaoId" layoutX="444.0" layoutY="76.0" prefHeight="25.0" prefWidth="186.0" />
       <Label layoutX="374.0" layoutY="80.0" text="ID do Leilão:" />
       <Button fx:id="bDetalheLeilao" layoutX="58.0" layoutY="434.0" mnemonicParsing="false" onAction="#DetalheLeilao" prefHeight="25.0" prefWidth="287.0" text="Ver detalhes do leilão" />
       <Separator layoutX="644.0" layoutY="73.0" orientation="VERTICAL" prefHeight="387.0" prefWidth="10.0" />
-      <ListView fx:id="lvUsuarios" layoutX="671.0" layoutY="106.0" prefHeight="166.0" prefWidth="287.0" />
-      <Label layoutX="671.0" layoutY="40.0" text="Usuários">
+      <Button fx:id="bHistoricoLances" layoutX="374.0" layoutY="434.0" mnemonicParsing="false" onAction="#HistoricoLances" prefHeight="25.0" prefWidth="252.0" text="Ver historico de lances do leilão" />
+      <Label fx:id="lUsuariosLance" layoutX="671.0" layoutY="40.0" text="Usuários">
          <font>
             <Font size="27.0" />
          </font>
       </Label>
       <ChoiceBox fx:id="cbUsuarios" layoutX="671.0" layoutY="76.0" prefHeight="25.0" prefWidth="287.0" />
+      <ListView fx:id="lvUsuarios" layoutX="671.0" layoutY="106.0" prefHeight="166.0" prefWidth="287.0" />
       <Button fx:id="bselecionaUsuario" layoutX="671.0" layoutY="283.0" mnemonicParsing="false" onAction="#SelecionarUsuario" prefHeight="25.0" prefWidth="287.0" text="Selecionar o usuário que dará o lance" />
-      <Label layoutX="671.0" layoutY="317.0" text="Usuário selecionado" />
+      <ListView fx:id="lvHistoricoLances" layoutX="374.0" layoutY="106.0" prefHeight="318.0" prefWidth="252.0" visible="false" />
+      <Label fx:id="lUsuario" layoutX="671.0" layoutY="317.0" text="Usuário selecionado" />
       <TextField fx:id="tfUsuarioSelecionado" layoutX="671.0" layoutY="334.0" prefHeight="25.0" prefWidth="252.0" />
+      <Label fx:id="lLance" layoutX="671.0" layoutY="367.0" text="Informe o valor para o lance" />
       <TextField fx:id="tfLance" layoutX="671.0" layoutY="384.0" prefHeight="25.0" prefWidth="252.0" />
-      <Label layoutX="671.0" layoutY="367.0" text="Informe o valor para o lance" />
       <Button fx:id="bDarLance" layoutX="671.0" layoutY="432.0" mnemonicParsing="false" onAction="#DarLance" prefHeight="25.0" prefWidth="287.0" text="Dar Lance" />
    </children>
 </AnchorPane>
