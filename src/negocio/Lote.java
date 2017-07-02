@@ -5,13 +5,13 @@ import java.util.ArrayList;
 public class Lote {
 	private int bemId, loteId;
 	private double valor;
-	
+
 	public Lote(int bemId, double valor) {
 		super();
 		this.bemId = bemId;
 		this.valor = valor;
 	}
-	
+
 	public Lote(int loteId, int bemId, double valor) {
 		super();
 		this.loteId = loteId;
@@ -38,6 +38,5 @@ public class Lote {
 	public void setValor(double valor) {
 		this.valor = valor;
 	}
-	
-		
+
 }
