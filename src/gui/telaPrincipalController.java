@@ -3,6 +3,7 @@ package gui;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Calendar;
@@ -66,7 +67,7 @@ public class telaPrincipalController implements Initializable{
 			"Selecione um status para exibir","Todos","Em Andamento","Encerrados","Leilão de oferta","Leilão de demanda","Lance aberto","Lance fechado"
 	);
 	ObservableList<String> itensChoiseusuarios = FXCollections.observableArrayList(
-			"Selecione um tipo de usuário","Pessoa Física","Pessoa Juridica"
+			"Escolha a modalidade de usuário para ver a lista","Pessoa Física","Pessoa Juridica"
 	);
 	
 	ObservableList<Leilao> listaLeiloes = FXCollections.observableArrayList();
@@ -98,6 +99,10 @@ public class telaPrincipalController implements Initializable{
     
     @FXML
     private Label lUsuariosLance;
+    @FXML
+    private Label lLanceVencedor;
+    @FXML
+    private Label lUsuarioVencedor;
     
     @FXML
     private Button bDetalheLeilao;
@@ -138,16 +143,16 @@ public class telaPrincipalController implements Initializable{
 		tfDataFim.setEditable(false);
 		tfTipoLeilao.setEditable(false);
 		tfTipoLance.setEditable(false);
-		taLote.setEditable(false);
 		tfNomeVencedor.setEditable(false);
 		tfValorLanceVencedor.setEditable(false);
-		bHistoricoLances.setDisable(true);
 		tfUsuarioSelecionado.setEditable(false);
 		tfLance.setEditable(false);
-		tfUsuarioSelecionado.setEditable(false);
+
+		taLote.setEditable(false);
+		
+		bHistoricoLances.setDisable(true);
 		bDarLance.setDisable(true);
-		
-		
+		bselecionaUsuario.setDisable(true);
 		
 		//Iniciando ChoiceBox com os status dos leilões
 		cbStatus.setItems(itensChoisestatus);
@@ -158,12 +163,18 @@ public class telaPrincipalController implements Initializable{
 		cbUsuarios.setItems(itensChoiseusuarios);
 		cbUsuarios.getSelectionModel().select(0);
 		cbUsuarios.setTooltip(new Tooltip("Selecione um tipo de usuário"));
+		cbUsuarios.setDisable(true);
 		
 		//monitoramento da ChoiceBox de stauts dos leilões
 		cbStatus.valueProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String valorAntigoCbStatus, String novoValorCbStatus) {
-				controleCbStatus(novoValorCbStatus);
+				try {
+					controleCbStatus(novoValorCbStatus);
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 	    });
 		
@@ -177,7 +188,7 @@ public class telaPrincipalController implements Initializable{
 	}
 	
 	//alimentaçao da lista de leiloes com base na ChoiceBox de status dos leilões
-	private void controleCbStatus(String novoValorCbStatus){
+	private void controleCbStatus(String novoValorCbStatus) throws ParseException{
 		switch (novoValorCbStatus) {
 			
 			case ("Selecione um status para exibir"):
@@ -207,6 +218,7 @@ public class telaPrincipalController implements Initializable{
 	        
 	        case ("Em Andamento"):
 	        	listaLeiloes.clear();
+	        	
 	        	try {
 	    			for(int i=0;i<leilaoDB.getAtivos().size();i++){
 	    				listaLeiloes.add(leilaoDB.getAtivos().get(i));
@@ -218,7 +230,7 @@ public class telaPrincipalController implements Initializable{
 	    		}
 	        	break;
 	        
-	        case ("Todos"):
+	        case ("Todos"): //não utilizado na versão final
 	        	listaLeiloes.clear();
 	        	try {
 	    			for(int i=0;i<leilaoDB.getTodos().size();i++){
@@ -297,9 +309,21 @@ public class telaPrincipalController implements Initializable{
 			alert.setHeaderText(null);
 			alert.setContentText("Selecione um status para exibir os leilões disponíveis");
 			alert.showAndWait();
-    	}else 
-    		PopulaDetalhesLeilao();
-       	bHistoricoLances.setDisable(false);
+    	}else
+    		try{
+    			PopulaDetalhesLeilao();
+           		bHistoricoLances.setDisable(false);
+           		bHistoricoLances.setText("Ver historico de lances do leilão");
+           		lvHistoricoLances.setVisible(false);
+        		listaLances.clear();
+        	} catch (NullPointerException e) {
+    			Alert alert = new Alert(AlertType.INFORMATION);
+    			alert.setTitle("Atenção!");
+    			alert.setHeaderText(null);
+    			alert.setContentText("Selecione um leilão na lista para ver seus detalhes \n"+e.toString());
+    			alert.showAndWait();
+    		}
+    		
     }
     public void PopulaDetalhesLeilao(){
     	l_temp = lvLeiloes.getSelectionModel().getSelectedItem();
@@ -317,6 +341,24 @@ public class telaPrincipalController implements Initializable{
 					);
 			tfNomeVencedor.setText(l_temp.getVencedor());
 			tfValorLanceVencedor.setText(Double.toString(l_temp.getArremate()));
+			
+			if(l_temp.getStatus()==true){
+				lLanceVencedor.setText("Lance vencedor até o momento");
+	        	lUsuarioVencedor.setText("Usuário vendedor até o momento");
+			}
+			
+			if(l_temp.getStatus()==true){
+				cbUsuarios.setDisable(false);
+	    		bselecionaUsuario.setDisable(false);
+	    		lLanceVencedor.setText("Lance vencedor até o momento");
+	        	lUsuarioVencedor.setText("Usuário vendedor até o momento");
+    		}else if(l_temp.getStatus()==false){
+    			cbUsuarios.setDisable(true);
+	    		bselecionaUsuario.setDisable(true);
+	    		lLanceVencedor.setText("Arremate vencedor");
+	        	lUsuarioVencedor.setText("Usuário que arrematou");
+    		}
+    		
 		} catch (DAOException e) {
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Atenção!");
@@ -324,43 +366,38 @@ public class telaPrincipalController implements Initializable{
 			alert.setContentText(e.toString());
 			alert.showAndWait();
 		}
+    	
+    	
     }
     
     //alimentação do histórico de lances
     @FXML
     void HistoricoLances(ActionEvent event) {
-    	
-    	Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle("Atenção!");
-		alert.setHeaderText(null);
-		alert.setContentText("Ainda não implementado");
-		alert.showAndWait();
-    	listaLances.clear();
-    	
-    	/*
-    	
-    	try {
-    		for(int i=0;i<lanceBD.getLancesPorLeilaoID(l_temp.getLeilaoId()).size();i++){
-    			listaLances.add(lanceBD.getLancesPorLeilaoID(l_temp.getLeilaoId()).get(i));
-    		}
-    		lvHistoricoLances.setItems(listaLances);
-    		lvHistoricoLances.setVisible(true);
-    		
-    		
-    	} catch (DAOException e) {
-    		e.printStackTrace();
+    	if(bHistoricoLances.getText().equals("Ver historico de lances do leilão")){
+    		listaLances.clear();
+        	try {
+        		for(int i=lanceBD.getLancesPorLeilaoID(l_temp.getLeilaoId()).size()-1;i>-1;i--){
+        			listaLances.add(lanceBD.getLancesPorLeilaoID(l_temp.getLeilaoId()).get(i));
+        		}
+        		lvHistoricoLances.setItems(listaLances);
+        		lvHistoricoLances.setVisible(true);
+        		bHistoricoLances.setText("Fechar histórico");
+        		
+        	} catch (DAOException e) {
+        		e.printStackTrace();
+        	}
+    	}else{
+    		bHistoricoLances.setText("Fechar Histórico");
+    		lvHistoricoLances.setVisible(false);
+    		listaLances.clear();
+    		bHistoricoLances.setText("Ver historico de lances do leilão");
     	}
-    	
-    	*/
-    	  
-    	
     }
     
     //alimentaçao da lista de usuarios com base na ChoiceBox de usuários	
   	private void controleCbUsuarios(String newValuecbUsuarios){
   		switch (newValuecbUsuarios) {
-  		
-	  		case ("Selecione um tipo de usuário"):
+  			case ("Selecione um tipo de usuário"):
 	  			listaUsuarios.clear();
 	  			break;
 	  		
@@ -399,9 +436,7 @@ public class telaPrincipalController implements Initializable{
      
     @FXML
     void SelecionarUsuario(ActionEvent event) {
-    	tfLance.setEditable(true);
-    	bDarLance.setDisable(false);
-    	
+    	    	
     	int indexUsuario=lvUsuarios.getSelectionModel().getSelectedIndex(); //pega o indice do item clicado na view
     	
        	if(cbUsuarios.getSelectionModel().getSelectedItem().equals("Selecione um tipo de usuário")){
@@ -426,6 +461,8 @@ public class telaPrincipalController implements Initializable{
 			tfUsuarioSelecionado.setText(
 					usuario_PjDB.getTodos().get(indexUsuario).getNome()+", e-mail:"+usuario_PjDB.getTodos().get(indexUsuario).getEmail()
 					);
+			tfLance.setEditable(true);
+        	bDarLance.setDisable(false);
     	} catch (DAOException e) {
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Atenção!");
@@ -444,7 +481,9 @@ public class telaPrincipalController implements Initializable{
     
     public void PopulaUsuarioPF(int indexUsuario){
     	try {
-			tfUsuarioSelecionado.setText(usuario_PfDB.getTodos().get(indexUsuario).getNome()+", e-mail:"+usuario_PfDB.getTodos().get(indexUsuario).getEmail());
+    		tfUsuarioSelecionado.setText(usuario_PfDB.getTodos().get(indexUsuario).getNome()+", e-mail:"+usuario_PfDB.getTodos().get(indexUsuario).getEmail());
+    		tfLance.setEditable(true);
+        	bDarLance.setDisable(false);
     	} catch (DAOException e) {
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Atenção!");
@@ -462,7 +501,6 @@ public class telaPrincipalController implements Initializable{
     	tfLance.setEditable(true);
     }
     
-    //TODO terminar Lance
     @FXML
     void DarLance(ActionEvent event) {
     	
@@ -481,13 +519,26 @@ public class telaPrincipalController implements Initializable{
     			);
     	try {
     		lanceBD.adicionar(la);
+    		if(la.getLance_valor()>l_temp.getArremate()){
+    			leilaoDB.darLance(la);
+    			tfValorLanceVencedor.setText(Double.toString(la.getLance_valor()));
+    			tfNomeVencedor.setText(la.getUsuario_id());
+    		}
+    	
+    		cbUsuarios.getSelectionModel().select(0);
+    		listaUsuarios.clear();
+    		tfUsuarioSelecionado.setText("");
+    		tfLance.setText("");
+    		tfUsuarioSelecionado.setEditable(false);
+    		tfLance.setEditable(false);
+    		
     		Alert alert = new Alert(AlertType.INFORMATION);
     		alert.setTitle("Sucesso!");
     		alert.setHeaderText("Lance efetuado com sucesso");
     		alert.setContentText(
     				"Detalhes: \n "
     				+ "Data / Hora do lance: "+data_hora_lance+"\n "
-    				+ "Valor do lance: "+la.getLance_valor()+"\n"
+    				+ "Valor do lance: "+la.getLance_valor()+"\n "
     				+ "Bem do leilão: "+bemDB.getBemPorBemID(loteDB.getLotePorLoteID(l_temp.getLoteId()).getBemId()).getDetalhes()
     						);
     		alert.showAndWait();

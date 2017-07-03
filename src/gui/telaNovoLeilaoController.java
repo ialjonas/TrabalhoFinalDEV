@@ -135,7 +135,6 @@ public class telaNovoLeilaoController implements Initializable {
 		tfInfoLote.setText(bemDB.getBemPorBemID(l.getBemId()).toString()+"");
 		
 		for(int i=0;i<loteDB.getTodos().size();i++){
-			//listaLote.add(loteDB.getTodos().get(i));
 			loteIdTemp=loteDB.getTodos().get(loteDB.getTodos().size()-1).getLoteId();
 		}
     }
@@ -158,7 +157,6 @@ public class telaNovoLeilaoController implements Initializable {
 			leilaoDB.adicionar(le);
 		} 
     	catch (DAOException e) {
-			// TODO Auto-generated catch block
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Atenção!");
 			alert.setHeaderText(null);
@@ -168,7 +166,6 @@ public class telaNovoLeilaoController implements Initializable {
 		}
     	
     	catch (NullPointerException n) {
-    		// TODO Auto-generated catch block
     		Alert alert = new Alert(AlertType.INFORMATION);
     		alert.setTitle("Atenção!");
     		alert.setHeaderText(null);
@@ -178,7 +175,6 @@ public class telaNovoLeilaoController implements Initializable {
     	}
     	
     	catch (RuntimeException r) {
-    		// TODO Auto-generated catch block
     		Alert alert = new Alert(AlertType.INFORMATION);
     		alert.setTitle("Atenção!");
     		alert.setHeaderText(null);

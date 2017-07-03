@@ -1,12 +1,11 @@
 package negocio;
 
-import java.time.LocalDate;
-
 public class Leilao {
 	private int loteId, leilaoId;
 	private double arremate;
 	private String vencedor, tipo, tipoLance, dataIni, dataFim;
-
+	private boolean status;
+	
 	public Leilao(int loteId, String dataIni, String dataFim, double arremate, String vencedor, String tipo,
 			String tipoLance) {
 		super();
@@ -17,6 +16,7 @@ public class Leilao {
 		this.vencedor = vencedor;
 		this.tipo = tipo;
 		this.tipoLance = tipoLance;
+		//this.status = status;
 	}
 
 	public Leilao(int leilaoId, int loteId, String dataIni, String dataFim, double arremate, String vencedor,
@@ -30,6 +30,18 @@ public class Leilao {
 		this.vencedor = vencedor;
 		this.tipo = tipo;
 		this.tipoLance = tipoLance;
+	}
+	
+	public void ativa(){
+		status=true;
+	}
+	
+	public void desativa(){
+		status=false;
+	}
+	
+	public boolean getStatus(){
+		return status;
 	}
 
 	public int getLeilaoId() {

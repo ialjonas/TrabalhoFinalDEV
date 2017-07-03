@@ -64,8 +64,7 @@ public class Lance {
 
 	@Override
 	public String toString() {
-		return "Lance [usuario_id=" + usuario_id + ", lance_data=" + lance_data + ", leilao_id=" + leilao_id
-				+ ", lance_id=" + lance_id + ", lance_valor=" + lance_valor + "]";
+		return "Valor: " + lance_valor + ", Data: " + lance_data + ", usuário: " + usuario_id;
 	}
 	
 	

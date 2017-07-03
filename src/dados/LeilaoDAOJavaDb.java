@@ -2,12 +2,20 @@
 package dados;
 
 import java.util.List;
+
+import negocio.Lance;
 import negocio.Leilao;
 import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class LeilaoDAOJavaDb {
 	private static LeilaoDAOJavaDb ref;
+	Date agora = new Date(System.currentTimeMillis());
+	Date d_temp;
+	SimpleDateFormat formatarData = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
 	public static LeilaoDAOJavaDb getInstance(){
 		if (ref == null){
@@ -52,8 +60,25 @@ public class LeilaoDAOJavaDb {
         }
     }
 	
+	public boolean darLance(Lance la) throws DAOException {
+		try {
+            Connection con = getConnection();
+            PreparedStatement stmt = con.prepareStatement(
+            		"UPDATE LEILAO SET leilao_arremate=? WHERE leilao_id=?"
+                    );
+            stmt.setString(1, Double.toString(la.getLance_valor()));
+            stmt.setString(2, Integer.toString(la.getLeilao_id()));
+            
+            int ret = stmt.executeUpdate();
+            con.close();
+            return (ret>0);
+        } catch (SQLException ex) {
+            throw new DAOException("Falha ao atualizar.", ex);
+        }
+    }
 	
-    public List<Leilao> getTodos() throws DAOException { //retorna lista de todos os leilões
+	
+    public List<Leilao> getTodos() throws DAOException, ParseException { //retorna lista de todos os leilões
         try {
             Connection con = getConnection();
             Statement stmt = con.createStatement();
@@ -70,6 +95,13 @@ public class LeilaoDAOJavaDb {
                 String tipo_lance = resultado.getString("leilao_tipo_lance");
                 
                 Leilao l = new Leilao(leilaoId,loteId, dataIni, dataFim, arremate, vencedor,tipo_leilao,tipo_lance);
+                
+                String data_hora_lance=dataFim;
+                d_temp=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(data_hora_lance);
+                if(agora.before(d_temp)){
+                	l.ativa();
+                }else l.desativa();
+                
                 listaLeiloes.add(l);
             }
             return listaLeiloes;
@@ -93,8 +125,10 @@ public class LeilaoDAOJavaDb {
                 String vencedor = resultado.getString("leilao_vencedor");
                 String tipo_leilao = resultado.getString("leilao_tipo");
                 String tipo_lance = resultado.getString("leilao_tipo_lance");
+                Boolean status=true;
                 
                 Leilao l = new Leilao(leilaoId,loteId, dataIni, dataFim, arremate, vencedor,tipo_leilao,tipo_lance);
+                l.ativa();
                 listaLeiloesAtivos.add(l);
                 
             }
@@ -121,6 +155,7 @@ public class LeilaoDAOJavaDb {
                 String tipo_lance = resultado.getString("leilao_tipo_lance");
                 
                 Leilao l = new Leilao(leilaoId,loteId, dataIni, dataFim, arremate, vencedor,tipo_leilao,tipo_lance);
+                l.desativa();
                 listaLeiloesEncerrados.add(l);
                 
             }
@@ -130,7 +165,7 @@ public class LeilaoDAOJavaDb {
         }
 	}
     
-    public List<Leilao> getTipoOferta() throws DAOException { //retorna lista de leilões de Oferta
+    public List<Leilao> getTipoOferta() throws DAOException, ParseException { //retorna lista de leilões de Oferta
         try {
         	Connection con = getConnection();
             PreparedStatement stmt = con.prepareStatement("SELECT * FROM LEILAO WHERE leilao_tipo=?");
@@ -148,6 +183,13 @@ public class LeilaoDAOJavaDb {
                 String tipo_lance = resultado.getString("leilao_tipo_lance");
                 
                 Leilao l = new Leilao(leilaoId,loteId, dataIni, dataFim, arremate, vencedor,tipo_leilao,tipo_lance);
+                
+                String data_hora_lance=dataFim;
+                d_temp=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(data_hora_lance);
+                if(agora.before(d_temp)){
+                	l.ativa();
+                }else l.desativa();
+                
                 listaLeiloesOferta.add(l);
                 
             }
@@ -157,7 +199,7 @@ public class LeilaoDAOJavaDb {
         }
 	}
 	
-    public List<Leilao> getTipoDemanda() throws DAOException { //retorna lista de leilões de Demanda
+    public List<Leilao> getTipoDemanda() throws DAOException, ParseException { //retorna lista de leilões de Demanda
         try {
         	Connection con = getConnection();
             PreparedStatement stmt = con.prepareStatement("SELECT * FROM LEILAO WHERE leilao_tipo=?");
@@ -175,6 +217,13 @@ public class LeilaoDAOJavaDb {
                 String tipo_lance = resultado.getString("leilao_tipo_lance");
                 
                 Leilao l = new Leilao(leilaoId,loteId, dataIni, dataFim, arremate, vencedor,tipo_leilao,tipo_lance);
+                
+                String data_hora_lance=dataFim;
+                d_temp=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(data_hora_lance);
+                if(agora.before(d_temp)){
+                	l.ativa();
+                }else l.desativa();
+                
                 listaLeiloesDemanda.add(l);
                 
             }
@@ -184,7 +233,7 @@ public class LeilaoDAOJavaDb {
         }
 	}
     
-    public List<Leilao> getLanceAberto() throws DAOException { //retorna lista de leilões de lance aberto
+    public List<Leilao> getLanceAberto() throws DAOException, ParseException { //retorna lista de leilões de lance aberto
         try {
         	Connection con = getConnection();
             PreparedStatement stmt = con.prepareStatement("SELECT * FROM LEILAO WHERE leilao_tipo_lance=?");
@@ -202,6 +251,13 @@ public class LeilaoDAOJavaDb {
                 String tipo_lance = resultado.getString("leilao_tipo_lance");
                 
                 Leilao l = new Leilao(leilaoId,loteId, dataIni, dataFim, arremate, vencedor,tipo_leilao,tipo_lance);
+                
+                String data_hora_lance=dataFim;
+                d_temp=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(data_hora_lance);
+                if(agora.before(d_temp)){
+                	l.ativa();
+                }else l.desativa();
+                
                 listaLeiloesLanceAberto.add(l);
                 
             }
@@ -211,7 +267,7 @@ public class LeilaoDAOJavaDb {
         }
 	}
 	
-    public List<Leilao> getLanceFechado() throws DAOException { //retorna lista de leilões de lance fechado
+    public List<Leilao> getLanceFechado() throws DAOException, ParseException { //retorna lista de leilões de lance fechado
         try {
         	Connection con = getConnection();
             PreparedStatement stmt = con.prepareStatement("SELECT * FROM LEILAO WHERE leilao_tipo_lance=?");
@@ -229,6 +285,13 @@ public class LeilaoDAOJavaDb {
                 String tipo_lance = resultado.getString("leilao_tipo_lance");
                 
                 Leilao l = new Leilao(leilaoId,loteId, dataIni, dataFim, arremate, vencedor,tipo_leilao,tipo_lance);
+                
+                String data_hora_lance=dataFim;
+                d_temp=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(data_hora_lance);
+                if(agora.before(d_temp)){
+                	l.ativa();
+                }else l.desativa();
+                
                 listaLeiloesLanceFechado.add(l);
                 
             }

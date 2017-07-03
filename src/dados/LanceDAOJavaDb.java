@@ -55,9 +55,10 @@ public class LanceDAOJavaDb {
 	public List<Lance> getLancesPorLeilaoID(int leilaoId) throws DAOException {
         try {
             Connection con = getConnection();
-            Statement stmt = con.createStatement();
-            ResultSet resultado = stmt.executeQuery("SELECT * FROM LANCE WHERE LEILAO_ID_foreign_key=?");
-            List<Lance> listaLances = new ArrayList<Lance>();
+            PreparedStatement stmt = con.prepareStatement("SELECT * FROM LANCE WHERE LEILAO_ID_foreign_key=?");
+            stmt.setString(1, Integer.toString(leilaoId));
+            ResultSet resultado = stmt.executeQuery();
+            List<Lance> listaLancesDoLeilao = new ArrayList<Lance>();
             while(resultado.next()) {
             	int lance_id = Integer.parseInt(resultado.getString("lance_id"));
                 int leilao_id = Integer.parseInt(resultado.getString("LEILAO_ID_foreign_key"));
@@ -65,9 +66,9 @@ public class LanceDAOJavaDb {
                 double lance_valor = Double.parseDouble(resultado.getString("lance_valor"));
                 String lance_data = resultado.getString("lance_data");
                 Lance l =new Lance(lance_id,leilao_id,usuario_id,lance_valor,lance_data);
-                listaLances.add(l);
+                listaLancesDoLeilao.add(l);
             }
-            return listaLances;
+            return listaLancesDoLeilao;
         } catch (SQLException ex) {
             throw new DAOException("Falha ao buscar.", ex);
         }

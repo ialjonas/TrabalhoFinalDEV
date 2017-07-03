@@ -1,6 +1,7 @@
 package gui;
 
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ResourceBundle;
 
 import com.sun.javafx.font.freetype.FTFactory;
@@ -8,6 +9,7 @@ import com.sun.javafx.font.freetype.FTFactory;
 import dados.DAOException;
 import dados.Usuario_PfDAOJavaDb;
 import dados.Usuario_PjDAOJavaDb;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -31,6 +33,7 @@ import negocio.Usuario_PF;
 import negocio.Usuario_PJ;
 
 public class telaNovoUsuarioController implements Initializable{
+	
 	Usuario_PjDAOJavaDb Usuario_PjJavaDbDB=Usuario_PjDAOJavaDb.getInstance();
 	Usuario_PfDAOJavaDb Usuario_PfJavaDbDB=Usuario_PfDAOJavaDb.getInstance();
 	
